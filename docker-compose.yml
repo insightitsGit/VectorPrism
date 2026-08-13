@@ -79,6 +79,33 @@ services:
     profiles: ["test"]
     command: ["python", "-m", "pytest", "test_psm.py", "test_phases.py", "-v"]
 
+  production-smoke:
+    image: vectorprism:local
+    working_dir: /app
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - hf-cache:/cache/huggingface
+      - st-cache:/cache/sentence-transformers
+      - ./checkpoints:/app/checkpoints
+    environment:
+      HF_HOME: /cache/huggingface
+      TRANSFORMERS_CACHE: /cache/huggingface
+      SENTENCE_TRANSFORMERS_HOME: /cache/sentence-transformers
+      VECTORPRISM_PG_DSN: postgresql://vectorprism:vectorprism@db:5432/vectorprism
+    command:
+      - python
+      - demos/finance_demo/run_production_smoke.py
+      - --full
+      - --dsn
+      - postgresql://vectorprism:vectorprism@db:5432/vectorprism
+      - --checkpoint
+      - checkpoints/finance_demo.pt
+      - --encoder
+      - sentence-transformers/all-mpnet-base-v2
+
 volumes:
   hf-cache:
   st-cache:

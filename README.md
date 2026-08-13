@@ -125,6 +125,19 @@ pytest test_psm.py test_phases.py -v
 
 Core deps: `torch`, `numpy`, `scipy`, `scikit-learn`, `pytest`. Optional: `psycopg[binary]`, `pgvector`, `qdrant-client`, `sentence-transformers`.
 
+### Production path (Docker + Postgres/pgvector) — recommended on Windows
+
+```bash
+docker compose up -d db
+docker compose run --rm test
+docker compose run --rm finance-pg
+docker compose run --rm production-smoke
+```
+
+- DB: `localhost:5433` · DSN `postgresql://vectorprism:vectorprism@localhost:5433/vectorprism`
+- Results: `demos/finance_demo/results/` (`PRODUCTION_RESULTS.md`, eval, live search JSON)
+- Full checklist: [`PRODUCTION.md`](PRODUCTION.md) · Docker notes: [`DOCKER.md`](DOCKER.md)
+
 ### Example 1 — Multi-Task Ingestion Adapter
 
 Encode raw text with a frozen 768d encoder → `MultiTaskProjectionAdapter` → contiguous **1024d** tensor (matches `ingestion_adapter.py` + `ingest_pipeline.py`).
