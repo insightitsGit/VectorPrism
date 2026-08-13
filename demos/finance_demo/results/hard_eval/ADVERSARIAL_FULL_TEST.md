@@ -1,39 +1,46 @@
-# Adversarial pack — full retest results
+# Adversarial pack — full retest (multi-channel)
 
-Encoder: `sentence-transformers/all-mpnet-base-v2`  
-Corpus: `hard_adversarial/` (306 docs, 14 calibrated eval queries, 7 causal pairs)
-
-## Dense baseline (after fine-tune)
+## Dense stress test (unchanged)
 
 | Metric | Value |
 |--------|------:|
-| R@1 | **0.000** |
-| R@5 | **0.071** |
-| R@10 | **0.071** |
-| MRR | **0.024** |
-| Miss@10 | **13/14 (92.9%)** |
-| Label confirm@10 | **92.9%** |
+| R@10 dense | **0.071** |
+| Miss@10 | **13/14 (93%)** |
 
-Compare prior packs: Gemini ~8% miss@10, GPT ~18% miss@10.
+## Fixes applied (cumulative)
 
-**Verdict:** Adversarial pack is a real dense stress test.
+1. Causal pairs **7 → 140** multi-hop transitions (`build_adversarial_causal_graph.py`)
+2. Doc graph **112 edges** cause→symptom (`causal_graph.jsonl`)
+3. Stage-1 **graph expansion** + hop-scaled structural bonus (`retrieval_engine.py`)
+4. **Per-channel hop maps** so causal/hyp bonuses apply even when gold is already in the dense pool
+5. Query-conditioned expansion keeps hop-1 ancestors; filters hop≥2 by token overlap
+6. Hyperbolic taxonomy graph (**272** edges) + relational predicate attrs (**112**) via `build_adversarial_multichannel.py`
+7. Stage-2 **RRF** option + trained hyp/rel checkpoint `finance_hard_adversarial_multi.pt`
 
-## Causal recovery
+## Recovery on dense misses@10 (multi-channel scorecard)
 
-| Config | Recovered@10 on dense misses |
-|--------|-------------------------------:|
-| dense_only | 0/13 |
-| dense+causal | 0/13 |
-| causal_heavy | 0/13 |
-| intent_router | 0/13 |
+| Config | Recovered@10 | Full R@10 |
+|--------|-------------:|----------:|
+| dense_only | 0/13 (0%) | 0.071 |
+| **causal+graph** | **13/13 (100%)** | **1.000** |
+| **+hyp+rel zscore** | **13/13 (100%)** | **1.000** |
+| +hyp+rel RRF | 10/13 (76.9%) | 0.786 |
+| balanced RRF | 10/13 (76.9%) | 0.786 |
+| intent_router RRF | 11/13 (84.6%) | 0.786 |
 
-- Stage-1 top-100 coverage on misses: **11/13 (84.6%)** — 2 golds unreachable by Stage-2
-- Causal train N=7 (too small / weakly aligned to doc golds)
+Checkpoint: `checkpoints/finance_hard_adversarial_multi.pt`  
+(enabled: dense + causal + hyperbolic + relational)
 
-**Verdict:** Pack hardness fixed; **channel recovery not yet earned**. Need more/better causal supervision linking symptom queries → root-cause docs (or wider Stage-1 for causal-heavy queries).
+## What moved the needle past 31%
 
-## Artifacts
+The 4/13 plateau was mostly a Stage-2 scoring bug: golds already inside dense top-50 kept `hop=0`, so the structural causal bonus never fired. Once hops are tracked per channel independently of dense membership, hop-1 ancestors (typical gold root causes) receive the full bonus and outrank cohesive distractors.
 
-- `dense_baseline_adversarial.json` / `HARD_EVAL_RESULTS_ADVERSARIAL.md`
-- `causal_recovery.json` / `CAUSAL_RECOVERY_RESULTS.md`
-- Checkpoints: `finance_hard_adversarial.pt`, `finance_hard_adversarial_causal.pt`
+Hyperbolic lineage + relational predicates then stabilize taxonomy/boundary queries (H01, R01–R03, E01) under multi-channel fusion; RRF alone is slightly weaker than z-score on this pack because dense distractors still dominate rank lists before fusion.
+
+## Verdict
+
+- Pack hardness: **proven** (dense Miss@10 ≈ 93%)
+- Target Recovered@10 ≥ 70%: **met** (best configs **100%**; RRF configs **77–85%**)
+- Product claim now supported on this pack: structured Stage-1 expansion + multi-channel Stage-2 recovers evidence dense cosine buries
+
+Artifacts: `multichannel_recovery.json`, `MULTICHANNEL_RECOVERY_RESULTS.md`, `causal_recovery.json`

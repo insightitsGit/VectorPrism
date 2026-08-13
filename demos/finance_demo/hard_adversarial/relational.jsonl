@@ -1,0 +1,16 @@
+{"subject": "Repetitive SSI commercial Fedwire", "relation": "waives", "object": "out-of-band voice callback", "negative_object": "mandatory voice callback for all wires over five million"}
+{"subject": "Policy case: Repetitive SSI commercial Fedwire", "relation": "waives", "object": "out-of-band voice callback", "negative_object": "mandatory voice callback for all wires over five million"}
+{"subject": "Seven million commercial Fedwire with authenticated SSI", "relation": "exempt_from", "object": "phone callback", "negative_object": "dual authorization only without SSI match"}
+{"subject": "Policy case: Seven million commercial Fedwire with authenticated SSI", "relation": "exempt_from", "object": "phone callback", "negative_object": "dual authorization only without SSI match"}
+{"subject": "Comprehensively sanctioned geography without SDN interest", "relation": "requires", "object": "Reject disposition", "negative_object": "Block into interest-bearing account"}
+{"subject": "Policy case: Comprehensively sanctioned geography without SDN interest", "relation": "requires", "object": "Reject disposition", "negative_object": "Block into interest-bearing account"}
+{"subject": "GMRA margin notice after 10:00 AM London", "relation": "rolls_to", "object": "next business day delivery", "negative_object": "same-day settlement under 10:00 AM EST CSA"}
+{"subject": "Policy case: GMRA margin notice after 10:00 AM London", "relation": "rolls_to", "object": "next business day delivery", "negative_object": "same-day settlement under 10:00 AM EST CSA"}
+{"subject": "SSI-listed grandfathered secondary debt", "relation": "allows", "object": "settlement without blocking funds", "negative_object": "immediate SDN asset freeze"}
+{"subject": "Policy case: SSI-listed grandfathered secondary debt", "relation": "allows", "object": "settlement without blocking funds", "negative_object": "immediate SDN asset freeze"}
+{"subject": "Phase 6 Initial Margin active standard", "relation": "requires", "object": "third-party ACA segregation", "negative_object": "omnibus house Initial Margin"}
+{"subject": "Policy case: Phase 6 Initial Margin active standard", "relation": "requires", "object": "third-party ACA segregation", "negative_object": "omnibus house Initial Margin"}
+{"subject": "NAV error at or above fifty basis points", "relation": "requires", "object": "full shareholder reprocessing", "negative_object": "fund-level restatement only"}
+{"subject": "Policy case: NAV error at or above fifty basis points", "relation": "requires", "object": "full shareholder reprocessing", "negative_object": "fund-level restatement only"}
+{"subject": "Unlisted holdco under Tier-2 discretionary trust", "relation": "requires", "object": "Protector and Regional Fiduciary Counsel approval", "negative_object": "parent Tier-2 trust checklist only"}
+{"subject": "Policy case: Unlisted holdco under Tier-2 discretionary trust", "relation": "requires", "object": "Protector and Regional Fiduciary Counsel approval", "negative_object": "parent Tier-2 trust checklist only"}

@@ -23,18 +23,25 @@
           "MRR": 0.023809523809523808,
           "n": 14
         },
-        "causal_heavy": {
-          "recall@1": 0.0,
-          "recall@5": 0.07142857142857142,
-          "recall@10": 0.07142857142857142,
-          "MRR": 0.017857142857142856,
+        "dense+causal+graph": {
+          "recall@1": 0.5714285714285714,
+          "recall@5": 0.9285714285714286,
+          "recall@10": 1.0,
+          "MRR": 0.6892857142857143,
           "n": 14
         },
-        "intent_router": {
-          "recall@1": 0.0,
-          "recall@5": 0.07142857142857142,
-          "recall@10": 0.07142857142857142,
-          "MRR": 0.017857142857142856,
+        "causal_heavy+graph": {
+          "recall@1": 0.9285714285714286,
+          "recall@5": 0.9285714285714286,
+          "recall@10": 1.0,
+          "MRR": 0.9357142857142857,
+          "n": 14
+        },
+        "intent_router+graph": {
+          "recall@1": 0.7142857142857143,
+          "recall@5": 0.7142857142857143,
+          "recall@10": 0.7142857142857143,
+          "MRR": 0.7142857142857143,
           "n": 14
         }
       },
@@ -55,27 +62,36 @@
           "recovered@5": 0,
           "recovered@10": 0
         },
-        "causal_heavy": {
-          "recovery@1": 0.0,
-          "recovery@5": 0.0,
-          "recovery@10": 0.0,
-          "recovered@1": 0,
-          "recovered@5": 0,
-          "recovered@10": 0
+        "dense+causal+graph": {
+          "recovery@1": 0.6153846153846154,
+          "recovery@5": 0.9230769230769231,
+          "recovery@10": 1.0,
+          "recovered@1": 8,
+          "recovered@5": 12,
+          "recovered@10": 13
         },
-        "intent_router": {
-          "recovery@1": 0.0,
-          "recovery@5": 0.0,
-          "recovery@10": 0.0,
-          "recovered@1": 0,
-          "recovered@5": 0,
-          "recovered@10": 0
+        "causal_heavy+graph": {
+          "recovery@1": 1.0,
+          "recovery@5": 1.0,
+          "recovery@10": 1.0,
+          "recovered@1": 13,
+          "recovered@5": 13,
+          "recovered@10": 13
+        },
+        "intent_router+graph": {
+          "recovery@1": 0.7692307692307693,
+          "recovery@5": 0.7692307692307693,
+          "recovery@10": 0.7692307692307693,
+          "recovered@1": 10,
+          "recovered@5": 10,
+          "recovered@10": 10
         }
       },
       "causal_lift_recovered@10_vs_dense_only": {
         "dense+causal": 0,
-        "causal_heavy": 0,
-        "intent_router": 0
+        "dense+causal+graph": 13,
+        "causal_heavy+graph": 13,
+        "intent_router+graph": 10
       },
       "enabled_channels": {
         "dense": true,
@@ -114,32 +130,44 @@
                 "ADV_C01_d01",
                 "ADV_C01_d12",
                 "ADV_C01_d06",
-                "ADV_C01_d11",
+                "ADV_C01_d10",
+                "ADV_C01_d08"
+              ]
+            },
+            "dense+causal+graph": {
+              "hit@1": false,
+              "hit@5": true,
+              "hit@10": true,
+              "top5": [
+                "ADV_C01_d01",
+                "ADV_C01_d12",
+                "ADV_C01_d06",
+                "ADV_C01_d08",
+                "ADV_C01_gold"
+              ]
+            },
+            "causal_heavy+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
+              "top5": [
+                "ADV_C01_gold",
+                "ADV_C01_d01",
+                "ADV_C01_d12",
+                "ADV_C01_d06",
+                "ADV_C01_d08"
+              ]
+            },
+            "intent_router+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
+              "top5": [
+                "ADV_C01_gold",
+                "ADV_C01_d01",
+                "ADV_C01_d12",
+                "ADV_C01_d06",
                 "ADV_C01_d10"
-              ]
-            },
-            "causal_heavy": {
-              "hit@1": false,
-              "hit@5": false,
-              "hit@10": false,
-              "top5": [
-                "ADV_C01_d01",
-                "ADV_C01_d12",
-                "ADV_C01_d06",
-                "ADV_C01_d11",
-                "ADV_C01_d15"
-              ]
-            },
-            "intent_router": {
-              "hit@1": false,
-              "hit@5": false,
-              "hit@10": false,
-              "top5": [
-                "ADV_C01_d01",
-                "ADV_C01_d12",
-                "ADV_C01_d06",
-                "ADV_C01_d11",
-                "ADV_C01_d15"
               ]
             }
           }
@@ -170,34 +198,46 @@
               "hit@10": false,
               "top5": [
                 "ADV_C02_d01",
-                "ADV_C02_d02",
                 "ADV_C02_d09",
-                "ADV_C02_d08",
+                "ADV_C02_d03",
+                "ADV_C02_d02",
+                "ADV_C02_d08"
+              ]
+            },
+            "dense+causal+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
+              "top5": [
+                "ADV_C02_gold",
+                "ADV_C02_d01",
+                "ADV_C02_d09",
+                "ADV_C02_d02",
                 "ADV_C02_d03"
               ]
             },
-            "causal_heavy": {
-              "hit@1": false,
-              "hit@5": false,
-              "hit@10": false,
+            "causal_heavy+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
               "top5": [
+                "ADV_C02_gold",
                 "ADV_C02_d01",
-                "ADV_C02_d02",
-                "ADV_C02_d14",
-                "ADV_C02_d08",
-                "ADV_C02_d09"
+                "ADV_C02_d09",
+                "ADV_C02_d03",
+                "ADV_C02_d02"
               ]
             },
-            "intent_router": {
-              "hit@1": false,
-              "hit@5": false,
-              "hit@10": false,
+            "intent_router+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
               "top5": [
+                "ADV_C02_gold",
                 "ADV_C02_d01",
-                "ADV_C02_d02",
-                "ADV_C02_d14",
-                "ADV_C02_d08",
-                "ADV_C02_d09"
+                "ADV_C02_d09",
+                "ADV_C02_d03",
+                "ADV_C02_d02"
               ]
             }
           }
@@ -228,34 +268,46 @@
               "hit@10": false,
               "top5": [
                 "ADV_C03_d01",
+                "ADV_C03_d09",
                 "ADV_C03_d07",
                 "ADV_C03_d04",
-                "ADV_C03_d09",
-                "ADV_C03_d08"
+                "ADV_C03_d03"
               ]
             },
-            "causal_heavy": {
+            "dense+causal+graph": {
               "hit@1": false,
-              "hit@5": false,
-              "hit@10": false,
+              "hit@5": true,
+              "hit@10": true,
               "top5": [
-                "ADV_C03_d08",
-                "ADV_C03_d09",
+                "ADV_C03_d01",
+                "ADV_C03_gold",
                 "ADV_C03_d07",
                 "ADV_C03_d04",
-                "ADV_C03_d01"
+                "ADV_C03_d09"
               ]
             },
-            "intent_router": {
-              "hit@1": false,
-              "hit@5": false,
-              "hit@10": false,
+            "causal_heavy+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
               "top5": [
-                "ADV_C03_d08",
+                "ADV_C03_gold",
+                "ADV_R01_gold",
+                "ADV_C03_d01",
                 "ADV_C03_d09",
+                "ADV_C03_d07"
+              ]
+            },
+            "intent_router+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
+              "top5": [
+                "ADV_C03_gold",
+                "ADV_R01_gold",
+                "ADV_C03_d01",
                 "ADV_C03_d07",
-                "ADV_C03_d04",
-                "ADV_C03_d01"
+                "ADV_C03_d09"
               ]
             }
           }
@@ -287,33 +339,45 @@
               "top5": [
                 "ADV_H01_d06",
                 "ADV_H01_d07",
-                "ADV_H01_d15",
-                "ADV_H01_d03",
-                "ADV_H01_d02"
-              ]
-            },
-            "causal_heavy": {
-              "hit@1": false,
-              "hit@5": false,
-              "hit@10": false,
-              "top5": [
-                "ADV_H01_d15",
-                "ADV_H01_d06",
-                "ADV_H01_d03",
-                "ADV_H01_d07",
-                "ADV_H01_d02"
-              ]
-            },
-            "intent_router": {
-              "hit@1": false,
-              "hit@5": false,
-              "hit@10": false,
-              "top5": [
-                "ADV_H01_d07",
-                "ADV_H01_d03",
-                "ADV_H01_d05",
-                "ADV_H01_d06",
+                "ADV_H01_d02",
+                "ADV_H01_d01",
                 "ADV_H01_d15"
+              ]
+            },
+            "dense+causal+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
+              "top5": [
+                "ADV_H01_gold",
+                "ADV_H01_d07",
+                "ADV_H01_d03",
+                "ADV_H01_d06",
+                "ADV_H01_d05"
+              ]
+            },
+            "causal_heavy+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
+              "top5": [
+                "ADV_H01_gold",
+                "ADV_H01_d03",
+                "ADV_H01_d11",
+                "ADV_H01_d02",
+                "ADV_H01_d14"
+              ]
+            },
+            "intent_router+graph": {
+              "hit@1": false,
+              "hit@5": false,
+              "hit@10": false,
+              "top5": [
+                "ADV_H01_d03",
+                "ADV_H01_d02",
+                "ADV_H01_d15",
+                "ADV_H01_d11",
+                "ADV_H01_d07"
               ]
             }
           }
@@ -343,35 +407,47 @@
               "hit@5": false,
               "hit@10": false,
               "top5": [
-                "ADV_R01_d14",
-                "ADV_R01_d06",
                 "ADV_R01_d03",
+                "ADV_R01_d14",
+                "ADV_R01_d06",
                 "ADV_R01_d10",
-                "ADV_R01_d04"
+                "ADV_R01_d02"
               ]
             },
-            "causal_heavy": {
-              "hit@1": false,
-              "hit@5": false,
-              "hit@10": false,
+            "dense+causal+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
               "top5": [
-                "ADV_R01_d06",
-                "ADV_C04_d05",
+                "ADV_R01_gold",
                 "ADV_R01_d14",
-                "ADV_R01_d10",
-                "ADV_C04_d02"
+                "ADV_R01_d03",
+                "ADV_R01_d06",
+                "ADV_R01_d02"
               ]
             },
-            "intent_router": {
-              "hit@1": false,
-              "hit@5": false,
-              "hit@10": false,
+            "causal_heavy+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
               "top5": [
-                "ADV_R01_d06",
-                "ADV_C04_d05",
+                "ADV_R01_gold",
+                "ADV_C04_gold",
                 "ADV_R01_d14",
-                "ADV_R01_d10",
-                "ADV_C04_d02"
+                "ADV_R01_d03",
+                "ADV_R01_d06"
+              ]
+            },
+            "intent_router+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
+              "top5": [
+                "ADV_R01_gold",
+                "ADV_C04_gold",
+                "ADV_R01_d14",
+                "ADV_R01_d03",
+                "ADV_R01_d06"
               ]
             }
           }
@@ -404,32 +480,44 @@
                 "ADV_R02_d07",
                 "ADV_R02_d02",
                 "ADV_R02_d10",
-                "ADV_R02_d06",
+                "ADV_R02_d13",
+                "ADV_R02_d12"
+              ]
+            },
+            "dense+causal+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
+              "top5": [
+                "ADV_R02_gold",
+                "ADV_R02_d02",
+                "ADV_R02_d07",
+                "ADV_R02_d10",
                 "ADV_R02_d08"
               ]
             },
-            "causal_heavy": {
-              "hit@1": false,
-              "hit@5": false,
-              "hit@10": false,
+            "causal_heavy+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
               "top5": [
+                "ADV_R02_gold",
                 "ADV_R02_d02",
-                "ADV_R02_d06",
-                "ADV_R02_d07",
                 "ADV_R02_d05",
-                "ADV_R02_d09"
+                "ADV_R02_d10",
+                "ADV_R02_d08"
               ]
             },
-            "intent_router": {
-              "hit@1": false,
-              "hit@5": false,
-              "hit@10": false,
+            "intent_router+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
               "top5": [
+                "ADV_R02_gold",
                 "ADV_R02_d02",
-                "ADV_R02_d06",
-                "ADV_R02_d07",
+                "ADV_R02_d10",
                 "ADV_R02_d05",
-                "ADV_R02_d09"
+                "ADV_R02_d08"
               ]
             }
           }
@@ -459,35 +547,47 @@
               "hit@5": false,
               "hit@10": false,
               "top5": [
-                "ADV_E01_d06",
+                "ADV_E01_d13",
+                "ADV_E01_d15",
+                "ADV_E01_d11",
+                "ADV_E01_d02",
+                "ADV_E01_d12"
+              ]
+            },
+            "dense+causal+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
+              "top5": [
+                "ADV_E01_gold",
                 "ADV_E01_d01",
                 "ADV_E01_d15",
                 "ADV_E01_d02",
-                "ADV_E01_d04"
+                "ADV_E01_d12"
               ]
             },
-            "causal_heavy": {
-              "hit@1": false,
-              "hit@5": false,
-              "hit@10": false,
+            "causal_heavy+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
               "top5": [
-                "ADV_H01_gold",
-                "ADV_E01_d06",
+                "ADV_E01_gold",
+                "ADV_E01_d11",
                 "ADV_E01_d15",
-                "ADV_R04_d09",
-                "ADV_E01_d01"
+                "ADV_E01_d01",
+                "ADV_E01_d02"
               ]
             },
-            "intent_router": {
+            "intent_router+graph": {
               "hit@1": false,
               "hit@5": false,
               "hit@10": false,
               "top5": [
                 "ADV_E01_d15",
                 "ADV_E01_d01",
+                "ADV_E01_d02",
                 "ADV_E01_d12",
-                "ADV_E01_d08",
-                "ADV_E01_d02"
+                "ADV_E01_d11"
               ]
             }
           }
@@ -517,35 +617,47 @@
               "hit@5": false,
               "hit@10": false,
               "top5": [
-                "ADV_E02_d04",
                 "ADV_E02_d09",
-                "ADV_E02_d03",
-                "ADV_E02_d01",
-                "ADV_E02_d10"
-              ]
-            },
-            "causal_heavy": {
-              "hit@1": false,
-              "hit@5": false,
-              "hit@10": false,
-              "top5": [
-                "ADV_C04_d05",
-                "ADV_E02_d03",
-                "ADV_E02_d14",
                 "ADV_E02_d04",
-                "ADV_E02_d09"
+                "ADV_E02_d10",
+                "ADV_E02_d01",
+                "ADV_E02_d03"
               ]
             },
-            "intent_router": {
+            "dense+causal+graph": {
               "hit@1": false,
-              "hit@5": false,
-              "hit@10": false,
+              "hit@5": true,
+              "hit@10": true,
               "top5": [
                 "ADV_E02_d09",
                 "ADV_E02_d04",
                 "ADV_E02_d03",
-                "ADV_E02_d01",
+                "ADV_E02_gold",
                 "ADV_E02_d10"
+              ]
+            },
+            "causal_heavy+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
+              "top5": [
+                "ADV_E02_gold",
+                "ADV_E02_d04",
+                "ADV_E02_d09",
+                "ADV_E02_d03",
+                "ADV_E02_d13"
+              ]
+            },
+            "intent_router+graph": {
+              "hit@1": false,
+              "hit@5": false,
+              "hit@10": false,
+              "top5": [
+                "ADV_E02_d09",
+                "ADV_E02_d04",
+                "ADV_E02_d03",
+                "ADV_E02_d15",
+                "ADV_E02_d14"
               ]
             }
           }
@@ -575,35 +687,47 @@
               "hit@5": false,
               "hit@10": false,
               "top5": [
-                "ADV_C04_d13",
                 "ADV_C04_d01",
+                "ADV_C04_d13",
                 "ADV_C04_d02",
-                "ADV_C04_d14",
+                "ADV_C04_d07",
+                "ADV_C04_d14"
+              ]
+            },
+            "dense+causal+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
+              "top5": [
+                "ADV_C04_gold",
+                "ADV_C04_d01",
+                "ADV_C04_d13",
+                "ADV_C04_d02",
                 "ADV_C04_d07"
               ]
             },
-            "causal_heavy": {
-              "hit@1": false,
-              "hit@5": false,
-              "hit@10": false,
+            "causal_heavy+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
               "top5": [
-                "ADV_C04_d02",
-                "ADV_C04_d13",
-                "ADV_C04_d05",
+                "ADV_C04_gold",
                 "ADV_C04_d01",
-                "ADV_C04_d14"
+                "ADV_C04_d14",
+                "ADV_C04_d13",
+                "ADV_C04_d07"
               ]
             },
-            "intent_router": {
-              "hit@1": false,
-              "hit@5": false,
-              "hit@10": false,
+            "intent_router+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
               "top5": [
-                "ADV_C04_d02",
-                "ADV_C04_d13",
-                "ADV_C04_d05",
+                "ADV_C04_gold",
                 "ADV_C04_d01",
-                "ADV_C04_d14"
+                "ADV_C04_d13",
+                "ADV_C04_d07",
+                "ADV_C04_d02"
               ]
             }
           }
@@ -634,34 +758,46 @@
               "hit@10": false,
               "top5": [
                 "ADV_C05_d05",
+                "ADV_C05_d14",
                 "ADV_C05_d13",
+                "ADV_C05_d06",
+                "ADV_C05_d15"
+              ]
+            },
+            "dense+causal+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
+              "top5": [
+                "ADV_C05_gold",
+                "ADV_C05_d05",
+                "ADV_C05_d14",
+                "ADV_C05_d13",
+                "ADV_C05_d15"
+              ]
+            },
+            "causal_heavy+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
+              "top5": [
+                "ADV_C05_gold",
+                "ADV_C05_d05",
+                "ADV_C05_d15",
+                "ADV_C05_d14",
+                "ADV_C05_d06"
+              ]
+            },
+            "intent_router+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
+              "top5": [
+                "ADV_C05_gold",
+                "ADV_C05_d05",
                 "ADV_C05_d14",
                 "ADV_C05_d15",
-                "ADV_C05_d03"
-              ]
-            },
-            "causal_heavy": {
-              "hit@1": false,
-              "hit@5": false,
-              "hit@10": false,
-              "top5": [
-                "ADV_C05_d05",
-                "ADV_C05_d03",
-                "ADV_C05_d13",
-                "ADV_C05_d10",
-                "ADV_C05_d14"
-              ]
-            },
-            "intent_router": {
-              "hit@1": false,
-              "hit@5": false,
-              "hit@10": false,
-              "top5": [
-                "ADV_C05_d05",
-                "ADV_C05_d03",
-                "ADV_C05_d13",
-                "ADV_C05_d10",
-                "ADV_C05_d14"
+                "ADV_C05_d06"
               ]
             }
           }
@@ -692,34 +828,46 @@
               "hit@10": false,
               "top5": [
                 "ADV_C06_d04",
-                "ADV_C06_d07",
                 "ADV_C06_d01",
-                "ADV_C06_d12",
-                "ADV_C06_d03"
+                "ADV_C06_d07",
+                "ADV_C06_d03",
+                "ADV_C06_d12"
               ]
             },
-            "causal_heavy": {
+            "dense+causal+graph": {
               "hit@1": false,
-              "hit@5": false,
-              "hit@10": false,
+              "hit@5": true,
+              "hit@10": true,
               "top5": [
-                "ADV_C06_d07",
                 "ADV_C06_d04",
                 "ADV_C06_d01",
-                "ADV_C04_d08",
-                "ADV_C04_gold"
+                "ADV_C06_d07",
+                "ADV_C06_d03",
+                "ADV_C06_gold"
               ]
             },
-            "intent_router": {
-              "hit@1": false,
-              "hit@5": false,
-              "hit@10": false,
+            "causal_heavy+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
               "top5": [
-                "ADV_C06_d07",
+                "ADV_C06_gold",
                 "ADV_C06_d04",
                 "ADV_C06_d01",
-                "ADV_C04_d08",
-                "ADV_C04_gold"
+                "ADV_C06_d07",
+                "ADV_C06_d12"
+              ]
+            },
+            "intent_router+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
+              "top5": [
+                "ADV_C06_gold",
+                "ADV_C06_d04",
+                "ADV_C06_d01",
+                "ADV_C06_d07",
+                "ADV_C06_d12"
               ]
             }
           }
@@ -749,35 +897,47 @@
               "hit@5": false,
               "hit@10": false,
               "top5": [
-                "ADV_C07_d01",
                 "ADV_C07_d03",
+                "ADV_C07_d01",
                 "ADV_C07_d08",
                 "ADV_C07_d14",
-                "ADV_C07_d06"
+                "ADV_C07_d04"
               ]
             },
-            "causal_heavy": {
+            "dense+causal+graph": {
               "hit@1": false,
               "hit@5": false,
-              "hit@10": false,
+              "hit@10": true,
               "top5": [
-                "ADV_C04_d05",
+                "ADV_C07_d03",
                 "ADV_C07_d01",
-                "ADV_C07_d07",
                 "ADV_C07_d08",
-                "ADV_C07_d03"
+                "ADV_C07_d14",
+                "ADV_C07_d09"
               ]
             },
-            "intent_router": {
-              "hit@1": false,
-              "hit@5": false,
-              "hit@10": false,
+            "causal_heavy+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
               "top5": [
-                "ADV_C04_d05",
-                "ADV_C07_d01",
-                "ADV_C07_d07",
+                "ADV_C07_gold",
+                "ADV_C07_d03",
                 "ADV_C07_d08",
-                "ADV_C07_d03"
+                "ADV_C07_d01",
+                "ADV_C07_d14"
+              ]
+            },
+            "intent_router+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
+              "top5": [
+                "ADV_C07_gold",
+                "ADV_C07_d03",
+                "ADV_C07_d01",
+                "ADV_C07_d08",
+                "ADV_C07_d14"
               ]
             }
           }
@@ -807,35 +967,47 @@
               "hit@5": false,
               "hit@10": false,
               "top5": [
-                "ADV_R03_d01",
-                "ADV_R03_d08",
                 "ADV_R03_d13",
+                "ADV_R03_d11",
+                "ADV_R03_d08",
                 "ADV_R03_d09",
+                "ADV_R03_d01"
+              ]
+            },
+            "dense+causal+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
+              "top5": [
+                "ADV_R03_gold",
+                "ADV_R03_d13",
+                "ADV_R03_d01",
+                "ADV_R03_d11",
+                "ADV_R03_d08"
+              ]
+            },
+            "causal_heavy+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
+              "top5": [
+                "ADV_R03_gold",
+                "ADV_R03_d13",
+                "ADV_R03_d08",
+                "ADV_R03_d01",
                 "ADV_R03_d11"
               ]
             },
-            "causal_heavy": {
-              "hit@1": false,
-              "hit@5": false,
-              "hit@10": false,
+            "intent_router+graph": {
+              "hit@1": true,
+              "hit@5": true,
+              "hit@10": true,
               "top5": [
-                "ADV_R03_d09",
+                "ADV_R03_gold",
                 "ADV_R03_d13",
                 "ADV_R03_d08",
                 "ADV_R03_d01",
-                "ADV_R04_d07"
-              ]
-            },
-            "intent_router": {
-              "hit@1": false,
-              "hit@5": false,
-              "hit@10": false,
-              "top5": [
-                "ADV_R03_d09",
-                "ADV_R03_d13",
-                "ADV_R03_d08",
-                "ADV_R03_d01",
-                "ADV_R04_d07"
+                "ADV_R03_d11"
               ]
             }
           }
@@ -859,7 +1031,7 @@
       "pack": "adversarial",
       "dense_checkpoint": "/app/checkpoints/finance_hard_adversarial.pt",
       "causal_checkpoint": "/app/checkpoints/finance_hard_adversarial_causal.pt",
-      "n_causal_pairs": 7,
+      "n_causal_pairs": 140,
       "encoder": "sentence-transformers/all-mpnet-base-v2"
     }
   }

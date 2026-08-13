@@ -1,0 +1,1176 @@
+{
+  "n_eval": 14,
+  "n_dense_miss_at_k": 13,
+  "k": 10,
+  "full_set_metrics": {
+    "dense_only": {
+      "recall@1": 0.0,
+      "recall@5": 0.07142857142857142,
+      "recall@10": 0.07142857142857142,
+      "MRR": 0.023809523809523808,
+      "n": 14
+    },
+    "causal+graph": {
+      "recall@1": 0.9285714285714286,
+      "recall@5": 0.9285714285714286,
+      "recall@10": 1.0,
+      "MRR": 0.9365079365079365,
+      "n": 14
+    },
+    "+hyp+rel zscore": {
+      "recall@1": 1.0,
+      "recall@5": 1.0,
+      "recall@10": 1.0,
+      "MRR": 1.0,
+      "n": 14
+    },
+    "+hyp+rel RRF": {
+      "recall@1": 0.35714285714285715,
+      "recall@5": 0.7142857142857143,
+      "recall@10": 0.7857142857142857,
+      "MRR": 0.5142857142857143,
+      "n": 14
+    },
+    "balanced RRF": {
+      "recall@1": 0.35714285714285715,
+      "recall@5": 0.7857142857142857,
+      "recall@10": 0.7857142857142857,
+      "MRR": 0.5202380952380953,
+      "n": 14
+    },
+    "intent_router RRF": {
+      "recall@1": 0.21428571428571427,
+      "recall@5": 0.6428571428571429,
+      "recall@10": 0.7857142857142857,
+      "MRR": 0.41071428571428564,
+      "n": 14
+    }
+  },
+  "recovery_on_dense_misses": {
+    "dense_only": {
+      "recovery@1": 0.0,
+      "recovery@5": 0.0,
+      "recovery@10": 0.0,
+      "recovered@1": 0,
+      "recovered@5": 0,
+      "recovered@10": 0
+    },
+    "causal+graph": {
+      "recovery@1": 1.0,
+      "recovery@5": 1.0,
+      "recovery@10": 1.0,
+      "recovered@1": 13,
+      "recovered@5": 13,
+      "recovered@10": 13
+    },
+    "+hyp+rel zscore": {
+      "recovery@1": 1.0,
+      "recovery@5": 1.0,
+      "recovery@10": 1.0,
+      "recovered@1": 13,
+      "recovered@5": 13,
+      "recovered@10": 13
+    },
+    "+hyp+rel RRF": {
+      "recovery@1": 0.38461538461538464,
+      "recovery@5": 0.6923076923076923,
+      "recovery@10": 0.7692307692307693,
+      "recovered@1": 5,
+      "recovered@5": 9,
+      "recovered@10": 10
+    },
+    "balanced RRF": {
+      "recovery@1": 0.38461538461538464,
+      "recovery@5": 0.7692307692307693,
+      "recovery@10": 0.7692307692307693,
+      "recovered@1": 5,
+      "recovered@5": 10,
+      "recovered@10": 10
+    },
+    "intent_router RRF": {
+      "recovery@1": 0.23076923076923078,
+      "recovery@5": 0.6923076923076923,
+      "recovery@10": 0.8461538461538461,
+      "recovered@1": 3,
+      "recovered@5": 9,
+      "recovered@10": 11
+    }
+  },
+  "enabled_channels": {
+    "dense": true,
+    "relational": true,
+    "disentangled": false,
+    "hyperbolic": true,
+    "identity": true,
+    "causal": true
+  },
+  "miss_examples": [
+    {
+      "query": "Why did the London trading desk's aggressive order routing halt at 14:15 even though the exchange FIX sessions still showed connected status?",
+      "gold": [
+        "ADV_C01_gold"
+      ],
+      "dense_rank": 138,
+      "in_stage1_top100": false,
+      "configs": {
+        "dense_only": {
+          "hit@1": false,
+          "hit@5": false,
+          "hit@10": false,
+          "top5": [
+            "ADV_C01_d01",
+            "ADV_C01_d12",
+            "ADV_C01_d06",
+            "ADV_C01_d08",
+            "ADV_C01_d11"
+          ]
+        },
+        "causal+graph": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_C01_gold",
+            "ADV_C01_d01",
+            "ADV_C01_d12",
+            "ADV_C01_d06",
+            "ADV_C01_d10"
+          ]
+        },
+        "+hyp+rel zscore": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_C01_gold",
+            "ADV_R03_gold",
+            "ADV_C01_d02",
+            "ADV_C01_d09",
+            "ADV_C01_d14"
+          ]
+        },
+        "+hyp+rel RRF": {
+          "hit@1": false,
+          "hit@5": false,
+          "hit@10": false,
+          "top5": [
+            "ADV_C01_d10",
+            "ADV_C01_d01",
+            "ADV_C01_d12",
+            "ADV_C01_d09",
+            "ADV_C01_d15"
+          ]
+        },
+        "balanced RRF": {
+          "hit@1": false,
+          "hit@5": false,
+          "hit@10": false,
+          "top5": [
+            "ADV_C01_d10",
+            "ADV_C01_d09",
+            "ADV_C01_d01",
+            "ADV_C01_d12",
+            "ADV_C01_d02"
+          ]
+        },
+        "intent_router RRF": {
+          "hit@1": false,
+          "hit@5": false,
+          "hit@10": false,
+          "top5": [
+            "ADV_C01_d10",
+            "ADV_C01_d09",
+            "ADV_C01_d03",
+            "ADV_C01_d01",
+            "ADV_C01_d15"
+          ]
+        }
+      }
+    },
+    {
+      "query": "Why did prime brokerage place a settlement lock on the client's Friday morning DVP deliveries when trade economics already matched?",
+      "gold": [
+        "ADV_C02_gold"
+      ],
+      "dense_rank": 14,
+      "in_stage1_top100": true,
+      "configs": {
+        "dense_only": {
+          "hit@1": false,
+          "hit@5": false,
+          "hit@10": false,
+          "top5": [
+            "ADV_C02_d01",
+            "ADV_C02_d02",
+            "ADV_C02_d09",
+            "ADV_C02_d08",
+            "ADV_C02_d03"
+          ]
+        },
+        "causal+graph": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_C02_gold",
+            "ADV_C02_d01",
+            "ADV_C02_d09",
+            "ADV_C02_d02",
+            "ADV_C02_d03"
+          ]
+        },
+        "+hyp+rel zscore": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_C02_gold",
+            "ADV_C02_d01",
+            "ADV_C02_d09",
+            "ADV_C02_d02",
+            "ADV_C02_d06"
+          ]
+        },
+        "+hyp+rel RRF": {
+          "hit@1": false,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_C02_d09",
+            "ADV_C02_gold",
+            "ADV_C02_d03",
+            "ADV_C02_d01",
+            "ADV_C02_d15"
+          ]
+        },
+        "balanced RRF": {
+          "hit@1": false,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_C02_d09",
+            "ADV_C02_gold",
+            "ADV_C02_d03",
+            "ADV_C02_d15",
+            "ADV_C02_d01"
+          ]
+        },
+        "intent_router RRF": {
+          "hit@1": false,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_C02_d09",
+            "ADV_C02_gold",
+            "ADV_C02_d03",
+            "ADV_C02_d15",
+            "ADV_C02_d10"
+          ]
+        }
+      }
+    },
+    {
+      "query": "Why did Fraud Operations freeze all outbound wires on a wealth account that submitted a valid wire request with matching MFA?",
+      "gold": [
+        "ADV_C03_gold"
+      ],
+      "dense_rank": 12,
+      "in_stage1_top100": true,
+      "configs": {
+        "dense_only": {
+          "hit@1": false,
+          "hit@5": false,
+          "hit@10": false,
+          "top5": [
+            "ADV_C03_d01",
+            "ADV_C03_d07",
+            "ADV_C03_d04",
+            "ADV_C03_d09",
+            "ADV_C03_d03"
+          ]
+        },
+        "causal+graph": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_C03_gold",
+            "ADV_R01_gold",
+            "ADV_C03_d01",
+            "ADV_C03_d07",
+            "ADV_C03_d04"
+          ]
+        },
+        "+hyp+rel zscore": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_C03_gold",
+            "ADV_R01_gold",
+            "ADV_C03_d01",
+            "ADV_C03_d07",
+            "ADV_C03_d03"
+          ]
+        },
+        "+hyp+rel RRF": {
+          "hit@1": false,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_C03_d09",
+            "ADV_C03_d03",
+            "ADV_C03_d01",
+            "ADV_C03_d08",
+            "ADV_C03_gold"
+          ]
+        },
+        "balanced RRF": {
+          "hit@1": false,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_C03_d09",
+            "ADV_C03_d03",
+            "ADV_C03_d01",
+            "ADV_C03_gold",
+            "ADV_C03_d12"
+          ]
+        },
+        "intent_router RRF": {
+          "hit@1": false,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_C03_d09",
+            "ADV_C03_gold",
+            "ADV_C03_d03",
+            "ADV_C03_d08",
+            "ADV_C03_d01"
+          ]
+        }
+      }
+    },
+    {
+      "query": "Which operational approval applies specifically to an unlisted holding company under the Tier-2 discretionary trust onboarding path?",
+      "gold": [
+        "ADV_H01_gold"
+      ],
+      "dense_rank": 19,
+      "in_stage1_top100": true,
+      "configs": {
+        "dense_only": {
+          "hit@1": false,
+          "hit@5": false,
+          "hit@10": false,
+          "top5": [
+            "ADV_H01_d07",
+            "ADV_H01_d03",
+            "ADV_H01_d05",
+            "ADV_H01_d06",
+            "ADV_H01_d02"
+          ]
+        },
+        "causal+graph": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_H01_gold",
+            "ADV_H01_d07",
+            "ADV_H01_d03",
+            "ADV_H01_d11",
+            "ADV_H01_d02"
+          ]
+        },
+        "+hyp+rel zscore": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_H01_gold",
+            "ADV_H01_d14",
+            "ADV_H01_d08",
+            "ADV_H01_d12",
+            "ADV_H01_d04"
+          ]
+        },
+        "+hyp+rel RRF": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_H01_gold",
+            "ADV_H01_d14",
+            "ADV_H01_d02",
+            "ADV_H01_d01",
+            "ADV_H01_d07"
+          ]
+        },
+        "balanced RRF": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_H01_gold",
+            "ADV_H01_d14",
+            "ADV_H01_d02",
+            "ADV_H01_d01",
+            "ADV_H01_d08"
+          ]
+        },
+        "intent_router RRF": {
+          "hit@1": false,
+          "hit@5": false,
+          "hit@10": true,
+          "top5": [
+            "ADV_H01_d14",
+            "ADV_H01_d08",
+            "ADV_H01_d02",
+            "ADV_H01_d12",
+            "ADV_H01_d04"
+          ]
+        }
+      }
+    },
+    {
+      "query": "Why was a seven-million-dollar commercial outbound Fedwire released without completing an out-of-band voice callback to the client?",
+      "gold": [
+        "ADV_R01_gold"
+      ],
+      "dense_rank": 13,
+      "in_stage1_top100": true,
+      "configs": {
+        "dense_only": {
+          "hit@1": false,
+          "hit@5": false,
+          "hit@10": false,
+          "top5": [
+            "ADV_R01_d14",
+            "ADV_R01_d03",
+            "ADV_R01_d06",
+            "ADV_R01_d02",
+            "ADV_R01_d04"
+          ]
+        },
+        "causal+graph": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_R01_gold",
+            "ADV_C04_gold",
+            "ADV_R01_d14",
+            "ADV_R01_d03",
+            "ADV_R01_d06"
+          ]
+        },
+        "+hyp+rel zscore": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_R01_gold",
+            "ADV_C04_gold",
+            "ADV_R01_d03",
+            "ADV_R01_d14",
+            "ADV_R01_d12"
+          ]
+        },
+        "+hyp+rel RRF": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_R01_gold",
+            "ADV_R01_d03",
+            "ADV_R01_d15",
+            "ADV_R01_d12",
+            "ADV_R01_d10"
+          ]
+        },
+        "balanced RRF": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_R01_gold",
+            "ADV_R01_d15",
+            "ADV_R01_d03",
+            "ADV_R01_d12",
+            "ADV_C04_d07"
+          ]
+        },
+        "intent_router RRF": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_R01_gold",
+            "ADV_R01_d03",
+            "ADV_R01_d15",
+            "ADV_R01_d10",
+            "ADV_C04_d05"
+          ]
+        }
+      }
+    },
+    {
+      "query": "Why did Sanctions Operations return an incoming payment tied to a comprehensively sanctioned geography instead of placing the funds into a blocked interest-bearing account?",
+      "gold": [
+        "ADV_R02_gold"
+      ],
+      "dense_rank": 42,
+      "in_stage1_top100": true,
+      "configs": {
+        "dense_only": {
+          "hit@1": false,
+          "hit@5": false,
+          "hit@10": false,
+          "top5": [
+            "ADV_R02_d02",
+            "ADV_R02_d07",
+            "ADV_R02_d10",
+            "ADV_R02_d08",
+            "ADV_R02_d13"
+          ]
+        },
+        "causal+graph": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_R02_gold",
+            "ADV_R02_d10",
+            "ADV_R02_d02",
+            "ADV_R02_d08",
+            "ADV_R02_d07"
+          ]
+        },
+        "+hyp+rel zscore": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_R02_gold",
+            "ADV_R02_f01",
+            "ADV_R02_d12",
+            "ADV_R02_d15",
+            "ADV_R02_d04"
+          ]
+        },
+        "+hyp+rel RRF": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_R02_gold",
+            "ADV_C03_d08",
+            "ADV_R02_f01",
+            "ADV_C04_d05",
+            "ADV_R02_d10"
+          ]
+        },
+        "balanced RRF": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_R02_gold",
+            "ADV_C03_d08",
+            "ADV_R02_f01",
+            "ADV_C04_d05",
+            "ADV_R04_d02"
+          ]
+        },
+        "intent_router RRF": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_R02_gold",
+            "ADV_C03_d08",
+            "ADV_C04_d05",
+            "ADV_R04_d12",
+            "ADV_R04_d02"
+          ]
+        }
+      }
+    },
+    {
+      "query": "What is the currently effective Initial Margin segregation requirement for Uncleared Margin Rules Phase 6 covered counterparties?",
+      "gold": [
+        "ADV_E01_gold"
+      ],
+      "dense_rank": 22,
+      "in_stage1_top100": true,
+      "configs": {
+        "dense_only": {
+          "hit@1": false,
+          "hit@5": false,
+          "hit@10": false,
+          "top5": [
+            "ADV_E01_d01",
+            "ADV_E01_d15",
+            "ADV_E01_d02",
+            "ADV_E01_d08",
+            "ADV_E01_d12"
+          ]
+        },
+        "causal+graph": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_E01_gold",
+            "ADV_E01_d01",
+            "ADV_E01_d12",
+            "ADV_E01_d09",
+            "ADV_E01_d02"
+          ]
+        },
+        "+hyp+rel zscore": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_E01_gold",
+            "ADV_E01_d03",
+            "ADV_E01_d07",
+            "ADV_E01_d05",
+            "ADV_E01_d10"
+          ]
+        },
+        "+hyp+rel RRF": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_E01_gold",
+            "ADV_E01_d01",
+            "ADV_E01_d03",
+            "ADV_E01_d13",
+            "ADV_E01_d09"
+          ]
+        },
+        "balanced RRF": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_E01_gold",
+            "ADV_E01_d03",
+            "ADV_E01_d01",
+            "ADV_E01_d09",
+            "ADV_E01_d13"
+          ]
+        },
+        "intent_router RRF": {
+          "hit@1": false,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_E01_d01",
+            "ADV_E01_gold",
+            "ADV_E01_d03",
+            "ADV_E01_d07",
+            "ADV_E01_d15"
+          ]
+        }
+      }
+    },
+    {
+      "query": "What NAV error threshold currently requires full retrospective shareholder transaction reprocessing and direct investor compensation?",
+      "gold": [
+        "ADV_E02_gold"
+      ],
+      "dense_rank": 73,
+      "in_stage1_top100": true,
+      "configs": {
+        "dense_only": {
+          "hit@1": false,
+          "hit@5": false,
+          "hit@10": false,
+          "top5": [
+            "ADV_E02_d09",
+            "ADV_E02_d04",
+            "ADV_E02_d03",
+            "ADV_E02_d10",
+            "ADV_E02_d01"
+          ]
+        },
+        "causal+graph": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_E02_gold",
+            "ADV_E02_d09",
+            "ADV_E02_d04",
+            "ADV_E02_d03",
+            "ADV_E02_d10"
+          ]
+        },
+        "+hyp+rel zscore": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_E02_gold",
+            "ADV_E02_f01",
+            "ADV_E02_d08",
+            "ADV_E02_d06",
+            "ADV_E02_d12"
+          ]
+        },
+        "+hyp+rel RRF": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_E02_gold",
+            "ADV_E02_f02",
+            "ADV_E03_d12",
+            "ADV_E02_f01",
+            "ADV_E02_d10"
+          ]
+        },
+        "balanced RRF": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_E02_gold",
+            "ADV_E03_d12",
+            "ADV_E02_f02",
+            "ADV_E02_f01",
+            "ADV_E02_d10"
+          ]
+        },
+        "intent_router RRF": {
+          "hit@1": false,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_E02_f01",
+            "ADV_E02_f02",
+            "ADV_E02_gold",
+            "ADV_E03_f01",
+            "ADV_E03_d07"
+          ]
+        }
+      }
+    },
+    {
+      "query": "Why did the Payment Queue Manager pause multiple large customer Fedwire releases at mid-morning even though customer ledger balances were sufficient?",
+      "gold": [
+        "ADV_C04_gold"
+      ],
+      "dense_rank": 12,
+      "in_stage1_top100": true,
+      "configs": {
+        "dense_only": {
+          "hit@1": false,
+          "hit@5": false,
+          "hit@10": false,
+          "top5": [
+            "ADV_C04_d01",
+            "ADV_C04_d13",
+            "ADV_C04_d02",
+            "ADV_C04_d07",
+            "ADV_C04_d14"
+          ]
+        },
+        "causal+graph": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_C04_gold",
+            "ADV_C04_d01",
+            "ADV_C04_d13",
+            "ADV_C04_d02",
+            "ADV_C04_d07"
+          ]
+        },
+        "+hyp+rel zscore": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_C04_gold",
+            "ADV_C04_d01",
+            "ADV_C04_d05",
+            "ADV_C04_d13",
+            "ADV_C04_d03"
+          ]
+        },
+        "+hyp+rel RRF": {
+          "hit@1": false,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_C04_d05",
+            "ADV_C04_d01",
+            "ADV_C04_gold",
+            "ADV_C04_d07",
+            "ADV_C04_d13"
+          ]
+        },
+        "balanced RRF": {
+          "hit@1": false,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_C04_d05",
+            "ADV_C04_gold",
+            "ADV_C04_d01",
+            "ADV_C04_d07",
+            "ADV_C04_d13"
+          ]
+        },
+        "intent_router RRF": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_C04_gold",
+            "ADV_C04_d05",
+            "ADV_C04_d07",
+            "ADV_C04_d13",
+            "ADV_C04_d02"
+          ]
+        }
+      }
+    },
+    {
+      "query": "Why did Datacenter Alpha suddenly reject new settlement writes and flip its database to read-only during a network event?",
+      "gold": [
+        "ADV_C05_gold"
+      ],
+      "dense_rank": 12,
+      "in_stage1_top100": true,
+      "configs": {
+        "dense_only": {
+          "hit@1": false,
+          "hit@5": false,
+          "hit@10": false,
+          "top5": [
+            "ADV_C05_d05",
+            "ADV_C05_d14",
+            "ADV_C05_d15",
+            "ADV_C05_d13",
+            "ADV_C05_d06"
+          ]
+        },
+        "causal+graph": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_C05_gold",
+            "ADV_C05_d05",
+            "ADV_C05_d14",
+            "ADV_C05_d15",
+            "ADV_C05_d06"
+          ]
+        },
+        "+hyp+rel zscore": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_C05_gold",
+            "ADV_R02_gold",
+            "ADV_C05_d04",
+            "ADV_C05_d05",
+            "ADV_C05_d12"
+          ]
+        },
+        "+hyp+rel RRF": {
+          "hit@1": false,
+          "hit@5": false,
+          "hit@10": true,
+          "top5": [
+            "ADV_C05_d05",
+            "ADV_C05_d14",
+            "ADV_C05_d06",
+            "ADV_C05_d04",
+            "ADV_C05_d07"
+          ]
+        },
+        "balanced RRF": {
+          "hit@1": false,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_C05_d05",
+            "ADV_C05_d14",
+            "ADV_C05_d04",
+            "ADV_C05_d06",
+            "ADV_C05_gold"
+          ]
+        },
+        "intent_router RRF": {
+          "hit@1": false,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_C05_d14",
+            "ADV_C05_d05",
+            "ADV_C05_gold",
+            "ADV_C05_d04",
+            "ADV_C05_d06"
+          ]
+        }
+      }
+    },
+    {
+      "query": "Why did LCH declare a clearing-member default after a morning volatility spike even though overnight margin balances looked sufficient?",
+      "gold": [
+        "ADV_C06_gold"
+      ],
+      "dense_rank": 66,
+      "in_stage1_top100": true,
+      "configs": {
+        "dense_only": {
+          "hit@1": false,
+          "hit@5": false,
+          "hit@10": false,
+          "top5": [
+            "ADV_C06_d04",
+            "ADV_C06_d01",
+            "ADV_C06_d07",
+            "ADV_C06_d03",
+            "ADV_C06_d05"
+          ]
+        },
+        "causal+graph": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_C06_gold",
+            "ADV_C06_d04",
+            "ADV_C06_d01",
+            "ADV_C06_d07",
+            "ADV_C06_d08"
+          ]
+        },
+        "+hyp+rel zscore": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_C06_gold",
+            "ADV_C06_d04",
+            "ADV_C06_d01",
+            "ADV_C06_d07",
+            "ADV_C06_d14"
+          ]
+        },
+        "+hyp+rel RRF": {
+          "hit@1": false,
+          "hit@5": false,
+          "hit@10": false,
+          "top5": [
+            "ADV_C06_d04",
+            "ADV_C06_d01",
+            "ADV_C06_d14",
+            "ADV_C06_d11",
+            "ADV_C06_d07"
+          ]
+        },
+        "balanced RRF": {
+          "hit@1": false,
+          "hit@5": false,
+          "hit@10": false,
+          "top5": [
+            "ADV_C06_d04",
+            "ADV_C06_d14",
+            "ADV_C06_d11",
+            "ADV_C06_d01",
+            "ADV_C02_d09"
+          ]
+        },
+        "intent_router RRF": {
+          "hit@1": false,
+          "hit@5": false,
+          "hit@10": true,
+          "top5": [
+            "ADV_C06_d04",
+            "ADV_C06_d01",
+            "ADV_C02_d09",
+            "ADV_C01_f01",
+            "ADV_C06_d11"
+          ]
+        }
+      }
+    },
+    {
+      "query": "Why were non-critical audit consumers disconnected from the Kafka cluster during yesterday's market-close processing window?",
+      "gold": [
+        "ADV_C07_gold"
+      ],
+      "dense_rank": 200,
+      "in_stage1_top100": false,
+      "configs": {
+        "dense_only": {
+          "hit@1": false,
+          "hit@5": false,
+          "hit@10": false,
+          "top5": [
+            "ADV_C07_d03",
+            "ADV_C07_d01",
+            "ADV_C07_d08",
+            "ADV_C07_d14",
+            "ADV_C07_d09"
+          ]
+        },
+        "causal+graph": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_C07_gold",
+            "ADV_C07_d01",
+            "ADV_C07_d03",
+            "ADV_C07_d08",
+            "ADV_C07_d14"
+          ]
+        },
+        "+hyp+rel zscore": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_C07_gold",
+            "ADV_C07_d03",
+            "ADV_C07_d01",
+            "ADV_C07_d11",
+            "ADV_C07_d13"
+          ]
+        },
+        "+hyp+rel RRF": {
+          "hit@1": false,
+          "hit@5": false,
+          "hit@10": false,
+          "top5": [
+            "ADV_C07_d01",
+            "ADV_C07_d03",
+            "ADV_C07_d08",
+            "ADV_C07_d14",
+            "ADV_C07_d04"
+          ]
+        },
+        "balanced RRF": {
+          "hit@1": false,
+          "hit@5": false,
+          "hit@10": false,
+          "top5": [
+            "ADV_C07_d01",
+            "ADV_C07_d03",
+            "ADV_C07_d08",
+            "ADV_C07_d14",
+            "ADV_C07_d04"
+          ]
+        },
+        "intent_router RRF": {
+          "hit@1": false,
+          "hit@5": false,
+          "hit@10": false,
+          "top5": [
+            "ADV_C07_d01",
+            "ADV_C07_d03",
+            "ADV_C07_d04",
+            "ADV_C07_d08",
+            "ADV_C07_d12"
+          ]
+        }
+      }
+    },
+    {
+      "query": "Why was a repo margin call notice rejected for same-day settlement when delivered at 10:45 AM London time?",
+      "gold": [
+        "ADV_R03_gold"
+      ],
+      "dense_rank": 37,
+      "in_stage1_top100": true,
+      "configs": {
+        "dense_only": {
+          "hit@1": false,
+          "hit@5": false,
+          "hit@10": false,
+          "top5": [
+            "ADV_R03_d13",
+            "ADV_R03_d01",
+            "ADV_R03_d11",
+            "ADV_R03_d08",
+            "ADV_R03_d02"
+          ]
+        },
+        "causal+graph": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_R03_gold",
+            "ADV_R03_d01",
+            "ADV_R03_d11",
+            "ADV_R03_d13",
+            "ADV_R03_d08"
+          ]
+        },
+        "+hyp+rel zscore": {
+          "hit@1": true,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_R03_gold",
+            "ADV_R03_d14",
+            "ADV_R03_d10",
+            "ADV_R03_d12",
+            "ADV_R03_d04"
+          ]
+        },
+        "+hyp+rel RRF": {
+          "hit@1": false,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_R03_d13",
+            "ADV_R03_gold",
+            "ADV_R03_d09",
+            "ADV_R03_d11",
+            "ADV_R03_d01"
+          ]
+        },
+        "balanced RRF": {
+          "hit@1": false,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_R03_d13",
+            "ADV_R03_gold",
+            "ADV_R03_d09",
+            "ADV_R03_d01",
+            "ADV_R03_d11"
+          ]
+        },
+        "intent_router RRF": {
+          "hit@1": false,
+          "hit@5": true,
+          "hit@10": true,
+          "top5": [
+            "ADV_R03_d13",
+            "ADV_R03_d09",
+            "ADV_R03_gold",
+            "ADV_R03_d11",
+            "ADV_R03_d08"
+          ]
+        }
+      }
+    }
+  ],
+  "checkpoint": "/app/checkpoints/finance_hard_adversarial_multi.pt"
+}

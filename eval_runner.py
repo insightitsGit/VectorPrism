@@ -51,6 +51,10 @@ class InMemoryCorpusDB(VectorDBClient):
         scored.sort(key=lambda x: x[0], reverse=True)
         return [r for _, r in scored[:limit]]
 
+    def get_by_ids(self, doc_ids):
+        want = set(str(x) for x in doc_ids)
+        return [r for r in self.rows if r["document_id"] in want]
+
 
 @dataclass
 class BaselineReport:

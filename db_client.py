@@ -22,6 +22,10 @@ class VectorDBClient(ABC):
         {'tensor_1024d': np.ndarray(1024,), 'chunk_text': str, 'document_id': str}."""
         ...
 
+    def get_by_ids(self, doc_ids: List[str]) -> List[Dict[str, Any]]:
+        """Optional fetch-by-id for graph-expanded Stage-1 candidates. Default: unsupported."""
+        raise NotImplementedError(f"{type(self).__name__}.get_by_ids is not implemented")
+
 
 class PgVectorClient(VectorDBClient):
     """

@@ -43,6 +43,7 @@ PACKS = {
         "dir": DEMO / "hard_adversarial",
         "dense_ckpt": ROOT / "checkpoints" / "finance_hard_adversarial.pt",
         "out_ckpt": ROOT / "checkpoints" / "finance_hard_adversarial_causal.pt",
+        "causal_graph": DEMO / "hard_adversarial" / "causal_graph.jsonl",
     },
 }
 RESULTS = DEMO / "results" / "hard_eval"
@@ -148,35 +149,56 @@ def score_recovery(
     documents_jsonl: Path,
     eval_jsonl: Path,
     k: int = 10,
+    causal_graph_path: Path | None = None,
+    use_graph_expansion: bool = True,
 ) -> dict[str, Any]:
     from ablation_harness import _fixed_weight_classifier
+    from causal_graph import CausalDocGraph
     from retrieval_engine import PSMRetrievalEngine
 
     encoder, ckpt, db, pipe = _ingest(checkpoint, encoder_name, documents_jsonl)
     eval_set = _eval_set(eval_jsonl, encoder, pipe)
     dense_stats, miss_idxs = _dense_rank_stats(eval_set, db, k_miss=k)
 
-    engine = PSMRetrievalEngine(
-        db,
-        causal_matrix=ckpt["causal_matrix"],
-        hard_truth_filter=False,
-    )
-    original = engine.classifier.classify
+    graph = None
+    if use_graph_expansion and causal_graph_path and causal_graph_path.exists():
+        graph = CausalDocGraph.from_jsonl(causal_graph_path)
+        print(f"[recovery] causal_graph edges={graph.n_edges} from {causal_graph_path.name}", flush=True)
 
-    configs = {
-        "dense_only": np.array([1.0, 0, 0, 0, 0], dtype=np.float32),
-        "dense+causal": np.array([0.7, 0, 0, 0, 0.3], dtype=np.float32),
-        "causal_heavy": np.array([0.35, 0.1, 0.1, 0.0, 0.45], dtype=np.float32),
-    }
+    def _make_engine(with_graph: bool) -> Any:
+        return PSMRetrievalEngine(
+            db,
+            causal_matrix=ckpt["causal_matrix"],
+            hard_truth_filter=False,
+            causal_graph=graph if with_graph else None,
+            stage1_dense_limit=50 if with_graph else 100,
+            stage1_graph_hops=2,
+            graph_struct_bonus=4.0 if with_graph else 0.0,
+        )
 
-    # Full-set metrics
-    full_metrics: dict[str, dict[str, float]] = {}
-    for name, w in configs.items():
-        engine.classifier.classify = _fixed_weight_classifier(w)
+    engine_dense = _make_engine(False)
+    engine_graph = _make_engine(True)
+    original = engine_graph.classifier.classify
+
+    # name -> (weight_vector or None for intent, use_graph)
+    run_cfgs: list[tuple[str, np.ndarray | None, bool]] = [
+        ("dense_only", np.array([1.0, 0, 0, 0, 0], dtype=np.float32), False),
+        ("dense+causal", np.array([0.7, 0, 0, 0, 0.3], dtype=np.float32), False),
+        ("dense+causal+graph", np.array([0.7, 0, 0, 0, 0.3], dtype=np.float32), True),
+        ("causal_heavy+graph", np.array([0.35, 0.1, 0.1, 0.0, 0.45], dtype=np.float32), True),
+        ("intent_router+graph", None, True),
+    ]
+
+    def _eval_config(name: str, w: np.ndarray | None, with_graph: bool) -> dict[str, float]:
+        eng = engine_graph if with_graph else engine_dense
+        if w is None:
+            eng.classifier.classify = original
+        else:
+            eng.classifier.classify = _fixed_weight_classifier(w)
         hits = {1: 0, 5: 0, 10: 0}
         rr = []
         for ex in eval_set:
-            ids = _search_ids(engine, ex, top_k=10)
+            ids = _search_ids(eng, ex, top_k=10)
             for kk in hits:
                 if _hit(ids, ex.relevant_doc_ids, kk):
                     hits[kk] += 1
@@ -187,7 +209,7 @@ def score_recovery(
                     break
             rr.append(rank)
         n = max(len(eval_set), 1)
-        full_metrics[name] = {
+        return {
             "recall@1": hits[1] / n,
             "recall@5": hits[5] / n,
             "recall@10": hits[10] / n,
@@ -195,33 +217,11 @@ def score_recovery(
             "n": len(eval_set),
         }
 
-    # Intent router (real classifier)
-    engine.classifier.classify = original
-    hits_i = {1: 0, 5: 0, 10: 0}
-    rr_i = []
-    for ex in eval_set:
-        ids = _search_ids(engine, ex, top_k=10)
-        for kk in hits_i:
-            if _hit(ids, ex.relevant_doc_ids, kk):
-                hits_i[kk] += 1
-        rank = 0.0
-        for i, did in enumerate(ids, start=1):
-            if did in ex.relevant_doc_ids:
-                rank = 1.0 / i
-                break
-        rr_i.append(rank)
-    n = max(len(eval_set), 1)
-    full_metrics["intent_router"] = {
-        "recall@1": hits_i[1] / n,
-        "recall@5": hits_i[5] / n,
-        "recall@10": hits_i[10] / n,
-        "MRR": float(np.mean(rr_i)) if rr_i else 0.0,
-        "n": len(eval_set),
-    }
+    full_metrics = {name: _eval_config(name, w, g) for name, w, g in run_cfgs}
 
     # Miss-set recovery
     miss_examples = []
-    recover_counts = {name: {"@1": 0, "@5": 0, "@10": 0} for name in list(configs) + ["intent_router"]}
+    recover_counts = {name: {"@1": 0, "@5": 0, "@10": 0} for name, _, _ in run_cfgs}
     stage1_in = 0
     for idx in miss_idxs:
         ex = eval_set[idx]
@@ -235,12 +235,16 @@ def score_recovery(
             "in_stage1_top100": st["in_stage1_top100"],
             "configs": {},
         }
-        for name, w in configs.items():
-            engine.classifier.classify = _fixed_weight_classifier(w)
-            ids = _search_ids(engine, ex, top_k=10)
-            h1, h5, h10 = _hit(ids, ex.relevant_doc_ids, 1), _hit(ids, ex.relevant_doc_ids, 5), _hit(
-                ids, ex.relevant_doc_ids, 10
-            )
+        for name, w, with_graph in run_cfgs:
+            eng = engine_graph if with_graph else engine_dense
+            if w is None:
+                eng.classifier.classify = original
+            else:
+                eng.classifier.classify = _fixed_weight_classifier(w)
+            ids = _search_ids(eng, ex, top_k=10)
+            h1 = _hit(ids, ex.relevant_doc_ids, 1)
+            h5 = _hit(ids, ex.relevant_doc_ids, 5)
+            h10 = _hit(ids, ex.relevant_doc_ids, 10)
             if h1:
                 recover_counts[name]["@1"] += 1
             if h5:
@@ -248,24 +252,6 @@ def score_recovery(
             if h10:
                 recover_counts[name]["@10"] += 1
             entry["configs"][name] = {"hit@1": h1, "hit@5": h5, "hit@10": h10, "top5": ids[:5]}
-
-        engine.classifier.classify = original
-        ids = _search_ids(engine, ex, top_k=10)
-        h1, h5, h10 = _hit(ids, ex.relevant_doc_ids, 1), _hit(ids, ex.relevant_doc_ids, 5), _hit(
-            ids, ex.relevant_doc_ids, 10
-        )
-        if h1:
-            recover_counts["intent_router"]["@1"] += 1
-        if h5:
-            recover_counts["intent_router"]["@5"] += 1
-        if h10:
-            recover_counts["intent_router"]["@10"] += 1
-        entry["configs"]["intent_router"] = {
-            "hit@1": h1,
-            "hit@5": h5,
-            "hit@10": h10,
-            "top5": ids[:5],
-        }
         miss_examples.append(entry)
 
     n_miss = max(len(miss_idxs), 1)
@@ -365,6 +351,8 @@ def run_pack(
         documents_jsonl=docs,
         eval_jsonl=ev,
         k=k,
+        causal_graph_path=meta.get("causal_graph"),
+        use_graph_expansion=True,
     )
     scored["pack"] = pack_name
     scored["dense_checkpoint"] = str(dense_ckpt)
@@ -477,13 +465,13 @@ def main(argv: list[str] | None = None) -> int:
     print("\n========== CAUSAL RECOVERY SUMMARY ==========")
     for name, r in packs_out.items():
         rec = r["recovery_on_dense_misses"]
+        graph_rec = rec.get("dense+causal+graph") or rec.get("dense+causal")
         print(
             f"{name}: dense_misses@{r['k']}={r['n_dense_miss_at_k']}/{r['n_eval']}  "
             f"stage1_cov={r['stage1_top100_coverage_on_misses']:.0%}  "
-            f"dense+causal recovered@10={rec['dense+causal']['recovered@10']}  "
-            f"intent recovered@10={rec['intent_router']['recovered@10']}  "
+            f"dense+causal+graph recovered@10={graph_rec['recovered@10'] if graph_rec else 'n/a'}  "
             f"full R@10 dense={r['full_set_metrics']['dense_only']['recall@10']:.3f} "
-            f"dense+causal={r['full_set_metrics']['dense+causal']['recall@10']:.3f}"
+            f"graph={r['full_set_metrics'].get('dense+causal+graph', {}).get('recall@10', 'n/a')}"
         )
     print(f"Wrote {json_path}")
     print(f"Wrote {md_path}")

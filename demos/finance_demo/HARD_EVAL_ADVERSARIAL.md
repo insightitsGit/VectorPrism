@@ -25,3 +25,14 @@ docker compose run --rm vectorprism python demos/finance_demo/calibrate_adversar
 Calibration **only keeps** eval rows where gold dense rank > 10 after iterative distractor hardening.
 
 Targets: Miss@10 ≥ 50% of generated queries surviving as confirmed misses; then re-run causal recovery on `hard_adversarial/`.
+
+## Causal graph expansion (zero-recovery fix)
+
+```bash
+python demos/finance_demo/build_adversarial_causal_graph.py   # → 140 pairs, 112 edges
+docker compose run --rm vectorprism python demos/finance_demo/run_causal_recovery.py --pack adversarial
+```
+
+Stage-1 unions dense top-50 with **upstream causal neighbors** of the top-10 seeds; Stage-2 adds a hop-scaled structural bonus into the causal score.
+
+Latest measured lift: dense R@10 **0.071** → dense+causal+graph R@10 **0.357**; recovered **4/13** dense misses (was 0/13).
