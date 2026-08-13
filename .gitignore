@@ -18,6 +18,9 @@ checkpoints/*
 
 # Local reports / logs
 reports/
+demos/**/reports/
+!demos/**/results/
+!demos/**/results/**
 *.log
 
 # Env / secrets

@@ -1,0 +1,17 @@
+{
+  "vectorprism": {
+    "recall@1": 1.0,
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "MRR": 1.0,
+    "n_eval_examples": 62
+  },
+  "dense_cosine_baseline": {
+    "recall@1": 1.0,
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "MRR": 1.0,
+    "n_eval_examples": 62.0
+  },
+  "beats_or_ties_baseline": true
+}

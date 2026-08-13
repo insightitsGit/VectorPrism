@@ -1,0 +1,62 @@
+{"query": "When must KYC be refreshed after a major ownership change?", "relevant_doc_ids": ["pol_kyc_01"]}
+{"query": "Do PEPs need enhanced due diligence before onboarding?", "relevant_doc_ids": ["pol_kyc_02"]}
+{"query": "How fast must we file a SAR after detecting suspicious wires?", "relevant_doc_ids": ["pol_aml_01"]}
+{"query": "What is the aging limit for AML transaction monitoring alerts?", "relevant_doc_ids": ["pol_aml_02"]}
+{"query": "Are callbacks required for large international wires?", "relevant_doc_ids": ["pol_wire_01"]}
+{"query": "Can we release a same-day wire after 3 PM Eastern?", "relevant_doc_ids": ["pol_wire_02"]}
+{"query": "By when must a maintenance margin call be met?", "relevant_doc_ids": ["pol_margin_01"]}
+{"query": "What house margin applies to concentrated equity holdings?", "relevant_doc_ids": ["pol_margin_02"]}
+{"query": "How does the firm retry failed equity settlements?", "relevant_doc_ids": ["pol_settle_01"]}
+{"query": "What is required before end-of-day NAV for DTC partials?", "relevant_doc_ids": ["pol_settle_02"]}
+{"query": "What time is official fund NAV struck?", "relevant_doc_ids": ["pol_nav_01"]}
+{"query": "Who approves large NAV error corrections?", "relevant_doc_ids": ["pol_nav_02"]}
+{"query": "What playbook runs on an LCR breach warning?", "relevant_doc_ids": ["pol_liq_01"]}
+{"query": "When do redemption gates activate on the short-duration credit fund?", "relevant_doc_ids": ["pol_liq_02"]}
+{"query": "What is the prime broker exposure limit versus Tier 1 capital?", "relevant_doc_ids": ["pol_cpty_01"]}
+{"query": "How are large ISDA CSA disputes escalated?", "relevant_doc_ids": ["pol_cpty_02"]}
+{"query": "Which SOX control covers suspense account reconciliation?", "relevant_doc_ids": ["pol_sox_01"]}
+{"query": "How often is privileged GL access recertified?", "relevant_doc_ids": ["pol_sox_02"]}
+{"query": "What is the rates desk DV01 limit?", "relevant_doc_ids": ["pol_mkt_01"]}
+{"query": "When must Model Risk review VaR exceptions?", "relevant_doc_ids": ["pol_mkt_02"]}
+{"query": "What should we do if trade capture p95 latency exceeds 2 seconds?", "relevant_doc_ids": ["run_inc_01"]}
+{"query": "How do we respond to a matching engine freeze?", "relevant_doc_ids": ["run_inc_02"]}
+{"query": "Why might the overnight pricing job delay NAV?", "relevant_doc_ids": ["run_inc_03"]}
+{"query": "What root cause delays wires when callbacks void?", "relevant_doc_ids": ["run_inc_04"]}
+{"query": "How do short inventory issues cascade into settlement fails?", "relevant_doc_ids": ["run_inc_05"]}
+{"query": "How is mutual fund cost basis reported on 1099-B?", "relevant_doc_ids": ["faq_tax_01"]}
+{"query": "What is the wash-sale repurchase window?", "relevant_doc_ids": ["faq_tax_02"]}
+{"query": "Can ACH satisfy a margin deficit?", "relevant_doc_ids": ["faq_acct_01"]}
+{"query": "When do corporate action elections close?", "relevant_doc_ids": ["faq_acct_02"]}
+{"query": "What must Article 8 funds disclose annually?", "relevant_doc_ids": ["faq_esg_01"]}
+{"query": "When are unallocated green bond proceeds reviewed?", "relevant_doc_ids": ["faq_esg_02"]}
+{"query": "What happens if an issuer is downgraded below BB-?", "relevant_doc_ids": ["risk_credit_01"]}
+{"query": "What CDS notional needs Credit Committee approval?", "relevant_doc_ids": ["risk_credit_02"]}
+{"query": "When is a reconciliation break material to the CFO dashboard?", "relevant_doc_ids": ["risk_ops_01"]}
+{"query": "What STP exception rate triggers an ops quality review?", "relevant_doc_ids": ["risk_ops_02"]}
+{"query": "How long must Reg BI suitability docs be retained?", "relevant_doc_ids": ["legal_reg_01"]}
+{"query": "How often are MiFID II best-execution reports published?", "relevant_doc_ids": ["legal_reg_02"]}
+{"query": "GDPR access request deadline for EU clients?", "relevant_doc_ids": ["legal_reg_03"]}
+{"query": "What is the golden source for LEIs?", "relevant_doc_ids": ["tech_data_01"]}
+{"query": "Which Kafka topic is authoritative for intraday risk?", "relevant_doc_ids": ["tech_data_02"]}
+{"query": "How long does payment break-glass access last?", "relevant_doc_ids": ["tech_sec_01"]}
+{"query": "How often do market-data API keys rotate?", "relevant_doc_ids": ["tech_sec_02"]}
+{"query": "Equity order size versus ADV soft block?", "relevant_doc_ids": ["desk_eq_01"]}
+{"query": "When is a corporate bond RFQ response considered stale?", "relevant_doc_ids": ["desk_fi_01"]}
+{"query": "Default NDF fix source?", "relevant_doc_ids": ["desk_fx_01"]}
+{"query": "Cash break aging requiring Ops Manager comment?", "relevant_doc_ids": ["ops_rec_01"]}
+{"query": "Tier-1 institutional trade query SLA?", "relevant_doc_ids": ["client_svc_01"]}
+{"query": "Complaint acknowledgment timing?", "relevant_doc_ids": ["client_svc_02"]}
+{"query": "Internal Audit wire dual-control sample size?", "relevant_doc_ids": ["audit_01"]}
+{"query": "Model inventory attestation due date?", "relevant_doc_ids": ["audit_02"]}
+{"query": "Intraday HQLA buffer target?", "relevant_doc_ids": ["treasury_01"]}
+{"query": "Fedwire cutoff for third-party wires?", "relevant_doc_ids": ["treasury_02"]}
+{"query": "Fraud escalation for new payee then quick wire?", "relevant_doc_ids": ["fraud_01"]}
+{"query": "Indicators of voice phishing on payment instructions?", "relevant_doc_ids": ["fraud_02"]}
+{"query": "Deferral percentage for material risk takers?", "relevant_doc_ids": ["hr_comp_01"]}
+{"query": "Personal trading pre-clearance for covered employees?", "relevant_doc_ids": ["hr_comp_02"]}
+{"query": "SOC 2 expectation for critical payment vendors?", "relevant_doc_ids": ["vendor_01"]}
+{"query": "Trade capture DR RTO and RPO?", "relevant_doc_ids": ["bc_dr_01"]}
+{"query": "HY sleeve limit in Global Credit Income Fund?", "relevant_doc_ids": ["prod_fund_01"]}
+{"query": "WAM target for Ultra-Short Liquidity Fund?", "relevant_doc_ids": ["prod_fund_02"]}
+{"query": "SBLOC advance rate on concentrated single-stock collateral?", "relevant_doc_ids": ["prod_loan_01"]}
+{"query": "Margin loan interest formula?", "relevant_doc_ids": ["prod_loan_02"]}

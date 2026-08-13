@@ -1,0 +1,42 @@
+services:
+  vectorprism:
+    build: .
+    image: vectorprism:local
+    working_dir: /app
+    volumes:
+      # Live code (optional; image already has a copy)
+      - .:/app
+      # Persist model downloads + trained checkpoints across runs
+      - hf-cache:/cache/huggingface
+      - st-cache:/cache/sentence-transformers
+      - ./checkpoints:/app/checkpoints
+      - ./demos/finance_demo/reports:/app/demos/finance_demo/reports
+    environment:
+      HF_HOME: /cache/huggingface
+      TRANSFORMERS_CACHE: /cache/huggingface
+      SENTENCE_TRANSFORMERS_HOME: /cache/sentence-transformers
+    # Default: finance demo with real encoder
+    command:
+      - python
+      - demos/finance_demo/run_demo.py
+      - --encoder
+      - sentence-transformers/all-mpnet-base-v2
+      - --epochs
+      - "3"
+      - --batch-size
+      - "16"
+      - --out
+      - checkpoints/finance_demo.pt
+
+  test:
+    build: .
+    image: vectorprism:local
+    working_dir: /app
+    volumes:
+      - .:/app
+    profiles: ["test"]
+    command: ["python", "-m", "pytest", "test_psm.py", "test_phases.py", "-v"]
+
+volumes:
+  hf-cache:
+  st-cache:

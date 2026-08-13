@@ -1,0 +1,65 @@
+{"document_id": "pol_kyc_01", "chunk_text": "KYC refresh must complete within 30 calendar days of trigger events including beneficial ownership changes above 25 percent."}
+{"document_id": "pol_kyc_02", "chunk_text": "Enhanced due diligence is mandatory for PEPs and high-risk jurisdictions before onboarding retail or corporate accounts."}
+{"document_id": "pol_aml_01", "chunk_text": "Suspicious Activity Reports must be filed within 30 days of detection when aggregated wire activity exceeds the internal SAR threshold."}
+{"document_id": "pol_aml_02", "chunk_text": "Transaction monitoring alerts aged beyond 5 business days require dual control review by AML Investigations and Compliance."}
+{"document_id": "pol_wire_01", "chunk_text": "International wires above USD 50,000 require callback verification to a registered phone number on file."}
+{"document_id": "pol_wire_02", "chunk_text": "Same-day wire release after 3 PM ET is blocked unless Treasury Operations override with dual approval."}
+{"document_id": "pol_margin_01", "chunk_text": "Maintenance margin calls must be met by 2 PM ET on T+1 or positions are subject to liquidation."}
+{"document_id": "pol_margin_02", "chunk_text": "House margin requirements for concentrated equity positions are 40 percent of market value."}
+{"document_id": "pol_settle_01", "chunk_text": "Failed equity settlements are auto-retried at 10 AM ET; persistent fails escalate to Settlement Ops after two retries."}
+{"document_id": "pol_settle_02", "chunk_text": "DTC partial settlements require allocation updates in the books-and-records system before end-of-day NAV lock."}
+{"document_id": "pol_nav_01", "chunk_text": "Official fund NAV is struck at 4 PM ET using final pricing; late-arriving prices use fair-value hierarchy Level 2 when available."}
+{"document_id": "pol_nav_02", "chunk_text": "NAV error corrections above 0.5 percent of prior NAV require Fund Accounting Director approval and investor notice."}
+{"document_id": "pol_liq_01", "chunk_text": "Liquidity Coverage Ratio breach warnings trigger Treasury liquidity contingency playbook within 2 hours."}
+{"document_id": "pol_liq_02", "chunk_text": "Redemption gates for the short-duration credit fund activate if weekly outflows exceed 15 percent of AUM."}
+{"document_id": "pol_cpty_01", "chunk_text": "Counterparty exposure limits for prime brokers are set at 10 percent of Tier 1 capital and reviewed quarterly."}
+{"document_id": "pol_cpty_02", "chunk_text": "ISDA CSA disputes above USD 1 million escalate to Collateral Management and Legal within one business day."}
+{"document_id": "pol_sox_01", "chunk_text": "SOX 404 key control FR-CTRL-17 requires monthly reconciliation of suspense accounts with dual sign-off."}
+{"document_id": "pol_sox_02", "chunk_text": "Privileged access to the general ledger must be recertified quarterly by Control Owners."}
+{"document_id": "pol_mkt_01", "chunk_text": "Interest-rate DV01 limits for the rates desk are USD 250,000 per 1bp; breaches page Risk Desk immediately."}
+{"document_id": "pol_mkt_02", "chunk_text": "VaR model exceptions above 4 in a rolling 20-day window require Model Risk Management review."}
+{"document_id": "run_inc_01", "chunk_text": "Incident runbook: when trade capture latency exceeds 2 seconds p95, disable non-critical enrichments and fail open to STP."}
+{"document_id": "run_inc_02", "chunk_text": "Incident runbook: matching engine freeze — switch to secondary matcher, notify Market Structure, freeze new order intake."}
+{"document_id": "run_inc_03", "chunk_text": "Root-cause pattern: overnight batch pricing job overrun delays NAV; mitigation is to pre-warm FX rates at 3:30 PM ET."}
+{"document_id": "run_inc_04", "chunk_text": "Root-cause pattern: wire callback queue causes release delay; verify CRM phone sync jobs completed before 9 AM."}
+{"document_id": "run_inc_05", "chunk_text": "Root-cause pattern: failed settlement cascade from short inventory; borrow desk must locate shares before 11 AM ET."}
+{"document_id": "faq_tax_01", "chunk_text": "Form 1099-B cost basis uses average cost for mutual funds unless the client elects specific identification in writing."}
+{"document_id": "faq_tax_02", "chunk_text": "Wash-sale losses are disallowed when substantially identical securities are purchased within 30 days before or after the sale."}
+{"document_id": "faq_acct_01", "chunk_text": "Clients can enable ACH pulls for margin deficits; ACH rejects re-open the margin call as unmet."}
+{"document_id": "faq_acct_02", "chunk_text": "Corporate action elections close at 2 PM ET on election day; default is DTC mandatory instruction."}
+{"document_id": "faq_esg_01", "chunk_text": "Article 8 funds disclose principal adverse impacts annually; Article 9 funds must evidence sustainable investment objectives."}
+{"document_id": "faq_esg_02", "chunk_text": "Green bond proceeds tracking uses earmarked ledgers; unallocated proceeds older than 24 months require Sustainability Committee review."}
+{"document_id": "risk_credit_01", "chunk_text": "Issuer downgrade below BB- forces automatic review of hold-to-maturity eligibility in the credit book."}
+{"document_id": "risk_credit_02", "chunk_text": "Single-name CDS notional cannot exceed USD 50 million without Credit Committee approval."}
+{"document_id": "risk_ops_01", "chunk_text": "Reconciliation breaks above USD 100,000 aged over 3 days are material and reported to the CFO dashboard."}
+{"document_id": "risk_ops_02", "chunk_text": "STP exception rate above 3 percent for a product line triggers Operations quality review."}
+{"document_id": "legal_reg_01", "chunk_text": "Reg BI suitability documentation must be retained for six years and available for SEC exam within 48 hours."}
+{"document_id": "legal_reg_02", "chunk_text": "MiFID II best-execution reports are published quarterly for EEA clients with systematic internaliser flow."}
+{"document_id": "legal_reg_03", "chunk_text": "GDPR data subject access requests for EU clients must be fulfilled within 30 days via the Privacy Office."}
+{"document_id": "tech_data_01", "chunk_text": "Golden source for legal entity identifiers is the GLEIF feed refreshed nightly into the MDM hub."}
+{"document_id": "tech_data_02", "chunk_text": "Trade blotter Kafka topic trades.raw.v3 is authoritative for intraday risk; JDBC warehouse is T+1 only."}
+{"document_id": "tech_sec_01", "chunk_text": "Privileged break-glass access to payment systems requires Cyber Security approval and expires in 4 hours."}
+{"document_id": "tech_sec_02", "chunk_text": "API keys for market-data vendors rotate every 90 days; expired keys cause silent quote stalls on the UI."}
+{"document_id": "desk_eq_01", "chunk_text": "Equity cash desk soft blocks orders that would exceed 5 percent of 20-day ADV without Sales Trader override."}
+{"document_id": "desk_fi_01", "chunk_text": "Corporate bond RFQ responses older than 90 seconds are considered stale and must be refreshed before hit."}
+{"document_id": "desk_fx_01", "chunk_text": "NDF fixings use the WM/R 4 PM London rate unless the ticket specifies an alternate fix source."}
+{"document_id": "ops_rec_01", "chunk_text": "Cash breaks between custodian and books are aged daily; aged over 5 days require Ops Manager comment."}
+{"document_id": "ops_rec_02", "chunk_text": "Position breaks on listed options after expiration must be cleared before next trading open."}
+{"document_id": "client_svc_01", "chunk_text": "Tier-1 institutional clients receive 15-minute response SLA for trade query tickets during market hours."}
+{"document_id": "client_svc_02", "chunk_text": "Complaint handling clock starts at first written notice; acknowledgment within 2 business days is mandatory."}
+{"document_id": "audit_01", "chunk_text": "Internal Audit tests wire dual-control annually; sample size is 25 high-value wires plus all overrides."}
+{"document_id": "audit_02", "chunk_text": "Model inventory attestation is due each January 31 for all production pricing and risk models."}
+{"document_id": "treasury_01", "chunk_text": "Intraday liquidity buffer target is USD 500 million in HQLA; usage above 70 percent pages Treasury."}
+{"document_id": "treasury_02", "chunk_text": "Fedwire cutoff for third-party USD wires is 5:45 PM ET; internal book transfers may settle later."}
+{"document_id": "fraud_01", "chunk_text": "New payee creation followed by a wire within 24 hours is auto-escalated to Fraud Operations."}
+{"document_id": "fraud_02", "chunk_text": "Voice-phish indicators include urgency language and requests to bypass callback; freeze the payment instruction."}
+{"document_id": "hr_comp_01", "chunk_text": "Material risk takers have deferral of at least 40 percent of variable compensation over three years."}
+{"document_id": "hr_comp_02", "chunk_text": "Personal trading pre-clearance is required for covered employees before any equity transaction."}
+{"document_id": "vendor_01", "chunk_text": "Critical payment vendors require annual SOC 2 Type II review by Third-Party Risk Management."}
+{"document_id": "vendor_02", "chunk_text": "Market-data redistribution outside licensed desktops is prohibited without vendor amendment."}
+{"document_id": "bc_dr_01", "chunk_text": "Disaster recovery RTO for trade capture is 2 hours; RPO is 5 minutes of durable log loss max."}
+{"document_id": "bc_dr_02", "chunk_text": "Annual market-close DR test includes failover of matching, middle office, and client reporting."}
+{"document_id": "prod_fund_01", "chunk_text": "The Global Credit Income Fund invests primarily in IG corporates with max 20 percent HY sleeve."}
+{"document_id": "prod_fund_02", "chunk_text": "The Ultra-Short Liquidity Fund targets WAM under 60 days and forbids subordinated bank paper."}
+{"document_id": "prod_loan_01", "chunk_text": "Securities-backed lines of credit use 50 percent advance rate on concentrated single-stock collateral."}
+{"document_id": "prod_loan_02", "chunk_text": "Margin loan interest accrues daily using the broker call rate plus 1.25 percent spread."}

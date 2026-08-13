@@ -1,0 +1,12 @@
+{"earlier": "CRM phone sync job failed overnight for institutional clients.", "later": "Wire callback verification voided and international wires delayed past cutoff."}
+{"earlier": "Overnight batch pricing job overran past 4 PM ET.", "later": "Official fund NAV publication slipped and investor portal showed stale prices."}
+{"earlier": "Borrow desk could not locate shares before 11 AM ET.", "later": "Equity settlement fails cascaded and DTC partials required allocation updates."}
+{"earlier": "Market-data API keys expired without rotation.", "later": "Trader UI showed silent quote stalls and RFQ hit ratios dropped."}
+{"earlier": "Liquidity buffer usage crossed 70 percent of HQLA target.", "later": "Treasury contingency playbook was paged and discretionary lending was paused."}
+{"earlier": "New payee was created and a wire was submitted within 24 hours.", "later": "Fraud Operations auto-escalated and froze the payment instruction."}
+{"earlier": "Trade capture p95 latency exceeded 2 seconds after a release.", "later": "Non-critical enrichments were disabled and STP fail-open mode was engaged."}
+{"earlier": "Matching engine primary froze during a volatility spike.", "later": "Secondary matcher was activated and new order intake was frozen."}
+{"earlier": "AML alert aged beyond 5 business days without dual review.", "later": "Compliance opened an exception and escalated to AML Investigations management."}
+{"earlier": "Maintenance margin call remained unmet after 2 PM ET on T+1.", "later": "Risk liquidated the concentrated equity positions under house rules."}
+{"earlier": "Issuer was downgraded below BB-.", "later": "Credit reviewed hold-to-maturity eligibility and flagged the position for committee."}
+{"earlier": "Weekly outflows on the short-duration credit fund exceeded 15 percent of AUM.", "later": "Redemption gates were activated per liquidity policy."}

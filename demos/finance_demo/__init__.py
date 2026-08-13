@@ -1,0 +1,1 @@
+# Finance vertical demo package for VectorPrism.

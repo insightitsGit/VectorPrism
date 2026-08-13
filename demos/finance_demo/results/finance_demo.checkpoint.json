@@ -1,0 +1,31 @@
+{
+  "model_version": 1,
+  "base_dim": 768,
+  "enabled_channels": {
+    "dense": true,
+    "relational": false,
+    "disentangled": false,
+    "hyperbolic": false,
+    "identity": true,
+    "causal": false
+  },
+  "relation_itos": null,
+  "meta": {
+    "last_channel": "dense",
+    "encoder": "sentence-transformers/all-mpnet-base-v2",
+    "history": [
+      {
+        "dense": 1.2035790857943622,
+        "total": 1.2035790857943622
+      },
+      {
+        "dense": 0.9137084267356179,
+        "total": 0.9137084267356179
+      },
+      {
+        "dense": 0.6123670393770392,
+        "total": 0.6123670393770392
+      }
+    ]
+  }
+}

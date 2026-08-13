@@ -13,6 +13,7 @@ Subcommands:
   live-benchmark  Phase-5 e2e latency
   reingest        Phase-6 versioned re-encode
   run-all-smoke   end-to-end plumbing on example JSONL (not a quality claim)
+  finance-demo    near-real finance client Phase-1 demo
 """
 
 from __future__ import annotations
@@ -263,6 +264,19 @@ def cmd_run_all_smoke(args) -> int:
     return 0
 
 
+def cmd_finance_demo(args) -> int:
+    cmd = [
+        sys.executable, str(ROOT / "demos" / "finance_demo" / "run_demo.py"),
+        "--encoder", args.encoder,
+        "--epochs", str(args.epochs),
+        "--batch-size", str(args.batch_size),
+        "--out", args.out,
+    ]
+    if args.skip_train:
+        cmd.append("--skip-train")
+    return _run(cmd)
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="vectorprism", description="VectorPrism Phases 0-6 CLI")
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -358,6 +372,14 @@ def build_parser() -> argparse.ArgumentParser:
 
     s = sub.add_parser("run-all-smoke", help="Full plumbing smoke on example data")
     s.set_defaults(func=cmd_run_all_smoke)
+
+    s = sub.add_parser("finance-demo", help="Near-real finance client Phase-1 demo")
+    s.add_argument("--encoder", default="hash")
+    s.add_argument("--epochs", type=int, default=3)
+    s.add_argument("--batch-size", type=int, default=16)
+    s.add_argument("--out", default="checkpoints/finance_demo.pt")
+    s.add_argument("--skip-train", action="store_true")
+    s.set_defaults(func=cmd_finance_demo)
     return p
 
 
