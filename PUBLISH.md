@@ -1,11 +1,11 @@
 # Publish VectorPrism to PyPI
 
-Name `vectorprism` is free on PyPI (404 at time of packaging). First release: **0.1.0**.
+Published: **[vectorprism 0.1.0](https://pypi.org/project/vectorprism/0.1.0/)**. Use this doc for **0.1.1+** rebuilds.
 
 ## 1. One-time: create a PyPI API token
 
 1. https://pypi.org/manage/account/token/
-2. Scope: **Entire account** or project `vectorprism` after first upload
+2. Scope: project `vectorprism` (or entire account)
 3. Copy token (starts with `pypi-`)
 
 Never commit the token. Prefer env vars.
@@ -53,6 +53,6 @@ git push origin main --tags
 
 ## Notes
 
-- Wheel is library-only (~80KB). Full adversarial packs stay in **git**, not PyPI.
+- Wheel includes library code + `schema.sql` + `data/*.example.jsonl`. Full adversarial packs stay in **git**, not PyPI.
 - Torch is a hard dependency; partners with CUDA should install torch from pytorch.org first if needed.
 - To yank a bad release: PyPI project → Releases → Yank.

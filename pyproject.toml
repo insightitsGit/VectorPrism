@@ -56,46 +56,14 @@ Issues = "https://github.com/insightitsGit/VectorPrism/issues"
 Documentation = "https://github.com/insightitsGit/VectorPrism/blob/main/PILOT.md"
 
 [project.scripts]
-vectorprism = "vectorprism:main"
+vectorprism = "vectorprism.cli:main"
 
-[tool.setuptools]
-include-package-data = true
-py-modules = [
-  "vectorprism",
-  "ablation_harness",
-  "base_encoder",
-  "benchmark_harness",
-  "causal_graph",
-  "channel_datasets",
-  "checkpointing",
-  "db_client",
-  "db_factory",
-  "dense_dataset",
-  "epistemic_truth",
-  "eval_harness",
-  "eval_runner",
-  "identity_anchor",
-  "ingestion_adapter",
-  "ingest_cli",
-  "ingest_pipeline",
-  "intrinsic_runner",
-  "intrinsic_validation",
-  "jsonl_utils",
-  "live_benchmark",
-  "losses",
-  "reingest",
-  "retrieval_engine",
-  "search_cli",
-  "structure_extract",
-  "structure_index",
-  "tensor_contract",
-  "train",
-  "training",
-  "train_dense",
-]
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["vectorprism*"]
 
 [tool.setuptools.package-data]
-"*" = ["schema.sql", "LICENSE"]
+vectorprism = ["schema.sql", "data/*.example.jsonl"]
 
 [tool.pytest.ini_options]
 testpaths = ["."]

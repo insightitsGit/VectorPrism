@@ -6,7 +6,7 @@ A **pilot** means someone outside your laptop installs VectorPrism and runs it o
 
 ## What a pilot partner needs from you
 
-1. **Installable software** — `pip install -e ".[all]"` from git (or later `pip install vectorprism` from PyPI)
+1. **Installable software** — `pip install "vectorprism[all]"` from PyPI, or `pip install -e ".[all]"` from git for latest main / full adversarial packs
 2. **A 30–60 minute path to first search** — ingest → search on their corpus
 3. **Clear success criteria** — e.g. “recover root-cause docs dense misses” with R@10 / MRR on *their* eval set
 4. **Support channel** — Discord / email / shared Slack for 2–4 weeks
@@ -91,17 +91,18 @@ vectorprism train --channel dense \
   --encoder sentence-transformers/all-mpnet-base-v2 \
   --out checkpoints/pilot_dense.pt --epochs 3
 
-# 2) Ingest (memory backend for laptop demos)
+# 2) Ingest (memory backend for laptop demos — persists to --store NPZ)
 vectorprism ingest --checkpoint checkpoints/pilot_dense.pt \
   --documents pilot_data/documents.jsonl \
   --encoder sentence-transformers/all-mpnet-base-v2 \
-  --backend memory
+  --backend memory \
+  --store checkpoints/memory_corpus.npz
 
-# 3) Search
+# 3) Search (same --store; empty store exits non-zero)
 vectorprism search --checkpoint checkpoints/pilot_dense.pt \
   --query "Why did outbound wires freeze after MFA passed?" \
   --encoder sentence-transformers/all-mpnet-base-v2 \
-  --backend memory --top-k 10
+  --backend memory --store checkpoints/memory_corpus.npz --top-k 10
 
 # 4) Eval vs dense baseline
 vectorprism eval --checkpoint checkpoints/pilot_dense.pt \
@@ -147,16 +148,16 @@ Publish only claims measured on **their** data — not the adversarial finance p
 | Console script `vectorprism` | Added |
 | Public git clone install docs | This file + README |
 | Push main with packaging | **You push when ready** |
-| PyPI publish (`twine upload`) | After 1–2 successful external installs |
+| PyPI publish (`twine upload`) | **0.1.0 live**; bump for bugfix |
 | Example checkpoint download | Optional (HF / release assets) — don’t put huge `.pt` on PyPI |
 
-### Publish to PyPI (when you decide)
+### Publish to PyPI (newer releases)
 
 ```bash
 pip install -e ".[dev]"
 python -m build
 twine check dist/*
-# twine upload dist/*   # requires PyPI token; confirm name `vectorprism` is free
+# twine upload dist/*   # requires PyPI token; 0.1.0 already live
 ```
 
 ---

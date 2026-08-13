@@ -77,7 +77,7 @@ services:
     volumes:
       - .:/app
     profiles: ["test"]
-    command: ["python", "-m", "pytest", "test_psm.py", "test_phases.py", "-v"]
+    command: ["python", "-m", "pytest", "test_psm.py", "test_phases.py", "tests/test_ho005_regressions.py", "-q"]
 
   production-smoke:
     image: vectorprism:local

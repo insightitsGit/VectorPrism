@@ -9,8 +9,8 @@ Adversarial-trained multi checkpoint scored on other finance corpora with channe
 | Pack | dense R@10 | multi R@10 | ΔR@10 | dense P@10 | multi P@10 | ΔP@10 |
 |------|-----------:|-----------:|------:|-----------:|-----------:|------:|
 | easy_finance | 1.000 | 1.000 | +0.000 | 0.100 | 0.100 | +0.000 |
-| hard_gemini | 0.955 | 0.920 | -0.036 | 0.096 | 0.092 | -0.004 |
-| hard_gpt | 0.640 | 0.680 | +0.040 | 0.064 | 0.068 | +0.004 |
+| hard_gemini | 0.955 | 0.929 | -0.027 | 0.096 | 0.093 | -0.003 |
+| hard_gpt | 0.640 | 0.670 | +0.030 | 0.064 | 0.067 | +0.003 |
 | hard_combined | 0.902 | 0.866 | -0.036 | 0.090 | 0.087 | -0.004 |
 
 ## 2. Graph-density stress (cross-cluster noise edges)
@@ -30,13 +30,13 @@ Stress graph edges: **512** (base + 400 noise).
 
 | Config | mean |cands| | max |cands| | mean Stage-1 ms | mean total ms | Recovered@10 |
 |--------|-------------:|------------:|----------------:|--------------:|-------------:|
-| baseline_no_cap | 71.7 | 89 | 0.72 | 1.66 | 11 (85%) |
-| beam8 | 71.6 | 89 | 0.72 | 1.53 | 11 (85%) |
-| beam4 | 69.8 | 87 | 0.66 | 1.39 | 11 (85%) |
-| cap200 | 71.7 | 89 | 0.67 | 1.42 | 11 (85%) |
-| cap100 | 71.7 | 89 | 0.69 | 1.48 | 11 (85%) |
-| beam8_cap150 | 71.6 | 89 | 0.70 | 1.48 | 11 (85%) |
-| clean_graph_baseline | 54.6 | 66 | 0.42 | 1.10 | 13 (100%) |
+| baseline_no_cap | 71.7 | 89 | 1.44 | 2.97 | 12 (92%) |
+| beam8 | 71.6 | 89 | 1.13 | 2.34 | 12 (92%) |
+| beam4 | 69.8 | 87 | 1.65 | 3.32 | 12 (92%) |
+| cap200 | 71.7 | 89 | 1.86 | 3.33 | 12 (92%) |
+| cap100 | 71.7 | 89 | 1.02 | 2.33 | 12 (92%) |
+| beam8_cap150 | 71.6 | 89 | 1.48 | 3.67 | 12 (92%) |
+| clean_graph_baseline | 54.6 | 66 | 0.97 | 2.29 | 13 (100%) |
 
 ## 4. RRF \(k\) sweep vs z-score
 
@@ -45,15 +45,15 @@ Z-score recovered@10: **13** (100.0%)
 | Config | Recovered@10 | Full R@10 | MRR |
 |--------|-------------:|----------:|----:|
 | zscore | 13 | 1.000 | — |
-| rrf k=20 | 10 | 0.786 | 0.508 |
-| rrf k=30 | 10 | 0.786 | 0.490 |
-| rrf k=40 | 10 | 0.786 | 0.496 |
-| rrf k=50 | 10 | 0.786 | 0.508 |
-| rrf k=60 | 10 | 0.786 | 0.496 |
+| rrf k=20 | 10 | 0.786 | 0.490 |
+| rrf k=30 | 10 | 0.786 | 0.493 |
+| rrf k=40 | 10 | 0.786 | 0.493 |
+| rrf k=50 | 10 | 0.786 | 0.505 |
+| rrf k=60 | 10 | 0.786 | 0.502 |
 
-- Best RRF: `k=20` recovered@10=10
+- Best RRF: `k=50` recovered@10=10
 - Gap to z-score (recovered@10): **3**
 
 ## Verdict
 
-OOD: multi fusion without graphs does not collapse precision on soft packs. Density: recovery 100% @0 noise → 85% @400 noise edges (P@10 0.100 → 0.086). Latency: pruning config recovered@10=11 at mean 72 candidates / 1.48 ms. RRF: best k=20 closes 3 recovered gap vs z-score (10 vs 13).
+OOD: multi fusion without graphs does not collapse precision on soft packs. Density: recovery 100% @0 noise → 85% @400 noise edges (P@10 0.100 → 0.086). Latency: pruning config recovered@10=12 at mean 72 candidates / 3.67 ms. RRF: best k=50 closes 3 recovered gap vs z-score (10 vs 13).

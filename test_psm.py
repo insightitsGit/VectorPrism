@@ -177,7 +177,7 @@ class _FakeDB(VectorDBClient):
     def upsert(self, *a, **kw):
         pass
 
-    def query_dense_slice(self, vector_slice, min_truth, max_anchor_dist, limit):
+    def query_dense_slice(self, vector_slice, min_truth, max_anchor_dist, limit, model_version=None):
         return self.docs[:limit]
 
 
@@ -319,14 +319,20 @@ class _MemoryDB(VectorDBClient):
             **meta,
         })
 
-    def query_dense_slice(self, vector_slice, min_truth, max_anchor_dist, limit):
+    def query_dense_slice(self, vector_slice, min_truth, max_anchor_dist, limit, model_version=None):
         out = []
         for r in self.rows:
+            if model_version is not None and int(r.get("model_version", 0)) != int(model_version):
+                continue
             if r["epistemic_truth"] >= min_truth and r["anchor_dist"] <= max_anchor_dist:
                 out.append(r)
             if len(out) >= limit:
                 break
         return out
+
+    def get_by_ids(self, doc_ids):
+        want = set(str(x) for x in doc_ids)
+        return [r for r in self.rows if r["document_id"] in want]
 
 
 class TestPlumbing:

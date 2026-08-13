@@ -4,8 +4,13 @@ include schema.sql
 include README.md
 include PILOT.md
 include PRODUCTION.md
+include SECURITY.md
 include requirements.txt
 include pyproject.toml
+
+# Packaged assets (also via setuptools package-data)
+include vectorprism/schema.sql
+recursive-include vectorprism/data *.example.jsonl
 
 # Finance demo scripts + small starter JSONL (not hard_* corpora / results)
 recursive-include demos/finance_demo *.py
@@ -17,6 +22,7 @@ include demos/finance_demo/causal.jsonl
 include demos/finance_demo/__init__.py
 
 recursive-include scripts *.py *.ps1 *.sh *.md
+recursive-include tests *.py
 
 global-exclude *.pt *.pth *.bin __pycache__ *.pyc .pytest_cache
 global-exclude demos/finance_demo/hard*/**

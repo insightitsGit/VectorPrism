@@ -1,6 +1,6 @@
 {
   "dsn_host_hint": "localhost:5433 when using docker compose db",
-  "document_count": 65,
+  "document_count": 75,
   "checkpoint": "checkpoints/finance_demo.pt",
   "encoder": "sentence-transformers/all-mpnet-base-v2",
   "model_version": 1,
@@ -9,19 +9,19 @@
       "query": "Why are international wires delayed after callback voids?",
       "hits": [
         {
-          "document_id": "run_inc_04",
-          "final_score": 1.4030344486236572,
-          "chunk_text": "Root-cause pattern: wire callback queue causes release delay; verify CRM phone sync jobs completed before 9 AM."
-        },
-        {
           "document_id": "pol_wire_02",
-          "final_score": 1.1707539558410645,
+          "final_score": 1.087899923324585,
           "chunk_text": "Same-day wire release after 3 PM ET is blocked unless Treasury Operations override with dual approval."
         },
         {
           "document_id": "faq_acct_01",
-          "final_score": 0.9179294109344482,
+          "final_score": 1.070751428604126,
           "chunk_text": "Clients can enable ACH pulls for margin deficits; ACH rejects re-open the margin call as unmet."
+        },
+        {
+          "document_id": "prod_loan_02",
+          "final_score": 0.9199721813201904,
+          "chunk_text": "Margin loan interest accrues daily using the broker call rate plus 1.25 percent spread."
         }
       ]
     },
@@ -30,17 +30,17 @@
       "hits": [
         {
           "document_id": "pol_margin_01",
-          "final_score": 3.8786709308624268,
+          "final_score": 2.5083494186401367,
           "chunk_text": "Maintenance margin calls must be met by 2 PM ET on T+1 or positions are subject to liquidation."
         },
         {
           "document_id": "faq_acct_01",
-          "final_score": 1.9951916933059692,
+          "final_score": 1.5356605052947998,
           "chunk_text": "Clients can enable ACH pulls for margin deficits; ACH rejects re-open the margin call as unmet."
         },
         {
           "document_id": "pol_margin_02",
-          "final_score": 1.865273356437683,
+          "final_score": 1.525316834449768,
           "chunk_text": "House margin requirements for concentrated equity positions are 40 percent of market value."
         }
       ]
@@ -50,18 +50,18 @@
       "hits": [
         {
           "document_id": "pol_nav_01",
-          "final_score": 4.282480716705322,
+          "final_score": 2.273163318634033,
           "chunk_text": "Official fund NAV is struck at 4 PM ET using final pricing; late-arriving prices use fair-value hierarchy Level 2 when available."
         },
         {
           "document_id": "pol_settle_01",
-          "final_score": 1.6455740928649902,
+          "final_score": 1.081135630607605,
           "chunk_text": "Failed equity settlements are auto-retried at 10 AM ET; persistent fails escalate to Settlement Ops after two retries."
         },
         {
-          "document_id": "treasury_02",
-          "final_score": 1.4960458278656006,
-          "chunk_text": "Fedwire cutoff for third-party USD wires is 5:45 PM ET; internal book transfers may settle later."
+          "document_id": "desk_fx_01",
+          "final_score": 0.9662575721740723,
+          "chunk_text": "NDF fixings use the WM/R 4 PM London rate unless the ticket specifies an alternate fix source."
         }
       ]
     },
@@ -70,17 +70,17 @@
       "hits": [
         {
           "document_id": "pol_wire_01",
-          "final_score": 4.886268138885498,
+          "final_score": 2.225240707397461,
           "chunk_text": "International wires above USD 50,000 require callback verification to a registered phone number on file."
         },
         {
           "document_id": "treasury_02",
-          "final_score": 2.482440710067749,
+          "final_score": 1.1019823551177979,
           "chunk_text": "Fedwire cutoff for third-party USD wires is 5:45 PM ET; internal book transfers may settle later."
         },
         {
           "document_id": "pol_wire_02",
-          "final_score": 2.1978676319122314,
+          "final_score": 0.9696740508079529,
           "chunk_text": "Same-day wire release after 3 PM ET is blocked unless Treasury Operations override with dual approval."
         }
       ]
@@ -90,17 +90,17 @@
       "hits": [
         {
           "document_id": "pol_liq_02",
-          "final_score": 3.741851568222046,
+          "final_score": 1.9702023267745972,
           "chunk_text": "Redemption gates for the short-duration credit fund activate if weekly outflows exceed 15 percent of AUM."
         },
         {
           "document_id": "faq_acct_01",
-          "final_score": 1.5311802625656128,
+          "final_score": 0.8638410568237305,
           "chunk_text": "Clients can enable ACH pulls for margin deficits; ACH rejects re-open the margin call as unmet."
         },
         {
           "document_id": "treasury_01",
-          "final_score": 1.2375880479812622,
+          "final_score": 0.7472462058067322,
           "chunk_text": "Intraday liquidity buffer target is USD 500 million in HQLA; usage above 70 percent pages Treasury."
         }
       ]

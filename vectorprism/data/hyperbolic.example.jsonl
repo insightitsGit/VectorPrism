@@ -1,0 +1,12 @@
+{"parent": "Retrieval systems", "child": "Dense retrieval", "negatives": ["Billing invoices", "Kitchen recipes"]}
+{"parent": "Retrieval systems", "child": "Hybrid retrieval", "negatives": ["Weather forecasts", "Music playlists"]}
+{"parent": "Dense retrieval", "child": "VectorPrism dense core", "negatives": ["Taxonomy editor UI", "SMTP servers"]}
+{"parent": "Hybrid retrieval", "child": "Multi-channel rescoring", "negatives": ["Image compression", "Payroll"]}
+{"parent": "Geometry", "child": "Hyperbolic space", "negatives": ["Customer refunds", "DNS records"]}
+{"parent": "Geometry", "child": "Euclidean space", "negatives": ["Coffee orders", "Flight delays"]}
+{"parent": "Hyperbolic space", "child": "Poincare ball embeddings", "negatives": ["Password reset emails", "Spreadsheet macros"]}
+{"parent": "Machine learning", "child": "Contrastive learning", "negatives": ["Office furniture", "Plumbing tools"]}
+{"parent": "Machine learning", "child": "Knowledge graph embeddings", "negatives": ["Garden plants", "Ticket prices"]}
+{"parent": "Knowledge graph embeddings", "child": "TransE", "negatives": ["Canvas painting", "Yoga mats"]}
+{"parent": "Evaluation", "child": "Recall at k", "negatives": ["Shoe sizes", "Hotel bookings"]}
+{"parent": "Evaluation", "child": "Mean reciprocal rank", "negatives": ["Dog breeds", "Paint colors"]}

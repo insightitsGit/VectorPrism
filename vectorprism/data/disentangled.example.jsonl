@@ -1,0 +1,16 @@
+{"text": "HNSW indexes the dense core for Stage 1 candidate generation.", "label": "retrieval"}
+{"text": "Cosine similarity ranks semantic neighbors in embedding space.", "label": "retrieval"}
+{"text": "Poincare ball geometry embeds trees with low distortion.", "label": "geometry"}
+{"text": "Hyperbolic distance is used for taxonomy closeness.", "label": "geometry"}
+{"text": "TransE learns subject plus relation approximates object.", "label": "graphs"}
+{"text": "Link prediction Hits@10 validates relational structure.", "label": "graphs"}
+{"text": "InfoNCE trains dense anchors against in-batch negatives.", "label": "training"}
+{"text": "AdamW optimizes the multi-task projection adapter.", "label": "training"}
+{"text": "Epistemic truth needs calibration before hard filtering.", "label": "safety"}
+{"text": "Anchor distance is only a soft injection-risk feature.", "label": "safety"}
+{"text": "Model version forces corpus re-ingestion after retrain.", "label": "ops"}
+{"text": "pgvector and Qdrant are supported storage backends.", "label": "ops"}
+{"text": "Ablations prove whether an extra channel helps recall.", "label": "evaluation"}
+{"text": "MRR and recall@10 are primary retrieval quality metrics.", "label": "evaluation"}
+{"text": "Causal scoring uses an asymmetric bilinear matrix.", "label": "causal"}
+{"text": "Ordered event pairs supervise temporal directionality.", "label": "causal"}

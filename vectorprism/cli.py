@@ -32,7 +32,21 @@ from pathlib import Path
 from typing import Optional
 
 
-ROOT = Path(__file__).resolve().parent
+def _repo_root() -> Path:
+    here = Path(__file__).resolve().parent
+    candidate = here.parent
+    if (candidate / "pyproject.toml").exists() or (candidate / "demos").exists():
+        return candidate
+    return Path.cwd()
+
+
+def _example_data_dir() -> Path:
+    from vectorprism.paths import example_data_dir
+
+    return example_data_dir()
+
+
+ROOT = _repo_root()
 
 
 def _run(cmd: list) -> int:
@@ -62,9 +76,9 @@ def cmd_pilot_check(_args) -> int:
     errors: list[str] = []
     print("VectorPrism pilot-check", flush=True)
     try:
-        from tensor_contract import PSMTensorContract
-        from causal_graph import CausalDocGraph
-        from structure_index import TaxonomyGraph, RelationalAttrIndex
+        from vectorprism.tensor_contract import PSMTensorContract
+        from vectorprism.causal_graph import CausalDocGraph
+        from vectorprism.structure_index import TaxonomyGraph, RelationalAttrIndex
 
         _ = (PSMTensorContract, CausalDocGraph, TaxonomyGraph, RelationalAttrIndex)
         print("  [ok] core imports", flush=True)
@@ -83,10 +97,11 @@ def cmd_pilot_check(_args) -> int:
         print(f"  [fail] torch/numpy: {e}", flush=True)
 
     try:
-        from base_encoder import HashingEncoder
-        from ingestion_adapter import MultiTaskProjectionAdapter
-        from ingest_pipeline import VectorPrismIngestPipeline, IngestDocument
-        from db_client import VectorDBClient
+        from vectorprism.base_encoder import HashingEncoder
+        from vectorprism.ingestion_adapter import MultiTaskProjectionAdapter
+        from vectorprism.ingest_pipeline import VectorPrismIngestPipeline, IngestDocument
+        from vectorprism.db_client import VectorDBClient
+        from vectorprism.paths import schema_sql_path, example_jsonl
 
         class _Mem(VectorDBClient):
             def __init__(self):
@@ -95,7 +110,9 @@ def cmd_pilot_check(_args) -> int:
             def upsert(self, doc_id, chunk_text, tensor_1024d, meta):
                 self.rows.append({"document_id": doc_id})
 
-            def query_dense_slice(self, vector_slice, min_truth, max_anchor_dist, limit):
+            def query_dense_slice(
+                self, vector_slice, min_truth, max_anchor_dist, limit, model_version=None
+            ):
                 return []
 
             def get_by_ids(self, doc_ids):
@@ -109,7 +126,9 @@ def cmd_pilot_check(_args) -> int:
             [IngestDocument(document_id="pilot_doc", chunk_text="pilot smoke document")]
         )
         assert len(db.rows) == 1
-        print("  [ok] ingest smoke (hash encoder)", flush=True)
+        _ = schema_sql_path().read_text(encoding="utf-8")[:40]
+        _ = example_jsonl("documents.example.jsonl")
+        print("  [ok] ingest smoke (hash encoder) + packaged schema/examples", flush=True)
     except Exception as e:
         errors.append(f"ingest smoke: {e}")
         print(f"  [fail] ingest smoke: {e}", flush=True)
@@ -137,8 +156,8 @@ def cmd_pilot_check(_args) -> int:
 
 
 def cmd_train(args) -> int:
-    from train import main as train_main
-    train_main([
+    from vectorprism.train import main as train_main
+    forwarded = [
         "--channel", args.channel,
         "--data", args.data,
         "--out", args.out,
@@ -146,15 +165,22 @@ def cmd_train(args) -> int:
         "--epochs", str(args.epochs),
         "--batch-size", str(args.batch_size),
         "--device", args.device,
-        *(["--init", args.init] if args.init else []),
-        *(["--identity-corpus", args.identity_corpus] if args.identity_corpus else []),
-    ])
+    ]
+    if args.init:
+        forwarded += ["--init", args.init]
+    if args.identity_corpus:
+        forwarded += ["--identity-corpus", args.identity_corpus]
+    if getattr(args, "num_disentangled_classes", None) is not None:
+        forwarded += ["--num-disentangled-classes", str(args.num_disentangled_classes)]
+    if getattr(args, "unsafe_pickle", False):
+        forwarded += ["--unsafe-pickle"]
+    train_main(forwarded)
     return 0
 
 
 def cmd_eval(args) -> int:
-    from eval_runner import run_phase1_eval, write_report
-    from train import build_encoder
+    from vectorprism.eval_runner import run_phase1_eval, write_report
+    from vectorprism.train import build_encoder
     encoder = build_encoder(args.encoder, args.device)
     report = run_phase1_eval(args.checkpoint, encoder, args.documents, args.eval)
     payload = {
@@ -169,8 +195,8 @@ def cmd_eval(args) -> int:
 
 
 def cmd_ablation(args) -> int:
-    from eval_runner import run_ablation_eval, write_report
-    from train import build_encoder
+    from vectorprism.eval_runner import run_ablation_eval, write_report
+    from vectorprism.train import build_encoder
     encoder = build_encoder(args.encoder, args.device)
     results = run_ablation_eval(args.checkpoint, encoder, args.documents, args.eval)
     if args.out:
@@ -179,8 +205,8 @@ def cmd_ablation(args) -> int:
 
 
 def cmd_intrinsic(args) -> int:
-    from intrinsic_runner import run_intrinsic, write_json
-    from train import build_encoder
+    from vectorprism.intrinsic_runner import run_intrinsic, write_json
+    from vectorprism.train import build_encoder
     encoder = build_encoder(args.encoder, args.device)
     report = run_intrinsic(args.channel, args.checkpoint, encoder, args.data, ood_path=args.ood)
     if args.out:
@@ -190,8 +216,8 @@ def cmd_intrinsic(args) -> int:
 
 
 def cmd_train_truth(args) -> int:
-    from epistemic_truth import train_truth_classifier
-    from train import build_encoder
+    from vectorprism.epistemic_truth import train_truth_classifier
+    from vectorprism.train import build_encoder
     encoder = build_encoder(args.encoder, args.device)
     report = train_truth_classifier(
         args.data,
@@ -206,22 +232,30 @@ def cmd_train_truth(args) -> int:
 
 
 def cmd_ingest(args) -> int:
-    from ingest_cli import main as ingest_main
-    ingest_main([
+    from vectorprism.ingest_cli import main as ingest_main
+    forwarded = [
         "--checkpoint", args.checkpoint,
         "--documents", args.documents,
         "--encoder", args.encoder,
         "--backend", args.backend,
         "--device", args.device,
-        *(["--dsn", args.dsn] if args.dsn else []),
-        *(["--qdrant-url", args.qdrant_url] if args.qdrant_url else []),
-        *(["--truth-checkpoint", args.truth_checkpoint] if args.truth_checkpoint else []),
-    ])
+    ]
+    if args.dsn:
+        forwarded += ["--dsn", args.dsn]
+    if args.qdrant_url:
+        forwarded += ["--qdrant-url", args.qdrant_url]
+    if args.truth_checkpoint:
+        forwarded += ["--truth-checkpoint", args.truth_checkpoint]
+    if getattr(args, "store", None):
+        forwarded += ["--store", args.store]
+    if getattr(args, "unsafe_pickle", False):
+        forwarded += ["--unsafe-pickle"]
+    ingest_main(forwarded)
     return 0
 
 
 def cmd_search(args) -> int:
-    from search_cli import main as search_main
+    from vectorprism.search_cli import main as search_main
     forwarded = [
         "--checkpoint", args.checkpoint,
         "--query", args.query,
@@ -238,12 +272,18 @@ def cmd_search(args) -> int:
         forwarded += ["--hard-truth-filter"]
     if args.truth_checkpoint:
         forwarded += ["--truth-checkpoint", args.truth_checkpoint]
-    search_main(forwarded)
-    return 0
+    if getattr(args, "store", None):
+        forwarded += ["--store", args.store]
+    if getattr(args, "unsafe_pickle", False):
+        forwarded += ["--unsafe-pickle"]
+    if getattr(args, "model_version", None) is not None:
+        forwarded += ["--model-version", str(args.model_version)]
+    hits = search_main(forwarded)
+    return 0 if hits else 1
 
 
 def cmd_live_benchmark(args) -> int:
-    from live_benchmark import main as bench_main
+    from vectorprism.live_benchmark import main as bench_main
     report = bench_main([
         "--checkpoint", args.checkpoint,
         "--documents", args.documents,
@@ -259,7 +299,7 @@ def cmd_live_benchmark(args) -> int:
 
 
 def cmd_reingest(args) -> int:
-    from reingest import main as reingest_main
+    from vectorprism.reingest import main as reingest_main
     reingest_main([
         "--checkpoint", args.checkpoint,
         "--documents", args.documents,
@@ -275,62 +315,69 @@ def cmd_reingest(args) -> int:
 
 def cmd_run_all_smoke(args) -> int:
     """Full plumbing smoke across Phases 1-6 on example JSONL. Not a quality DoD pass."""
-    data = ROOT / "data"
+    data = _example_data_dir()
     ckpt = ROOT / "checkpoints" / "vectorprism_smoke.pt"
     truth = ROOT / "checkpoints" / "truth_smoke.pt"
     reports = ROOT / "reports"
     reports.mkdir(exist_ok=True)
 
     steps = [
-        [sys.executable, "train.py", "--channel", "dense",
+        [sys.executable, "-m", "vectorprism", "train", "--channel", "dense",
          "--data", str(data / "dense_pairs.example.jsonl"),
          "--out", str(ckpt), "--encoder", "hash", "--epochs", "1", "--batch-size", "8"],
-        [sys.executable, "train.py", "--channel", "causal",
+        [sys.executable, "-m", "vectorprism", "train", "--channel", "causal",
          "--data", str(data / "causal.example.jsonl"),
          "--init", str(ckpt), "--out", str(ckpt), "--encoder", "hash", "--epochs", "1"],
-        [sys.executable, "train.py", "--channel", "relational",
+        [sys.executable, "-m", "vectorprism", "train", "--channel", "relational",
          "--data", str(data / "relational.example.jsonl"),
          "--init", str(ckpt), "--out", str(ckpt), "--encoder", "hash", "--epochs", "1"],
-        [sys.executable, "train.py", "--channel", "hyperbolic",
+        [sys.executable, "-m", "vectorprism", "train", "--channel", "hyperbolic",
          "--data", str(data / "hyperbolic.example.jsonl"),
          "--init", str(ckpt), "--out", str(ckpt), "--encoder", "hash", "--epochs", "1"],
-        [sys.executable, "train.py", "--channel", "disentangled",
+        [sys.executable, "-m", "vectorprism", "train", "--channel", "disentangled",
          "--data", str(data / "disentangled.example.jsonl"),
          "--init", str(ckpt), "--out", str(ckpt), "--encoder", "hash", "--epochs", "1",
          "--num-disentangled-classes", "8"],
-        [sys.executable, "train.py", "--channel", "identity",
+        [sys.executable, "-m", "vectorprism", "train", "--channel", "identity",
          "--data", str(data / "identity.example.jsonl"),
          "--init", str(ckpt), "--out", str(ckpt), "--encoder", "hash", "--epochs", "1"],
-        [sys.executable, "vectorprism.py", "train-truth",
+        [sys.executable, "-m", "vectorprism", "train-truth",
          "--data", str(data / "truth.example.jsonl"),
          "--out", str(truth), "--encoder", "hash", "--epochs", "3"],
-        [sys.executable, "vectorprism.py", "eval",
+        [sys.executable, "-m", "vectorprism", "eval",
          "--checkpoint", str(ckpt),
          "--documents", str(data / "documents.example.jsonl"),
          "--eval", str(data / "eval.example.jsonl"),
          "--encoder", "hash",
          "--out", str(reports / "phase1_eval.json")],
-        [sys.executable, "vectorprism.py", "ablation",
+        [sys.executable, "-m", "vectorprism", "ablation",
          "--checkpoint", str(ckpt),
          "--documents", str(data / "documents.example.jsonl"),
          "--eval", str(data / "eval.example.jsonl"),
          "--encoder", "hash",
          "--out", str(reports / "ablation.json")],
-        [sys.executable, "vectorprism.py", "intrinsic",
+        [sys.executable, "-m", "vectorprism", "intrinsic",
          "--channel", "causal", "--checkpoint", str(ckpt),
          "--data", str(data / "causal.example.jsonl"), "--encoder", "hash",
          "--out", str(reports / "intrinsic_causal.json")],
-        [sys.executable, "ingest_cli.py",
+        [sys.executable, "-m", "vectorprism", "ingest",
          "--checkpoint", str(ckpt),
          "--documents", str(data / "documents.example.jsonl"),
          "--encoder", "hash", "--backend", "memory",
+         "--store", str(ROOT / "checkpoints" / "smoke_memory_corpus.npz"),
          "--truth-checkpoint", str(truth)],
-        [sys.executable, "live_benchmark.py",
+        [sys.executable, "-m", "vectorprism", "search",
+         "--checkpoint", str(ckpt),
+         "--query", "VectorPrism uses a 1024-dimensional tensor",
+         "--encoder", "hash", "--backend", "memory",
+         "--store", str(ROOT / "checkpoints" / "smoke_memory_corpus.npz"),
+         "--top-k", "3"],
+        [sys.executable, "-m", "vectorprism", "live-benchmark",
          "--checkpoint", str(ckpt),
          "--documents", str(data / "documents.example.jsonl"),
          "--encoder", "hash", "--backend", "memory",
          "--n-trials", "10", "--p95-budget-ms", "100"],
-        [sys.executable, "reingest.py",
+        [sys.executable, "-m", "vectorprism", "reingest",
          "--checkpoint", str(ckpt),
          "--documents", str(data / "documents.example.jsonl"),
          "--encoder", "hash", "--backend", "memory"],
@@ -453,6 +500,8 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--batch-size", type=int, default=16)
     s.add_argument("--device", default="cpu")
     s.add_argument("--identity-corpus", default=None)
+    s.add_argument("--num-disentangled-classes", type=int, default=None)
+    s.add_argument("--unsafe-pickle", action="store_true")
     s.set_defaults(func=cmd_train)
 
     s = sub.add_parser("eval", help="Phase-1 eval vs dense baseline")
@@ -502,6 +551,8 @@ def build_parser() -> argparse.ArgumentParser:
         s.add_argument("--qdrant-url", default=None)
         s.add_argument("--truth-checkpoint", default=None)
         s.add_argument("--device", default="cpu")
+        s.add_argument("--store", default=None)
+        s.add_argument("--unsafe-pickle", action="store_true")
         s.set_defaults(func=helper)
 
     s = sub.add_parser("search")
@@ -515,6 +566,9 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--hard-truth-filter", action="store_true")
     s.add_argument("--truth-checkpoint", default=None)
     s.add_argument("--device", default="cpu")
+    s.add_argument("--store", default=None)
+    s.add_argument("--model-version", type=int, default=None)
+    s.add_argument("--unsafe-pickle", action="store_true")
     s.set_defaults(func=cmd_search)
 
     s = sub.add_parser("live-benchmark")

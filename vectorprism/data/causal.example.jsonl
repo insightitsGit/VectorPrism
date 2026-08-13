@@ -1,0 +1,12 @@
+{"earlier": "Service received a crash report from region us-west.", "later": "On-call engineer opened an incident ticket."}
+{"earlier": "On-call engineer opened an incident ticket.", "later": "Root cause was identified in the cache layer."}
+{"earlier": "Root cause was identified in the cache layer.", "later": "A hotfix was deployed to production."}
+{"earlier": "A hotfix was deployed to production.", "later": "Error rates returned to baseline."}
+{"earlier": "User submitted a support request about billing.", "later": "Support agent requested account details."}
+{"earlier": "Support agent requested account details.", "later": "Refund was issued after verification."}
+{"earlier": "Model training job started on GPU cluster.", "later": "Checkpoint was written at epoch 3."}
+{"earlier": "Checkpoint was written at epoch 3.", "later": "Evaluation metrics were logged to the report."}
+{"earlier": "Taxonomy editor added a new category node.", "later": "Documents were reassigned under the new parent."}
+{"earlier": "Documents were reassigned under the new parent.", "later": "Search results reflected the updated hierarchy."}
+{"earlier": "API schema change was proposed in review.", "later": "Clients were updated to the new endpoint."}
+{"earlier": "Clients were updated to the new endpoint.", "later": "Legacy endpoint was deprecated."}

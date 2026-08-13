@@ -39,3 +39,7 @@ Out of scope:
 ## Safe harbor
 
 Good-faith research that follows this policy and avoids privacy violations / service disruption is welcome. We will not pursue legal action for such reports.
+
+## Checkpoints
+
+Default `load_checkpoint` / truth-classifier load uses `torch.load(..., weights_only=True)` — tensors and state_dicts only. Use `--unsafe-pickle` only for trusted legacy local `.pt` files that still require full pickle.
