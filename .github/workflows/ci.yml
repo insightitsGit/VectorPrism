@@ -1,10 +1,12 @@
 name: CI
-
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+
+permissions:
+  contents: read
 
 jobs:
   test:
@@ -14,10 +16,15 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Install deps
+      - name: Install
         run: |
-          python -m pip install --upgrade pip
-          pip install torch --index-url https://download.pytorch.org/whl/cpu
-          pip install numpy scipy scikit-learn pytest
+          python -m pip install -U pip
+          pip install -e ".[dev]"
       - name: Unit tests
         run: pytest test_psm.py test_phases.py -q
+      - name: Pilot check
+        run: vectorprism pilot-check
+      - name: Build package
+        run: |
+          python -m build
+          twine check dist/*

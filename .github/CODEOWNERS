@@ -1,0 +1,9 @@
+# Default owners for protected paths — reviews required via branch rules.
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+*       @insightitsGit
+
+/.github/                @insightitsGit
+/pyproject.toml          @insightitsGit
+/SECURITY.md             @insightitsGit
+/scripts/publish_pypi.*  @insightitsGit
