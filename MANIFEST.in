@@ -1,10 +1,25 @@
+# Keep the published sdist lean — full demo corpora live in git, not on PyPI.
 include LICENSE
 include schema.sql
 include README.md
 include PILOT.md
 include PRODUCTION.md
 include requirements.txt
-recursive-include demos *.md *.jsonl *.json
-recursive-include scripts *
-graft demos/finance_demo
+include pyproject.toml
+
+# Finance demo scripts + small starter JSONL (not hard_* corpora / results)
+recursive-include demos/finance_demo *.py
+recursive-include demos/finance_demo *.md
+include demos/finance_demo/documents.jsonl
+include demos/finance_demo/dense_pairs.jsonl
+include demos/finance_demo/eval.jsonl
+include demos/finance_demo/causal.jsonl
+include demos/finance_demo/__init__.py
+
+recursive-include scripts *.py *.ps1 *.sh *.md
+
 global-exclude *.pt *.pth *.bin __pycache__ *.pyc .pytest_cache
+global-exclude demos/finance_demo/hard*/**
+global-exclude demos/finance_demo/results/**
+global-exclude demos/finance_demo/hard_adversarial_auto/**
+global-exclude demos/finance_demo/hard_adversarial_scale/**
