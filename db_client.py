@@ -44,6 +44,13 @@ class PgVectorClient(VectorDBClient):
                     (document_id, chunk_text, tensor_1024d,
                      epistemic_truth, anchor_dist, valid_timestamp, model_version)
                 VALUES (%s, %s, %s, %s, %s, %s, %s)
+                ON CONFLICT (document_id) DO UPDATE SET
+                    chunk_text = EXCLUDED.chunk_text,
+                    tensor_1024d = EXCLUDED.tensor_1024d,
+                    epistemic_truth = EXCLUDED.epistemic_truth,
+                    anchor_dist = EXCLUDED.anchor_dist,
+                    valid_timestamp = EXCLUDED.valid_timestamp,
+                    model_version = EXCLUDED.model_version
                 """,
                 (
                     doc_id,
@@ -55,6 +62,33 @@ class PgVectorClient(VectorDBClient):
                     int(meta.get("model_version", 0)),
                 ),
             )
+
+    def ensure_schema(self, schema_sql_path: str) -> None:
+        """Apply schema.sql (idempotent CREATE IF NOT EXISTS statements)."""
+        from pathlib import Path
+        sql = Path(schema_sql_path).read_text(encoding="utf-8")
+        with self.conn.cursor() as cur:
+            cur.execute(sql)
+        # Older DBs may lack UNIQUE(document_id) — add if missing
+        with self.conn.cursor() as cur:
+            cur.execute(
+                """
+                DO $$ BEGIN
+                  IF NOT EXISTS (
+                    SELECT 1 FROM pg_constraint
+                    WHERE conname = 'psm_document_embeddings_document_id_key'
+                  ) THEN
+                    ALTER TABLE psm_document_embeddings
+                      ADD CONSTRAINT psm_document_embeddings_document_id_key UNIQUE (document_id);
+                  END IF;
+                END $$;
+                """
+            )
+
+    def count_documents(self) -> int:
+        with self.conn.cursor() as cur:
+            cur.execute("SELECT COUNT(*) FROM psm_document_embeddings")
+            return int(cur.fetchone()[0])
 
     def query_dense_slice(
         self, vector_slice: np.ndarray, min_truth: float, max_anchor_dist: float, limit: int
@@ -73,9 +107,24 @@ class PgVectorClient(VectorDBClient):
             )
             rows = cur.fetchall()
         return [
-            {"document_id": r[0], "chunk_text": r[1], "tensor_1024d": np.asarray(r[2], dtype=np.float32)}
+            {
+                "document_id": r[0],
+                "chunk_text": r[1],
+                "tensor_1024d": _as_float32_vector(r[2]),
+            }
             for r in rows
         ]
+
+
+def _as_float32_vector(value) -> np.ndarray:
+    """Convert pgvector Vector / list / ndarray to float32 numpy vector."""
+    if isinstance(value, np.ndarray):
+        return value.astype(np.float32, copy=False)
+    if hasattr(value, "to_numpy"):
+        return value.to_numpy().astype(np.float32)
+    if hasattr(value, "tolist"):
+        return np.asarray(value.tolist(), dtype=np.float32)
+    return np.asarray(value, dtype=np.float32)
 
 
 class QdrantVectorClient(VectorDBClient):

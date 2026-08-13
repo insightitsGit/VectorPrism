@@ -14,7 +14,7 @@ Linux containers avoid that.
 docker compose build
 ```
 
-## Finance demo (real encoder)
+## Finance demo (real encoder, in-memory)
 
 ```bash
 docker compose run --rm vectorprism
@@ -24,6 +24,25 @@ This trains dense on the finance corpus with `sentence-transformers/all-mpnet-ba
 writes `checkpoints/finance_demo.pt`, prints Phase-1 eval + sample queries.
 
 First run downloads the model into a Docker volume (cached for next runs).
+
+## Finance demo on Postgres + pgvector (production path)
+
+```bash
+docker compose up -d db
+docker compose run --rm finance-pg
+```
+
+- Starts `pgvector/pgvector:pg16` on **localhost:5433**
+- DSN: `postgresql://vectorprism:vectorprism@localhost:5433/vectorprism`
+- Applies `schema.sql`, ingests finance docs, runs live Stage-1/2 search
+- Writes `demos/finance_demo/results/pgvector_live_search.json`
+
+Point at your own local Postgres instead:
+
+```bash
+docker compose run --rm -e VECTORPRISM_PG_DSN="postgresql://USER:PASS@host.docker.internal:5432/DB" finance-pg \
+  python demos/finance_demo/run_pgvector_demo.py --dsn "postgresql://USER:PASS@host.docker.internal:5432/DB"
+```
 
 ## Tests
 

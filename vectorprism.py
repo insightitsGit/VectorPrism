@@ -14,12 +14,14 @@ Subcommands:
   reingest        Phase-6 versioned re-encode
   run-all-smoke   end-to-end plumbing on example JSONL (not a quality claim)
   finance-demo    near-real finance client Phase-1 demo
+  finance-pg      finance demo ingest+search on Postgres/pgvector
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -277,6 +279,19 @@ def cmd_finance_demo(args) -> int:
     return _run(cmd)
 
 
+def cmd_finance_pg(args) -> int:
+    cmd = [
+        sys.executable, str(ROOT / "demos" / "finance_demo" / "run_pgvector_demo.py"),
+        "--dsn", args.dsn,
+        "--checkpoint", args.checkpoint,
+        "--encoder", args.encoder,
+        "--epochs", str(args.epochs),
+    ]
+    if args.skip_train:
+        cmd.append("--skip-train")
+    return _run(cmd)
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="vectorprism", description="VectorPrism Phases 0-6 CLI")
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -380,6 +395,17 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--out", default="checkpoints/finance_demo.pt")
     s.add_argument("--skip-train", action="store_true")
     s.set_defaults(func=cmd_finance_demo)
+
+    s = sub.add_parser("finance-pg", help="Finance demo on Postgres/pgvector")
+    s.add_argument("--dsn", default=os.environ.get(
+        "VECTORPRISM_PG_DSN",
+        "postgresql://vectorprism:vectorprism@localhost:5433/vectorprism",
+    ))
+    s.add_argument("--checkpoint", default="checkpoints/finance_demo.pt")
+    s.add_argument("--encoder", default="sentence-transformers/all-mpnet-base-v2")
+    s.add_argument("--epochs", type=int, default=3)
+    s.add_argument("--skip-train", action="store_true")
+    s.set_defaults(func=cmd_finance_pg)
     return p
 
 

@@ -4,7 +4,7 @@ CREATE EXTENSION IF NOT EXISTS vector;
 -- Primary Storage Table for VectorPrism 1024d Tensors
 CREATE TABLE IF NOT EXISTS psm_document_embeddings (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    document_id VARCHAR(255) NOT NULL,
+    document_id VARCHAR(255) NOT NULL UNIQUE,
     chunk_text TEXT NOT NULL,
 
     -- Full 1024-Dimensional Composite Tensor Payload

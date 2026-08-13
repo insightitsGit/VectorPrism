@@ -1,12 +1,27 @@
 services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: vectorprism
+      POSTGRES_PASSWORD: vectorprism
+      POSTGRES_DB: vectorprism
+    ports:
+      - "5433:5432"
+    volumes:
+      - vp-pgdata:/var/lib/postgresql/data
+      - ./schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vectorprism -d vectorprism"]
+      interval: 3s
+      timeout: 5s
+      retries: 20
+
   vectorprism:
     build: .
     image: vectorprism:local
     working_dir: /app
     volumes:
-      # Live code (optional; image already has a copy)
       - .:/app
-      # Persist model downloads + trained checkpoints across runs
       - hf-cache:/cache/huggingface
       - st-cache:/cache/sentence-transformers
       - ./checkpoints:/app/checkpoints
@@ -15,7 +30,7 @@ services:
       HF_HOME: /cache/huggingface
       TRANSFORMERS_CACHE: /cache/huggingface
       SENTENCE_TRANSFORMERS_HOME: /cache/sentence-transformers
-    # Default: finance demo with real encoder
+      VECTORPRISM_PG_DSN: postgresql://vectorprism:vectorprism@db:5432/vectorprism
     command:
       - python
       - demos/finance_demo/run_demo.py
@@ -27,6 +42,33 @@ services:
       - "16"
       - --out
       - checkpoints/finance_demo.pt
+
+  # Full production-path demo: train (if needed) + schema + ingest + live search on pgvector
+  finance-pg:
+    image: vectorprism:local
+    working_dir: /app
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - hf-cache:/cache/huggingface
+      - st-cache:/cache/sentence-transformers
+      - ./checkpoints:/app/checkpoints
+    environment:
+      HF_HOME: /cache/huggingface
+      TRANSFORMERS_CACHE: /cache/huggingface
+      SENTENCE_TRANSFORMERS_HOME: /cache/sentence-transformers
+      VECTORPRISM_PG_DSN: postgresql://vectorprism:vectorprism@db:5432/vectorprism
+    command:
+      - python
+      - demos/finance_demo/run_pgvector_demo.py
+      - --encoder
+      - sentence-transformers/all-mpnet-base-v2
+      - --checkpoint
+      - checkpoints/finance_demo.pt
+      - --dsn
+      - postgresql://vectorprism:vectorprism@db:5432/vectorprism
 
   test:
     build: .
@@ -40,3 +82,4 @@ services:
 volumes:
   hf-cache:
   st-cache:
+  vp-pgdata:
