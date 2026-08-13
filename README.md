@@ -17,6 +17,9 @@
 
 ---
 
+
+**Keywords:** pgvector multi-vector cost reduction, Intent-gated RAG retrieval engine, Causal retrieval for enterprise RAG, Positional subspace multiplexing vector search, Reduce hallucinations in root-cause RAG, VectorPrism, HNSW
+
 ## Benchmarks (adversarial pack)
 
 Dense fails on purpose. Multi-channel recovers the misses.
@@ -50,7 +53,7 @@ Enterprise RAG is stuck between two bad defaults:
 | Storage | **1×** vector footprint (one `vector(1024)` / named full tensor) |
 | Stage 1 | HNSW only on the **368d dense core** slice |
 | Stage 2 | In-RAM zero-copy slice scoring with intent weights |
-| Early exit | Header filters (`epistemic_truth`, `anchor_dist`, timestamp, `model_version`) before heavy math |
+| Early exit | Header filters (`epistemic_truth`, `anchor_dist`, `model_version`) before heavy math |
 | Latency target | **&lt; 15ms** end-to-end search SLA (see benchmarks) |
 
 Philosophically grounded channel design. Engineering-grounded memory contract. Production path for pgvector and Qdrant.
@@ -76,10 +79,10 @@ Before Stage-2 matrix math, the **16d Control Header Manifest** (`[0:16)`) expos
 
 - Epistemic truth score (soft by default; hard filter opt-in after ECE calibration)
 - Identity anchor distance (OOD / injection-risk gate in Stage 1)
-- Exact int64 timestamp (bit-reinterpreted across two float32 slots — no float32 rounding of Unix time)
-- Model version for safe re-ingest after retrains
+- Exact int64 timestamp (packed in the header for audit / future filters — **not** applied as a Stage-1 SQL/Qdrant predicate today)
+- Model version for safe re-ingest after retrains (**applied** as a Stage-1 filter; search defaults to the checkpoint’s `model_version`)
 
-Stage 1 can reject expired, unverified, or out-of-domain chunks **before** rescoring.
+Stage 1 rejects low-truth, high-anchor-distance, or wrong-`model_version` chunks **before** rescoring.
 
 ### 4. Cost-Optimized Scale for pgvector & Qdrant
 **Keywords:** multi-vector RAG cost reduction, pgvector HNSW, Qdrant named vectors, high-scale vector search
@@ -134,10 +137,10 @@ Ground truth: `PSMTensorContract` / `VectorPrismTensorContract` in [`tensor_cont
 ### Installation
 
 ```bash
-# From PyPI (after first publish)
+# From PyPI
 pip install "vectorprism[all]"
 
-# Or from git (pilots / latest main)
+# Or from git (latest main / full adversarial packs)
 git clone https://github.com/insightitsGit/VectorPrism.git
 cd VectorPrism
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
@@ -148,6 +151,8 @@ vectorprism version
 vectorprism pilot-check
 pytest test_psm.py test_phases.py -q
 ```
+
+The PyPI wheel ships `schema.sql` and `data/*.example.jsonl` (enough for `pilot-check` / `run-all-smoke`). Full adversarial finance packs stay in **git**, not on PyPI.
 
 Publish / release: [`PUBLISH.md`](PUBLISH.md) · External pilot: [`PILOT.md`](PILOT.md) · Production: [`PRODUCTION.md`](PRODUCTION.md)
 
@@ -299,7 +304,7 @@ CREATE EXTENSION IF NOT EXISTS vector;
 
 CREATE TABLE IF NOT EXISTS psm_document_embeddings (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    document_id VARCHAR(255) NOT NULL,
+    document_id VARCHAR(255) NOT NULL UNIQUE,
     chunk_text TEXT NOT NULL,
 
     -- Full 1024-Dimensional Composite Tensor Payload
@@ -367,7 +372,7 @@ if not client.collection_exists(collection):
     )
 ```
 
-Payload fields used for Stage-1 filters: `epistemic_truth`, `anchor_dist`, `valid_timestamp`, `model_version`, `chunk_text`, `document_id`.
+Payload fields used for Stage-1 filters: `epistemic_truth`, `anchor_dist`, `model_version`. Payload also stores `valid_timestamp`, `chunk_text`, and `document_id` (timestamp is header metadata today; not a Stage-1 predicate).
 
 ---
 
@@ -444,8 +449,8 @@ Insight ITS works with enterprise architects on:
 
 **Talk to us**
 
-- Email: `enterprise@insightits.com`  
-- Book a technical deep-dive: `https://cal.com/insightits/vectorprism`  
+- Email: `insightits.info@gmail.com`
+- Soft CTA: email subject **RECOVER** → `insightits.info@gmail.com`
 - GitHub Discussions: [insightitsGit/VectorPrism](https://github.com/insightitsGit/VectorPrism/discussions)  
 - Discord: [Join the VectorPrism community](https://discord.gg/vectorprism)
 
@@ -464,7 +469,7 @@ If VectorPrism informs your research or production retrieval stack:
 ```bibtex
 @software{vectorprism2026,
   title  = {VectorPrism: Positional Subspace Multiplexing for Intent-Gated Retrieval},
-  author = Amin Parva,
+  author = {Amin Parva},
   year   = {2026},
   url    = {https://github.com/insightitsGit/VectorPrism}
 }
@@ -473,3 +478,13 @@ If VectorPrism informs your research or production retrieval stack:
 ---
 
 **VectorPrism** — six signals, one tensor, baseline storage cost, intent-gated speed.
+
+---
+
+## Links
+
+- Author: **Amin Parva** ([insightits.info@gmail.com](mailto:insightits.info@gmail.com))
+- Company: [https://www.insightits.com](https://www.insightits.com)
+- GitHub: https://github.com/insightitsGit/VectorPrism
+- PyPI: https://pypi.org/project/vectorprism/
+- Product page: https://www.insightits.com/products/vectorprism.html
