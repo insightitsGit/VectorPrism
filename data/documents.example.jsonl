@@ -1,0 +1,10 @@
+{"document_id": "doc_dense", "chunk_text": "VectorPrism dense core powers Stage 1 HNSW candidate retrieval."}
+{"document_id": "doc_causal", "chunk_text": "Causal scoring uses an asymmetric matrix to rank ordered events."}
+{"document_id": "doc_hyper", "chunk_text": "Hyperbolic embeddings place taxonomy children near their parents."}
+{"document_id": "doc_rel", "chunk_text": "Relational channel learns subject relation object structure with TransE."}
+{"document_id": "doc_id", "chunk_text": "Identity anchor distance helps gate out-of-domain chunks."}
+{"document_id": "doc_truth", "chunk_text": "Epistemic truth should stay soft until calibration ECE is low."}
+{"document_id": "doc_ops", "chunk_text": "Changing model version requires versioned corpus re-ingestion."}
+{"document_id": "doc_eval", "chunk_text": "Recall at 10 and MRR measure whether retrieval quality improved."}
+{"document_id": "doc_db", "chunk_text": "pgvector and Qdrant backends store the 1024d tensor payloads."}
+{"document_id": "doc_fuse", "chunk_text": "Stage 2 z-score normalizes channel scores before intent weighting."}

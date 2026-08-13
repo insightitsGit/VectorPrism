@@ -1,0 +1,371 @@
+"""
+vectorprism.py - Master CLI for Phases 0-6.
+
+Subcommands:
+  phase0          install-check + pytest
+  train           train one channel (Phases 1-3)
+  eval            Phase-1 retrieval eval vs dense baseline
+  ablation        system-level channel ablation
+  intrinsic       per-channel intrinsic DoD
+  train-truth     Phase-4 epistemic truth classifier
+  ingest          Phase-5 upsert
+  search          Phase-5 query
+  live-benchmark  Phase-5 e2e latency
+  reingest        Phase-6 versioned re-encode
+  run-all-smoke   end-to-end plumbing on example JSONL (not a quality claim)
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import subprocess
+import sys
+from pathlib import Path
+from typing import Optional
+
+
+ROOT = Path(__file__).resolve().parent
+
+
+def _run(cmd: list) -> int:
+    print("+", " ".join(cmd))
+    return subprocess.call(cmd, cwd=str(ROOT))
+
+
+def cmd_phase0(_args) -> int:
+    code = _run([sys.executable, "-m", "pytest", "test_psm.py", "test_phases.py", "-v"])
+    return code
+
+
+def cmd_train(args) -> int:
+    from train import main as train_main
+    train_main([
+        "--channel", args.channel,
+        "--data", args.data,
+        "--out", args.out,
+        "--encoder", args.encoder,
+        "--epochs", str(args.epochs),
+        "--batch-size", str(args.batch_size),
+        "--device", args.device,
+        *(["--init", args.init] if args.init else []),
+        *(["--identity-corpus", args.identity_corpus] if args.identity_corpus else []),
+    ])
+    return 0
+
+
+def cmd_eval(args) -> int:
+    from eval_runner import run_phase1_eval, write_report
+    from train import build_encoder
+    encoder = build_encoder(args.encoder, args.device)
+    report = run_phase1_eval(args.checkpoint, encoder, args.documents, args.eval)
+    payload = {
+        "vectorprism": report.vectorprism,
+        "dense_cosine_baseline": report.dense_cosine_baseline,
+        "beats_or_ties_baseline": report.beats_or_ties_baseline,
+    }
+    if args.out:
+        write_report(args.out, payload)
+    print(json.dumps(payload, indent=2))
+    return 0 if report.beats_or_ties_baseline else 2
+
+
+def cmd_ablation(args) -> int:
+    from eval_runner import run_ablation_eval, write_report
+    from train import build_encoder
+    encoder = build_encoder(args.encoder, args.device)
+    results = run_ablation_eval(args.checkpoint, encoder, args.documents, args.eval)
+    if args.out:
+        write_report(args.out, results)
+    return 0
+
+
+def cmd_intrinsic(args) -> int:
+    from intrinsic_runner import run_intrinsic, write_json
+    from train import build_encoder
+    encoder = build_encoder(args.encoder, args.device)
+    report = run_intrinsic(args.channel, args.checkpoint, encoder, args.data, ood_path=args.ood)
+    if args.out:
+        write_json(args.out, report)
+    print(json.dumps(report, indent=2))
+    return 0 if report.get("pass_intrinsic") else 2
+
+
+def cmd_train_truth(args) -> int:
+    from epistemic_truth import train_truth_classifier
+    from train import build_encoder
+    encoder = build_encoder(args.encoder, args.device)
+    report = train_truth_classifier(
+        args.data,
+        encoder,
+        args.out,
+        epochs=args.epochs,
+        batch_size=args.batch_size,
+        device=args.device,
+    )
+    print(json.dumps(report.__dict__, indent=2))
+    return 0 if report.hard_filter_allowed else 2
+
+
+def cmd_ingest(args) -> int:
+    from ingest_cli import main as ingest_main
+    ingest_main([
+        "--checkpoint", args.checkpoint,
+        "--documents", args.documents,
+        "--encoder", args.encoder,
+        "--backend", args.backend,
+        "--device", args.device,
+        *(["--dsn", args.dsn] if args.dsn else []),
+        *(["--qdrant-url", args.qdrant_url] if args.qdrant_url else []),
+        *(["--truth-checkpoint", args.truth_checkpoint] if args.truth_checkpoint else []),
+    ])
+    return 0
+
+
+def cmd_search(args) -> int:
+    from search_cli import main as search_main
+    forwarded = [
+        "--checkpoint", args.checkpoint,
+        "--query", args.query,
+        "--encoder", args.encoder,
+        "--backend", args.backend,
+        "--top-k", str(args.top_k),
+        "--device", args.device,
+    ]
+    if args.dsn:
+        forwarded += ["--dsn", args.dsn]
+    if args.qdrant_url:
+        forwarded += ["--qdrant-url", args.qdrant_url]
+    if args.hard_truth_filter:
+        forwarded += ["--hard-truth-filter"]
+    if args.truth_checkpoint:
+        forwarded += ["--truth-checkpoint", args.truth_checkpoint]
+    search_main(forwarded)
+    return 0
+
+
+def cmd_live_benchmark(args) -> int:
+    from live_benchmark import main as bench_main
+    report = bench_main([
+        "--checkpoint", args.checkpoint,
+        "--documents", args.documents,
+        "--encoder", args.encoder,
+        "--backend", args.backend,
+        "--n-trials", str(args.n_trials),
+        "--p95-budget-ms", str(args.p95_budget_ms),
+        "--device", args.device,
+        *(["--dsn", args.dsn] if args.dsn else []),
+        *(["--qdrant-url", args.qdrant_url] if args.qdrant_url else []),
+    ])
+    return 0 if report["pass_sla"] else 2
+
+
+def cmd_reingest(args) -> int:
+    from reingest import main as reingest_main
+    reingest_main([
+        "--checkpoint", args.checkpoint,
+        "--documents", args.documents,
+        "--encoder", args.encoder,
+        "--backend", args.backend,
+        "--device", args.device,
+        *(["--dsn", args.dsn] if args.dsn else []),
+        *(["--qdrant-url", args.qdrant_url] if args.qdrant_url else []),
+        *(["--truth-checkpoint", args.truth_checkpoint] if args.truth_checkpoint else []),
+    ])
+    return 0
+
+
+def cmd_run_all_smoke(args) -> int:
+    """Full plumbing smoke across Phases 1-6 on example JSONL. Not a quality DoD pass."""
+    data = ROOT / "data"
+    ckpt = ROOT / "checkpoints" / "vectorprism_smoke.pt"
+    truth = ROOT / "checkpoints" / "truth_smoke.pt"
+    reports = ROOT / "reports"
+    reports.mkdir(exist_ok=True)
+
+    steps = [
+        [sys.executable, "train.py", "--channel", "dense",
+         "--data", str(data / "dense_pairs.example.jsonl"),
+         "--out", str(ckpt), "--encoder", "hash", "--epochs", "1", "--batch-size", "8"],
+        [sys.executable, "train.py", "--channel", "causal",
+         "--data", str(data / "causal.example.jsonl"),
+         "--init", str(ckpt), "--out", str(ckpt), "--encoder", "hash", "--epochs", "1"],
+        [sys.executable, "train.py", "--channel", "relational",
+         "--data", str(data / "relational.example.jsonl"),
+         "--init", str(ckpt), "--out", str(ckpt), "--encoder", "hash", "--epochs", "1"],
+        [sys.executable, "train.py", "--channel", "hyperbolic",
+         "--data", str(data / "hyperbolic.example.jsonl"),
+         "--init", str(ckpt), "--out", str(ckpt), "--encoder", "hash", "--epochs", "1"],
+        [sys.executable, "train.py", "--channel", "disentangled",
+         "--data", str(data / "disentangled.example.jsonl"),
+         "--init", str(ckpt), "--out", str(ckpt), "--encoder", "hash", "--epochs", "1",
+         "--num-disentangled-classes", "8"],
+        [sys.executable, "train.py", "--channel", "identity",
+         "--data", str(data / "identity.example.jsonl"),
+         "--init", str(ckpt), "--out", str(ckpt), "--encoder", "hash", "--epochs", "1"],
+        [sys.executable, "vectorprism.py", "train-truth",
+         "--data", str(data / "truth.example.jsonl"),
+         "--out", str(truth), "--encoder", "hash", "--epochs", "3"],
+        [sys.executable, "vectorprism.py", "eval",
+         "--checkpoint", str(ckpt),
+         "--documents", str(data / "documents.example.jsonl"),
+         "--eval", str(data / "eval.example.jsonl"),
+         "--encoder", "hash",
+         "--out", str(reports / "phase1_eval.json")],
+        [sys.executable, "vectorprism.py", "ablation",
+         "--checkpoint", str(ckpt),
+         "--documents", str(data / "documents.example.jsonl"),
+         "--eval", str(data / "eval.example.jsonl"),
+         "--encoder", "hash",
+         "--out", str(reports / "ablation.json")],
+        [sys.executable, "vectorprism.py", "intrinsic",
+         "--channel", "causal", "--checkpoint", str(ckpt),
+         "--data", str(data / "causal.example.jsonl"), "--encoder", "hash",
+         "--out", str(reports / "intrinsic_causal.json")],
+        [sys.executable, "ingest_cli.py",
+         "--checkpoint", str(ckpt),
+         "--documents", str(data / "documents.example.jsonl"),
+         "--encoder", "hash", "--backend", "memory",
+         "--truth-checkpoint", str(truth)],
+        [sys.executable, "live_benchmark.py",
+         "--checkpoint", str(ckpt),
+         "--documents", str(data / "documents.example.jsonl"),
+         "--encoder", "hash", "--backend", "memory",
+         "--n-trials", "10", "--p95-budget-ms", "100"],
+        [sys.executable, "reingest.py",
+         "--checkpoint", str(ckpt),
+         "--documents", str(data / "documents.example.jsonl"),
+         "--encoder", "hash", "--backend", "memory"],
+    ]
+
+    # train-truth may exit 2 if ECE gate fails on tiny example data — allow that.
+    allow_nonzero = {
+        "vectorprism.py train-truth",
+        "vectorprism.py eval",
+        "vectorprism.py intrinsic",
+    }
+    for cmd in steps:
+        key = " ".join(cmd[1:3]) if len(cmd) > 2 else cmd[-1]
+        code = _run(cmd)
+        if code != 0 and key not in allow_nonzero and "train-truth" not in " ".join(cmd) \
+           and "eval" not in cmd and "intrinsic" not in cmd:
+            # Allow DoD gate exits (2) from eval/intrinsic/train-truth
+            if code == 2 and any(x in cmd for x in ["eval", "intrinsic", "train-truth"]):
+                print(f"[smoke] DoD gate not met (exit {code}) — expected on tiny example data")
+                continue
+            return code
+        if code not in (0, 2):
+            return code
+        if code == 2:
+            print(f"[smoke] DoD gate not met (exit 2) — expected on tiny example data: {' '.join(cmd[1:4])}")
+    print("[smoke] Full Phase 0-6 plumbing completed on example JSONL.")
+    print("[smoke] Quality DoDs still require YOUR labeled datasets + real encoder.")
+    return 0
+
+
+def build_parser() -> argparse.ArgumentParser:
+    p = argparse.ArgumentParser(prog="vectorprism", description="VectorPrism Phases 0-6 CLI")
+    sub = p.add_subparsers(dest="cmd", required=True)
+
+    s = sub.add_parser("phase0", help="Run test suite")
+    s.set_defaults(func=cmd_phase0)
+
+    s = sub.add_parser("train", help="Train one channel")
+    s.add_argument("--channel", required=True)
+    s.add_argument("--data", required=True)
+    s.add_argument("--out", default="checkpoints/vectorprism.pt")
+    s.add_argument("--init", default=None)
+    s.add_argument("--encoder", default="hash")
+    s.add_argument("--epochs", type=int, default=3)
+    s.add_argument("--batch-size", type=int, default=16)
+    s.add_argument("--device", default="cpu")
+    s.add_argument("--identity-corpus", default=None)
+    s.set_defaults(func=cmd_train)
+
+    s = sub.add_parser("eval", help="Phase-1 eval vs dense baseline")
+    s.add_argument("--checkpoint", required=True)
+    s.add_argument("--documents", required=True)
+    s.add_argument("--eval", required=True)
+    s.add_argument("--encoder", default="hash")
+    s.add_argument("--device", default="cpu")
+    s.add_argument("--out", default=None)
+    s.set_defaults(func=cmd_eval)
+
+    s = sub.add_parser("ablation", help="Channel ablation report")
+    s.add_argument("--checkpoint", required=True)
+    s.add_argument("--documents", required=True)
+    s.add_argument("--eval", required=True)
+    s.add_argument("--encoder", default="hash")
+    s.add_argument("--device", default="cpu")
+    s.add_argument("--out", default=None)
+    s.set_defaults(func=cmd_ablation)
+
+    s = sub.add_parser("intrinsic", help="Per-channel intrinsic DoD")
+    s.add_argument("--channel", required=True)
+    s.add_argument("--checkpoint", required=True)
+    s.add_argument("--data", required=True)
+    s.add_argument("--ood", default=None)
+    s.add_argument("--encoder", default="hash")
+    s.add_argument("--device", default="cpu")
+    s.add_argument("--out", default=None)
+    s.set_defaults(func=cmd_intrinsic)
+
+    s = sub.add_parser("train-truth", help="Phase-4 truth classifier")
+    s.add_argument("--data", required=True)
+    s.add_argument("--out", default="checkpoints/truth.pt")
+    s.add_argument("--encoder", default="hash")
+    s.add_argument("--epochs", type=int, default=5)
+    s.add_argument("--batch-size", type=int, default=32)
+    s.add_argument("--device", default="cpu")
+    s.set_defaults(func=cmd_train_truth)
+
+    for name, helper in [("ingest", cmd_ingest), ("reingest", cmd_reingest)]:
+        s = sub.add_parser(name)
+        s.add_argument("--checkpoint", required=True)
+        s.add_argument("--documents", required=True)
+        s.add_argument("--encoder", default="hash")
+        s.add_argument("--backend", default="memory")
+        s.add_argument("--dsn", default=None)
+        s.add_argument("--qdrant-url", default=None)
+        s.add_argument("--truth-checkpoint", default=None)
+        s.add_argument("--device", default="cpu")
+        s.set_defaults(func=helper)
+
+    s = sub.add_parser("search")
+    s.add_argument("--checkpoint", required=True)
+    s.add_argument("--query", required=True)
+    s.add_argument("--encoder", default="hash")
+    s.add_argument("--backend", default="memory")
+    s.add_argument("--dsn", default=None)
+    s.add_argument("--qdrant-url", default=None)
+    s.add_argument("--top-k", type=int, default=5)
+    s.add_argument("--hard-truth-filter", action="store_true")
+    s.add_argument("--truth-checkpoint", default=None)
+    s.add_argument("--device", default="cpu")
+    s.set_defaults(func=cmd_search)
+
+    s = sub.add_parser("live-benchmark")
+    s.add_argument("--checkpoint", required=True)
+    s.add_argument("--documents", required=True)
+    s.add_argument("--encoder", default="hash")
+    s.add_argument("--backend", default="memory")
+    s.add_argument("--dsn", default=None)
+    s.add_argument("--qdrant-url", default=None)
+    s.add_argument("--n-trials", type=int, default=20)
+    s.add_argument("--p95-budget-ms", type=float, default=50.0)
+    s.add_argument("--device", default="cpu")
+    s.set_defaults(func=cmd_live_benchmark)
+
+    s = sub.add_parser("run-all-smoke", help="Full plumbing smoke on example data")
+    s.set_defaults(func=cmd_run_all_smoke)
+    return p
+
+
+def main(argv: Optional[list] = None) -> int:
+    parser = build_parser()
+    args = parser.parse_args(argv)
+    return int(args.func(args))
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

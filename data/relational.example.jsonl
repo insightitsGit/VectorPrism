@@ -1,0 +1,12 @@
+{"subject": "VectorPrism", "relation": "uses", "object": "1024d multi-channel tensors", "negative_object": "only BM25 keyword search"}
+{"subject": "Stage 1 retrieval", "relation": "uses", "object": "HNSW over dense core", "negative_object": "full 1024d brute force scan"}
+{"subject": "Causal channel", "relation": "scored_by", "object": "asymmetric matrix M", "negative_object": "plain euclidean distance only"}
+{"subject": "Identity anchor", "relation": "gates", "object": "out-of-domain candidates", "negative_object": "Stage 2 relevance ranking"}
+{"subject": "Hyperbolic channel", "relation": "embeds", "object": "taxonomy hierarchies", "negative_object": "temporal event order"}
+{"subject": "Dense channel", "relation": "trained_with", "object": "InfoNCE contrastive loss", "negative_object": "TransE margin loss"}
+{"subject": "Relational channel", "relation": "trained_with", "object": "TransE margin loss", "negative_object": "Poincare negative sampling"}
+{"subject": "pgvector backend", "relation": "indexes", "object": "368d dense_core_slice", "negative_object": "unindexed payload blobs"}
+{"subject": "Qdrant backend", "relation": "stores", "object": "named dense and full tensors", "negative_object": "header fields only"}
+{"subject": "Ablation harness", "relation": "compares", "object": "dense-only versus dense-plus-channel", "negative_object": "latency percentiles alone"}
+{"subject": "Epistemic truth", "relation": "requires", "object": "calibrated classifier before hard filter", "negative_object": "random default thresholds"}
+{"subject": "Model version", "relation": "invalidates", "object": "previously ingested vectors", "negative_object": "timestamp packing format"}

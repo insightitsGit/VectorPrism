@@ -1,0 +1,12 @@
+{"text": "VectorPrism stores a fixed 1024d tensor per document chunk.", "in_domain": true}
+{"text": "Dense retrieval remains the backbone of the system.", "in_domain": true}
+{"text": "Stage two rescoring combines intent-weighted channel scores.", "in_domain": true}
+{"text": "Identity anchor distance supports out-of-domain gating.", "in_domain": true}
+{"text": "Causal channel encodes ordered event directionality.", "in_domain": true}
+{"text": "Hyperbolic embeddings capture taxonomy parent-child links.", "in_domain": true}
+{"text": "Relational training needs subject relation object triples.", "in_domain": true}
+{"text": "Epistemic truth must be calibrated before hard filters.", "in_domain": true}
+{"text": "Model versioning triggers corpus re-ingestion after retrain.", "in_domain": true}
+{"text": "Ablation harness measures whether a channel improves recall.", "in_domain": true}
+{"text": "pgvector exposes a generated dense core slice column.", "in_domain": true}
+{"text": "Qdrant stores dense_core_slice and full_tensor named vectors.", "in_domain": true}

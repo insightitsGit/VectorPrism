@@ -1,0 +1,16 @@
+{"text": "VectorPrism uses a 1024-dimensional multi-channel tensor contract.", "is_true": 1}
+{"text": "Stage 1 retrieval runs HNSW over the dense core slice.", "is_true": 1}
+{"text": "Identity anchor is scored again inside Stage 2 relevance.", "is_true": 0}
+{"text": "Causal retrieval scores candidates with q transpose M c.", "is_true": 1}
+{"text": "Epistemic truth hard filters are safe without calibration.", "is_true": 0}
+{"text": "Hyperbolic space is useful for tree-like taxonomies.", "is_true": 1}
+{"text": "The dense core occupies dimensions 0 through 15 of the tensor.", "is_true": 0}
+{"text": "Model version changes require re-ingestion of stored vectors.", "is_true": 1}
+{"text": "Relational training can ignore relation ids entirely.", "is_true": 0}
+{"text": "Ablations compare dense-only against dense-plus-channel configs.", "is_true": 1}
+{"text": "Timestamp packing uses float32 numeric casts of Unix time.", "is_true": 0}
+{"text": "Qdrant stores the full tensor as a named vector for Stage 2.", "is_true": 1}
+{"text": "Prompt injection is solved completely by anchor distance alone.", "is_true": 0}
+{"text": "Phase 1 must validate dense quality before adding exotic channels.", "is_true": 1}
+{"text": "The header bitmask occupies sixteen float slots by design.", "is_true": 0}
+{"text": "Soft truth defaults avoid silently dropping good results.", "is_true": 1}

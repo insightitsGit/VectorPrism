@@ -1,0 +1,16 @@
+{"query": "What is VectorPrism?", "passage": "VectorPrism is a multi-channel retrieval system that stores a 1024-dimensional tensor per document chunk."}
+{"query": "How does stage one retrieval work?", "passage": "Stage 1 uses HNSW over the 368d dense core slice with optional header filters."}
+{"query": "What is the causal channel for?", "passage": "The causal channel encodes temporal and directional order with an asymmetric bilinear score."}
+{"query": "Why use hyperbolic embeddings?", "passage": "Hyperbolic space embeds tree-like taxonomies with lower distortion than Euclidean space."}
+{"query": "What is identity anchor distance?", "passage": "Identity anchor distance measures how far a chunk embedding is from a frozen in-domain reference vector."}
+{"query": "How are channels fused?", "passage": "Stage 2 z-score normalizes each channel score and combines them with intent weights."}
+{"query": "Does VectorPrism replace dense retrieval?", "passage": "No. Dense retrieval is the backbone; other channels are earned only if ablations show lift."}
+{"query": "What data trains the dense head?", "passage": "Dense training uses query-passage pairs in JSONL with query and passage fields."}
+{"query": "Where is the tensor contract defined?", "passage": "tensor_contract.py defines the fixed 1024d layout including header and six channel slices."}
+{"query": "What backends are supported?", "passage": "VectorPrism supports PostgreSQL with pgvector and Qdrant named-vector collections."}
+{"query": "Is epistemic truth a hard filter?", "passage": "By default epistemic truth is soft; hard filtering is opt-in after calibration."}
+{"query": "How is causal scored at retrieval?", "passage": "Causal retrieval uses the learned matrix M with score q transpose M c."}
+{"query": "What is Phase 1 of training?", "passage": "Phase 1 trains only the dense channel and must match a strong sentence-embedding baseline before adding more channels."}
+{"query": "Can channels train on different datasets?", "passage": "Yes. PSMBatch allows per-channel fields to be None so unaligned datasets can train independently."}
+{"query": "What does the relational channel need?", "passage": "Relational training needs subject-relation-object triples and a closed relation vocabulary table."}
+{"query": "How do I start training?", "passage": "Run train_dense.py with a JSONL pairs file and an optional sentence-transformers encoder."}

@@ -1,0 +1,8 @@
+{"query": "How does Stage 1 candidate retrieval work?", "relevant_doc_ids": ["doc_dense"]}
+{"query": "How is causal order scored?", "relevant_doc_ids": ["doc_causal"]}
+{"query": "Where do taxonomy hierarchies live?", "relevant_doc_ids": ["doc_hyper"]}
+{"query": "What trains the relational channel?", "relevant_doc_ids": ["doc_rel"]}
+{"query": "How do we gate out-of-domain content?", "relevant_doc_ids": ["doc_id"]}
+{"query": "When can epistemic truth hard-filter?", "relevant_doc_ids": ["doc_truth"]}
+{"query": "What happens after model retrain?", "relevant_doc_ids": ["doc_ops"]}
+{"query": "Which metrics measure retrieval quality?", "relevant_doc_ids": ["doc_eval"]}

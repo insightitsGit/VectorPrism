@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+
+# Model artifacts / local runs (retrain instead of committing)
+checkpoints/*
+!checkpoints/.gitkeep
+*.pt
+*.pth
+*.bin
+
+# Local reports / logs
+reports/
+*.log
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
