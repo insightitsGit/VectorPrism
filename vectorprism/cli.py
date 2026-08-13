@@ -65,7 +65,7 @@ def cmd_version(_args) -> int:
 
         ver = version("vectorprism")
     except Exception:
-        ver = "0.1.1 (editable / source tree)"
+        ver = "0.1.2 (editable / source tree)"
     print(f"vectorprism {ver}")
     print(f"root={ROOT}")
     return 0

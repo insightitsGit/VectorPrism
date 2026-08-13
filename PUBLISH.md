@@ -1,6 +1,6 @@
 # Publish VectorPrism to PyPI
 
-Published: **[vectorprism 0.1.1](https://pypi.org/project/vectorprism/0.1.1/)**. Use this doc for later rebuilds.
+Published: **[vectorprism 0.1.2](https://pypi.org/project/vectorprism/0.1.2/)**. Use this doc for later rebuilds.
 
 ## 1. One-time: create a PyPI API token
 
@@ -39,7 +39,7 @@ bash scripts/publish_pypi.sh
 ## 4. After publish — verify
 
 ```bash
-pip install vectorprism==0.1.1
+pip install vectorprism==0.1.2
 vectorprism version
 vectorprism pilot-check
 ```
@@ -47,7 +47,7 @@ vectorprism pilot-check
 ## 5. Git tag (recommended)
 
 ```bash
-git tag v0.1.1
+git tag v0.1.2
 git push origin main --tags
 ```
 

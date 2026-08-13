@@ -85,25 +85,48 @@ Source: `auto_extraction.json`
 
 ## How to reproduce
 
+**Checkpoints (`*.pt`) are gitignored** — a fresh clone does **not** include
+`checkpoints/finance_hard_adversarial_multi.pt`. Do not rely on `--skip-train`
+unless you already trained locally.
+
 ```bash
 git clone https://github.com/insightitsGit/VectorPrism.git
 cd VectorPrism
-pip install -e ".[all]"
+pip install -e ".[all]"   # or use Docker below
 
+# Recommended: one script trains missing checkpoints then scores
 docker compose run --rm vectorprism \
-  python demos/finance_demo/run_multichannel_recovery.py --skip-train
+  python scripts/reproduce_adversarial_benchmarks.py --epochs 3
 
+# Optional extras (needs multi checkpoint from the step above)
 docker compose run --rm vectorprism \
-  python demos/finance_demo/run_post_validation.py
-
-docker compose run --rm vectorprism \
-  python demos/finance_demo/run_robustness_validation.py
+  python scripts/reproduce_adversarial_benchmarks.py --skip-train --with-post --with-robustness
 ```
 
-Rebuild the stakeholder report:
+Fast path **only if** you already have local checkpoints:
+
+```bash
+docker compose run --rm vectorprism \
+  python demos/finance_demo/run_multichannel_recovery.py --skip-train
+```
+
+Rebuild the stakeholder report (uses existing JSON artifacts):
 
 ```bash
 python demos/finance_demo/run_stakeholder_demo.py
+```
+
+External (non-finance) transfer audits:
+
+```bash
+docker compose run --rm --no-deps vectorprism \
+  python scripts/corpus_recovery_audit.py \
+  --documents demos/external_audit/packs/scifact_subset/documents.jsonl \
+  --eval demos/external_audit/packs/scifact_subset/eval.jsonl \
+  --checkpoint checkpoints/finance_hard_adversarial_multi.pt \
+  --vertical generic \
+  --pack-meta demos/external_audit/packs/scifact_subset/meta.json \
+  --out demos/external_audit/results/scifact_subset
 ```
 
 ---

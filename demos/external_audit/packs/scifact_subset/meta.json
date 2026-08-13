@@ -1,0 +1,7 @@
+{
+  "source": "BeIR/scifact (subset)",
+  "n_documents": 500,
+  "n_eval": 40,
+  "vertical": "scientific claim verification / compliance-adjacent",
+  "why_this_pack": "Public BeIR SciFact subset; not VectorPrism-authored adversarial finance data."
+}

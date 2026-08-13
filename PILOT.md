@@ -150,7 +150,7 @@ Publish only claims measured on **their** data — not the adversarial finance p
 | Console script `vectorprism` | Added |
 | Public git clone install docs | This file + README |
 | Push main with packaging | **You push when ready** |
-| PyPI publish (`twine upload`) | **0.1.1** (BUG-001–008 pilot/packaging fixes) |
+| PyPI publish (`twine upload`) | **0.1.2** (README/claims sync + audit tooling) |
 | Example checkpoint download | Optional (HF / release assets) — don’t put huge `.pt` on PyPI |
 
 ### Publish to PyPI (newer releases)
@@ -159,7 +159,7 @@ Publish only claims measured on **their** data — not the adversarial finance p
 pip install -e ".[dev]"
 python -m build
 twine check dist/*
-# twine upload dist/*   # requires PyPI token; current release 0.1.1
+# twine upload dist/*   # requires PyPI token; current release 0.1.2
 ```
 
 ---
