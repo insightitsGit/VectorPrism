@@ -45,4 +45,4 @@ if ($repo -eq "testpypi") {
   python -m twine upload dist/*
 }
 
-Write-Host "==> Done. Install with: pip install vectorprism==0.1.0" -ForegroundColor Green
+Write-Host "==> Done. Install with: pip install vectorprism==0.1.1" -ForegroundColor Green

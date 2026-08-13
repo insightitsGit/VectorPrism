@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 # Public aliases kept for partner / docs imports
 from vectorprism.tensor_contract import PSMTensorContract, VectorPrismTensorContract

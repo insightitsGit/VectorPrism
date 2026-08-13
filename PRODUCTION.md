@@ -10,7 +10,7 @@
 | Postgres + pgvector ingest/search | Ready (Compose `db` on `:5433`) |
 | Real client labeled data | **Not yet** — swap JSONL when a client arrives |
 | Extra channels (causal/relational/…) in prod | **Earn via ablation** after dense DoD |
-| PyPI package `pip install vectorprism` | **Live** — [vectorprism 0.1.0](https://pypi.org/project/vectorprism/0.1.0/); wheel includes `schema.sql` + example JSONL |
+| PyPI package `pip install vectorprism` | **Live** — [vectorprism 0.1.1](https://pypi.org/project/vectorprism/); wheel includes `schema.sql` + example JSONL |
 | Real external pilot | See [`PILOT.md`](PILOT.md) — recruit a partner; not another internal benchmark |
 
 ## Partner install
