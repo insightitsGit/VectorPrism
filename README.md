@@ -6,10 +6,33 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![Build](https://img.shields.io/badge/tests-36%20passing-brightgreen)](https://github.com/insightitsGit/VectorPrism/actions)
+[![Demo](https://img.shields.io/badge/Demo-interactive-2f9e7a)](https://insightitsgit.github.io/VectorPrism/)
+[![Benchmarks](https://img.shields.io/badge/Benchmarks-13%2F13%20recovery-c4a35a)](BENCHMARKS.md)
 [![Discord](https://img.shields.io/badge/Discord-Join%20Community-5865F2?logo=discord&logoColor=white)](https://discord.gg/vectorprism)
 [![GitHub](https://img.shields.io/badge/GitHub-insightitsGit%2FVectorPrism-181717?logo=github)](https://github.com/insightitsGit/VectorPrism)
 
 > One contiguous **1024d** tensor. Six independently trained relevance subspaces. Stage-1 HNSW + Stage-2 intent-gated rescoring. Baseline vector-DB storage cost — not 6× multi-vector inflation.
+
+**[Interactive demo](https://insightitsgit.github.io/VectorPrism/)** · **[Benchmarks](BENCHMARKS.md)** · **[Pilot guide](PILOT.md)** · **[Technical report](demos/finance_demo/TECHNICAL_REPORT.md)**
+
+---
+
+## Benchmarks (adversarial pack)
+
+Dense fails on purpose. Multi-channel recovers the misses.
+
+| Metric | Result |
+|--------|-------:|
+| Dense R@10 | **7.1%** |
+| Dense Miss@10 | **13/14 (93%)** |
+| Multi z-score recovered@10 | **13/13 (100%)** |
+| RRF recovered@10 (conservative) | **10–11/13 (77–85%)** |
+| Auto-graph recovered@10 | **11/13 (85%)** |
+| 1000-doc scale recovered@10 | **13/13** (~1.8 ms) |
+
+Full tables, caveats, and reproduce commands → **[`BENCHMARKS.md`](BENCHMARKS.md)**  
+Interactive query comparison (dense vs multi) → **[demo site](https://insightitsgit.github.io/VectorPrism/)**  
+Raw JSON/MD artifacts → [`demos/finance_demo/results/`](demos/finance_demo/results/)
 
 ---
 

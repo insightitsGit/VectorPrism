@@ -1,0 +1,162 @@
+[
+  {
+    "query": "Why did the London trading desk's aggressive order routing halt at 14:15 even though the exchange FIX sessions still showed connected status?",
+    "gold": "ADV_C01_gold",
+    "dense_rank": 138,
+    "dense_top5": [
+      "ADV_C01_d01",
+      "ADV_C01_d12",
+      "ADV_C01_d06",
+      "ADV_C01_d08",
+      "ADV_C01_d11"
+    ],
+    "multi_top5": [
+      "ADV_C01_gold",
+      "ADV_R03_gold",
+      "ADV_C01_d02",
+      "ADV_C01_d09",
+      "ADV_C01_d14"
+    ],
+    "recovered": true
+  },
+  {
+    "query": "Why did prime brokerage place a settlement lock on the client's Friday morning DVP deliveries when trade economics already matched?",
+    "gold": "ADV_C02_gold",
+    "dense_rank": 14,
+    "dense_top5": [
+      "ADV_C02_d01",
+      "ADV_C02_d02",
+      "ADV_C02_d09",
+      "ADV_C02_d08",
+      "ADV_C02_d03"
+    ],
+    "multi_top5": [
+      "ADV_C02_gold",
+      "ADV_C02_d01",
+      "ADV_C02_d09",
+      "ADV_C02_d02",
+      "ADV_C02_d06"
+    ],
+    "recovered": true
+  },
+  {
+    "query": "Why did Fraud Operations freeze all outbound wires on a wealth account that submitted a valid wire request with matching MFA?",
+    "gold": "ADV_C03_gold",
+    "dense_rank": 12,
+    "dense_top5": [
+      "ADV_C03_d01",
+      "ADV_C03_d07",
+      "ADV_C03_d04",
+      "ADV_C03_d09",
+      "ADV_C03_d03"
+    ],
+    "multi_top5": [
+      "ADV_C03_gold",
+      "ADV_R01_gold",
+      "ADV_C03_d01",
+      "ADV_C03_d07",
+      "ADV_C03_d03"
+    ],
+    "recovered": true
+  },
+  {
+    "query": "Which operational approval applies specifically to an unlisted holding company under the Tier-2 discretionary trust onboarding path?",
+    "gold": "ADV_H01_gold",
+    "dense_rank": 19,
+    "dense_top5": [
+      "ADV_H01_d07",
+      "ADV_H01_d03",
+      "ADV_H01_d05",
+      "ADV_H01_d06",
+      "ADV_H01_d02"
+    ],
+    "multi_top5": [
+      "ADV_H01_gold",
+      "ADV_H01_d14",
+      "ADV_H01_d08",
+      "ADV_H01_d12",
+      "ADV_H01_d04"
+    ],
+    "recovered": true
+  },
+  {
+    "query": "Why was a seven-million-dollar commercial outbound Fedwire released without completing an out-of-band voice callback to the client?",
+    "gold": "ADV_R01_gold",
+    "dense_rank": 13,
+    "dense_top5": [
+      "ADV_R01_d14",
+      "ADV_R01_d03",
+      "ADV_R01_d06",
+      "ADV_R01_d02",
+      "ADV_R01_d04"
+    ],
+    "multi_top5": [
+      "ADV_R01_gold",
+      "ADV_C04_gold",
+      "ADV_R01_d03",
+      "ADV_R01_d14",
+      "ADV_R01_d12"
+    ],
+    "recovered": true
+  },
+  {
+    "query": "Why did Sanctions Operations return an incoming payment tied to a comprehensively sanctioned geography instead of placing the funds into a blocked interest-bearing account?",
+    "gold": "ADV_R02_gold",
+    "dense_rank": 42,
+    "dense_top5": [
+      "ADV_R02_d02",
+      "ADV_R02_d07",
+      "ADV_R02_d10",
+      "ADV_R02_d08",
+      "ADV_R02_d13"
+    ],
+    "multi_top5": [
+      "ADV_R02_gold",
+      "ADV_R02_f01",
+      "ADV_R02_d12",
+      "ADV_R02_d15",
+      "ADV_R02_d04"
+    ],
+    "recovered": true
+  },
+  {
+    "query": "What is the currently effective Initial Margin segregation requirement for Uncleared Margin Rules Phase 6 covered counterparties?",
+    "gold": "ADV_E01_gold",
+    "dense_rank": 22,
+    "dense_top5": [
+      "ADV_E01_d01",
+      "ADV_E01_d15",
+      "ADV_E01_d02",
+      "ADV_E01_d08",
+      "ADV_E01_d12"
+    ],
+    "multi_top5": [
+      "ADV_E01_gold",
+      "ADV_E01_d03",
+      "ADV_E01_d07",
+      "ADV_E01_d05",
+      "ADV_E01_d10"
+    ],
+    "recovered": true
+  },
+  {
+    "query": "What NAV error threshold currently requires full retrospective shareholder transaction reprocessing and direct investor compensation?",
+    "gold": "ADV_E02_gold",
+    "dense_rank": 73,
+    "dense_top5": [
+      "ADV_E02_d09",
+      "ADV_E02_d04",
+      "ADV_E02_d03",
+      "ADV_E02_d10",
+      "ADV_E02_d01"
+    ],
+    "multi_top5": [
+      "ADV_E02_gold",
+      "ADV_E02_f01",
+      "ADV_E02_d08",
+      "ADV_E02_d06",
+      "ADV_E02_d12"
+    ],
+    "recovered": true
+  }
+]

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VectorPrism — Interactive Demo & Benchmarks</title>
+  <meta name="description" content="Interactive multi-channel retrieval demo and adversarial benchmark results for VectorPrism." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg0: #0f1412;
+      --bg1: #18201c;
+      --bg2: #223028;
+      --ink: #e8efe9;
+      --muted: #9aada0;
+      --accent: #2f9e7a;
+      --accent2: #c4a35a;
+      --danger: #d45d4a;
+      --line: rgba(232, 239, 233, 0.12);
+      --card: rgba(255, 255, 255, 0.03);
+      --radius: 14px;
+      --font: "DM Sans", system-ui, sans-serif;
+      --display: "Instrument Serif", Georgia, serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(47, 158, 122, 0.18), transparent 55%),
+        radial-gradient(900px 500px at 90% 0%, rgba(196, 163, 90, 0.12), transparent 50%),
+        linear-gradient(180deg, var(--bg0), #121916 40%, var(--bg0));
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { width: min(1100px, calc(100% - 2rem)); margin: 0 auto; }
+    header.hero {
+      padding: 3.5rem 0 2rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand {
+      font-family: var(--display);
+      font-size: clamp(2.6rem, 6vw, 4.2rem);
+      letter-spacing: -0.02em;
+      margin: 0 0 0.4rem;
+      line-height: 1.05;
+    }
+    .tagline {
+      max-width: 38rem;
+      color: var(--muted);
+      font-size: 1.05rem;
+      margin: 0 0 1.5rem;
+    }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.7rem 1.1rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--bg2);
+      color: var(--ink);
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .btn.primary { background: var(--accent); color: #062218; border-color: transparent; }
+    .btn:hover { filter: brightness(1.08); text-decoration: none; }
+    nav.toc {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      padding: 1rem 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+    section { padding: 2.5rem 0; border-bottom: 1px solid var(--line); }
+    h2 {
+      font-family: var(--display);
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      margin: 0 0 0.75rem;
+      font-weight: 400;
+    }
+    .lede { color: var(--muted); max-width: 40rem; margin: 0 0 1.5rem; }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0.9rem;
+      margin: 1.25rem 0 1.75rem;
+    }
+    .metric {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 1rem 1.1rem;
+    }
+    .metric .v {
+      font-family: var(--display);
+      font-size: 2rem;
+      line-height: 1;
+      margin-bottom: 0.35rem;
+    }
+    .metric .l { color: var(--muted); font-size: 0.85rem; }
+    .metric.good .v { color: var(--accent); }
+    .metric.warn .v { color: var(--accent2); }
+    .metric.bad .v { color: var(--danger); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    th, td { padding: 0.7rem 0.85rem; text-align: left; border-bottom: 1px solid var(--line); }
+    th { color: var(--muted); font-weight: 600; background: rgba(0,0,0,0.2); }
+    tr:last-child td { border-bottom: none; }
+    .bar-wrap { display: flex; align-items: center; gap: 0.6rem; }
+    .bar {
+      height: 8px; border-radius: 99px; background: rgba(255,255,255,0.08);
+      flex: 1; overflow: hidden;
+    }
+    .bar > i { display: block; height: 100%; background: var(--accent); border-radius: 99px; }
+    .bar.dense > i { background: var(--danger); }
+    .demo-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 1.25rem;
+    }
+    @media (max-width: 860px) { .demo-grid { grid-template-columns: 1fr; } }
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 1.1rem;
+    }
+    label { display: block; color: var(--muted); font-size: 0.85rem; margin-bottom: 0.4rem; }
+    select, textarea {
+      width: 100%;
+      background: var(--bg1);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 0.75rem 0.85rem;
+      font: inherit;
+    }
+    textarea { min-height: 96px; resize: vertical; }
+    .rank-list { list-style: none; margin: 0.75rem 0 0; padding: 0; }
+    .rank-list li {
+      display: grid;
+      grid-template-columns: 2rem 1fr;
+      gap: 0.55rem;
+      padding: 0.55rem 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 0.9rem;
+    }
+    .rank-list li:last-child { border-bottom: none; }
+    .rank-n { color: var(--muted); font-variant-numeric: tabular-nums; }
+    .gold {
+      color: #062218;
+      background: var(--accent);
+      border-radius: 6px;
+      padding: 0.05rem 0.4rem;
+      font-weight: 700;
+      font-size: 0.8rem;
+    }
+    .miss {
+      color: var(--danger);
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+    .pipe {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.6rem;
+      margin-top: 1rem;
+    }
+    @media (max-width: 860px) { .pipe { grid-template-columns: 1fr 1fr; } }
+    .pipe .step {
+      border: 1px dashed var(--line);
+      border-radius: 12px;
+      padding: 0.8rem;
+      background: rgba(47, 158, 122, 0.06);
+      font-size: 0.85rem;
+    }
+    .pipe .step strong { display: block; margin-bottom: 0.25rem; }
+    footer {
+      padding: 2rem 0 3rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .tabs { display: flex; gap: 0.4rem; margin-bottom: 0.85rem; flex-wrap: wrap; }
+    .tab {
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 0.35rem 0.8rem;
+      cursor: pointer;
+      font: inherit;
+    }
+    .tab.active { color: var(--ink); border-color: var(--accent); background: rgba(47,158,122,0.15); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <p style="color:var(--accent);font-weight:600;margin:0 0 0.5rem;letter-spacing:0.04em;text-transform:uppercase;font-size:0.78rem;">Interactive demo · Adversarial benchmarks</p>
+      <h1 class="brand">VectorPrism</h1>
+      <p class="tagline">
+        Multi-channel retrieval that recovers evidence dense cosine buries —
+        causal, hyperbolic, and relational signals in one 1024d tensor.
+      </p>
+      <div class="cta-row">
+        <a class="btn primary" href="https://pypi.org/project/vectorprism/">pip install vectorprism</a>
+        <a class="btn" href="https://github.com/insightitsGit/VectorPrism">GitHub repo</a>
+        <a class="btn" href="https://github.com/insightitsGit/VectorPrism/blob/main/BENCHMARKS.md">Benchmarks markdown</a>
+        <a class="btn" href="#demo">Try the demo ↓</a>
+      </div>
+    </header>
+
+    <nav class="toc">
+      <a href="#benchmarks">Benchmarks</a>
+      <a href="#demo">Interactive demo</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#repro">Reproduce</a>
+    </nav>
+
+    <section id="benchmarks">
+      <h2>Adversarial finance pack</h2>
+      <p class="lede">
+        Calibrated hard pack: dense Miss@10 ≈ 93%. Multi-channel Stage-1 expansion + Stage-2 fusion
+        recovers the buried gold documents. Numbers from committed artifacts under
+        <code>demos/finance_demo/results/hard_eval/</code>.
+      </p>
+      <div class="metrics">
+        <div class="metric bad"><div class="v">7.1%</div><div class="l">Dense R@10</div></div>
+        <div class="metric good"><div class="v">100%</div><div class="l">Multi z-score R@10</div></div>
+        <div class="metric warn"><div class="v">78.6%</div><div class="l">RRF (prod-realistic)</div></div>
+        <div class="metric good"><div class="v">13/13</div><div class="l">Recovered dense misses</div></div>
+        <div class="metric good"><div class="v">85%</div><div class="l">Auto-graph recovery</div></div>
+        <div class="metric"><div class="v">~1.8ms</div><div class="l">Search @ 1000 docs</div></div>
+      </div>
+
+      <table>
+        <thead>
+          <tr><th>Config</th><th>Recovered@10</th><th>Full R@10</th><th>Visual</th></tr>
+        </thead>
+        <tbody id="bench-rows"></tbody>
+      </table>
+
+      <div style="margin-top:1.5rem" class="metrics">
+        <div class="metric"><div class="v">±0.4pp</div><div class="l">OOD ΔP@10 (soft packs)</div></div>
+        <div class="metric"><div class="v">85%</div><div class="l">Recovery @ +400 noise edges</div></div>
+        <div class="metric"><div class="v">100%</div><div class="l">After 40% edge dropout</div></div>
+        <div class="metric"><div class="v">13/13</div><div class="l">On 1000-doc scale corpus</div></div>
+      </div>
+    </section>
+
+    <section id="demo">
+      <h2>Interactive recovery demo</h2>
+      <p class="lede">
+        Pick a real adversarial query. Left = dense ranking (gold buried). Right = multi-channel
+        ranking from the measured scorecard (gold recovered into top-10).
+      </p>
+      <div class="demo-grid">
+        <div class="panel">
+          <label for="qsel">Query from hard_adversarial eval</label>
+          <select id="qsel"></select>
+          <label for="qtext" style="margin-top:0.9rem">Query text</label>
+          <textarea id="qtext" readonly></textarea>
+          <p style="color:var(--muted);font-size:0.85rem;margin:0.8rem 0 0">
+            Dense rank of gold: <strong id="drank">—</strong>
+            · Multi recovered@10: <strong id="rec">—</strong>
+          </p>
+          <div class="pipe">
+            <div class="step"><strong>1. Dense</strong>Top-K semantic seeds</div>
+            <div class="step"><strong>2. Expand</strong>Causal · taxonomy · predicates</div>
+            <div class="step"><strong>3. Score</strong>Per-channel hop maps</div>
+            <div class="step"><strong>4. Fuse</strong>Z-score or RRF</div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="tabs">
+            <button class="tab active" data-mode="compare" type="button">Compare</button>
+            <button class="tab" data-mode="dense" type="button">Dense only</button>
+            <button class="tab" data-mode="multi" type="button">Multi-channel</button>
+          </div>
+          <div id="compare" class="demo-grid" style="grid-template-columns:1fr 1fr;gap:0.75rem">
+            <div>
+              <div style="color:var(--danger);font-weight:700;font-size:0.85rem">Dense top-5</div>
+              <ol class="rank-list" id="dense-list"></ol>
+            </div>
+            <div>
+              <div style="color:var(--accent);font-weight:700;font-size:0.85rem">Multi top-5</div>
+              <ol class="rank-list" id="multi-list"></ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="architecture">
+      <h2>Why dense fails — and channels win</h2>
+      <p class="lede">
+        Cohesive distractors share vocabulary with the symptom. Gold root-cause / sub-clause /
+        predicate docs sit at ranks 12–200 until Stage-1 structure brings them into the pool and
+        Stage-2 topological bonuses overcome the cosine gap.
+      </p>
+      <table>
+        <thead><tr><th>Channel</th><th>Failure mode it fixes</th></tr></thead>
+        <tbody>
+          <tr><td>Causal DAG</td><td>Symptom neighborhoods ≠ root cause</td></tr>
+          <tr><td>Hyperbolic taxonomy</td><td>Parent/sibling policies outrank deep child clauses</td></tr>
+          <tr><td>Relational predicates</td><td>Fuzzy match beats exact amount / callback / timezone rules</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="repro">
+      <h2>Reproduce from git</h2>
+      <pre style="background:var(--bg1);border:1px solid var(--line);border-radius:12px;padding:1rem;overflow:auto;font-size:0.85rem"><code>git clone https://github.com/insightitsGit/VectorPrism.git
+cd VectorPrism
+pip install -e ".[all]"
+vectorprism pilot-check
+
+# Scorecards (Docker recommended on Windows for sentence-transformers)
+docker compose run --rm vectorprism python demos/finance_demo/run_multichannel_recovery.py --skip-train
+docker compose run --rm vectorprism python demos/finance_demo/run_post_validation.py
+docker compose run --rm vectorprism python demos/finance_demo/run_robustness_validation.py</code></pre>
+      <p class="lede" style="margin-top:1rem">
+        Artifact index:
+        <a href="https://github.com/insightitsGit/VectorPrism/blob/main/demos/finance_demo/results/RESULTS_INDEX.md">RESULTS_INDEX.md</a>
+        · Technical report:
+        <a href="https://github.com/insightitsGit/VectorPrism/blob/main/demos/finance_demo/TECHNICAL_REPORT.md">TECHNICAL_REPORT.md</a>
+      </p>
+    </section>
+
+    <footer>
+      Apache-2.0 · InsightITS ·
+      <a href="https://github.com/insightitsGit/VectorPrism">github.com/insightitsGit/VectorPrism</a>
+    </footer>
+  </div>
+
+  <script>
+    const BENCH = [
+      { name: "dense_only", recovered: "0/13", r10: 0.071 },
+      { name: "causal+graph", recovered: "13/13", r10: 1.0 },
+      { name: "+hyp+rel zscore", recovered: "13/13", r10: 1.0 },
+      { name: "+hyp+rel RRF", recovered: "10/13", r10: 0.786 },
+      { name: "balanced RRF", recovered: "10/13", r10: 0.786 },
+      { name: "intent_router RRF", recovered: "11/13", r10: 0.786 },
+    ];
+
+    const tbody = document.getElementById("bench-rows");
+    BENCH.forEach((row) => {
+      const tr = document.createElement("tr");
+      const dense = row.name === "dense_only";
+      tr.innerHTML = `
+        <td><code>${row.name}</code></td>
+        <td>${row.recovered}</td>
+        <td>${(row.r10 * 100).toFixed(1)}%</td>
+        <td><div class="bar-wrap"><div class="bar ${dense ? "dense" : ""}"><i style="width:${row.r10 * 100}%"></i></div><span>${(row.r10 * 100).toFixed(0)}%</span></div></td>`;
+      tbody.appendChild(tr);
+    });
+
+    let cases = [];
+    let mode = "compare";
+
+    function renderList(el, ids, gold) {
+      el.innerHTML = "";
+      (ids || []).forEach((id, i) => {
+        const li = document.createElement("li");
+        const isGold = id === gold;
+        li.innerHTML = `<span class="rank-n">${i + 1}</span><span>${id} ${isGold ? '<span class="gold">GOLD</span>' : (i < 5 ? '<span class="miss">near-miss</span>' : "")}</span>`;
+        el.appendChild(li);
+      });
+    }
+
+    function showCase(idx) {
+      const c = cases[idx];
+      if (!c) return;
+      document.getElementById("qtext").value = c.query;
+      document.getElementById("drank").textContent = c.dense_rank;
+      document.getElementById("rec").textContent = c.recovered ? "yes" : "no";
+      renderList(document.getElementById("dense-list"), c.dense_top5, c.gold);
+      renderList(document.getElementById("multi-list"), c.multi_top5, c.gold);
+      const cmp = document.getElementById("compare");
+      if (mode === "dense") {
+        cmp.style.gridTemplateColumns = "1fr";
+        cmp.children[1].style.display = "none";
+        cmp.children[0].style.display = "block";
+      } else if (mode === "multi") {
+        cmp.style.gridTemplateColumns = "1fr";
+        cmp.children[0].style.display = "none";
+        cmp.children[1].style.display = "block";
+      } else {
+        cmp.style.gridTemplateColumns = "1fr 1fr";
+        cmp.children[0].style.display = "block";
+        cmp.children[1].style.display = "block";
+      }
+    }
+
+    document.querySelectorAll(".tab").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        mode = btn.dataset.mode;
+        showCase(document.getElementById("qsel").selectedIndex);
+      });
+    });
+
+    fetch("demo_cases.json")
+      .then((r) => r.json())
+      .then((data) => {
+        cases = data;
+        const sel = document.getElementById("qsel");
+        data.forEach((c, i) => {
+          const opt = document.createElement("option");
+          opt.value = i;
+          opt.textContent = `${c.gold} · dense rank ${c.dense_rank}`;
+          sel.appendChild(opt);
+        });
+        sel.addEventListener("change", () => showCase(+sel.value));
+        showCase(0);
+      })
+      .catch(() => {
+        document.getElementById("qtext").value = "Failed to load demo_cases.json — open via GitHub Pages or a local static server.";
+      });
+  </script>
+</body>
+</html>
