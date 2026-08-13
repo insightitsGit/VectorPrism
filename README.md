@@ -111,19 +111,30 @@ Ground truth: `PSMTensorContract` / `VectorPrismTensorContract` in [`tensor_cont
 ### Installation
 
 ```bash
-# From source (current)
+# Recommended for pilots / partners (editable install from git)
 git clone https://github.com/insightitsGit/VectorPrism.git
 cd VectorPrism
-pip install -r requirements.txt
+python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -U pip
+pip install -e ".[all]"
 
-# Verify
-pytest test_psm.py test_phases.py -v
-
-# PyPI (when published)
-# pip install vectorprism
+vectorprism version
+vectorprism pilot-check
+pytest test_psm.py test_phases.py -q
 ```
 
-Core deps: `torch`, `numpy`, `scipy`, `scikit-learn`, `pytest`. Optional: `psycopg[binary]`, `pgvector`, `qdrant-client`, `sentence-transformers`.
+Legacy (deps only, no console script):
+
+```bash
+pip install -r requirements.txt
+python vectorprism.py --help
+```
+
+PyPI publish is next after 1–2 external installs (`python -m build && twine upload dist/*`). Until then partners install **from git**.
+
+External pilot runbook: [`PILOT.md`](PILOT.md) · Production checklist: [`PRODUCTION.md`](PRODUCTION.md)
+
+Core deps: `torch`, `numpy`, `scipy`, `scikit-learn`. Optional extras: `encoder`, `postgres`, `qdrant`, `dev`, `all`.
 
 ### Production path (Docker + Postgres/pgvector) — recommended on Windows
 

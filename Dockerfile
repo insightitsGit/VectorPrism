@@ -15,11 +15,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       git \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt .
-RUN pip install --upgrade pip \
- && pip install -r requirements.txt
-
+COPY requirements.txt pyproject.toml MANIFEST.in README.md LICENSE ./
+# Remaining sources (modules, demos, schema, etc.)
 COPY . .
 
+RUN pip install --upgrade pip \
+ && pip install -r requirements.txt \
+ && pip install -e ".[all]"
+
 # Default: show CLI help. Override with docker compose / docker run commands.
-CMD ["python", "vectorprism.py", "--help"]
+CMD ["vectorprism", "--help"]

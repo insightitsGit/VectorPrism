@@ -1,0 +1,10 @@
+include LICENSE
+include schema.sql
+include README.md
+include PILOT.md
+include PRODUCTION.md
+include requirements.txt
+recursive-include demos *.md *.jsonl *.json
+recursive-include scripts *
+graft demos/finance_demo
+global-exclude *.pt *.pth *.bin __pycache__ *.pyc .pytest_cache

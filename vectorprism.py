@@ -17,6 +17,8 @@ Subcommands:
   finance-pg      finance demo ingest+search on Postgres/pgvector
   hard-eval       isolated/mixed dense hard-eval baseline
   causal-recovery train causal + recovery scorecard on dense misses
+  pilot-check     validate partner install (imports + ingest smoke)
+  version         print package version
 """
 
 from __future__ import annotations
@@ -41,6 +43,97 @@ def _run(cmd: list) -> int:
 def cmd_phase0(_args) -> int:
     code = _run([sys.executable, "-m", "pytest", "test_psm.py", "test_phases.py", "-v"])
     return code
+
+
+def cmd_version(_args) -> int:
+    try:
+        from importlib.metadata import version
+
+        ver = version("vectorprism")
+    except Exception:
+        ver = "0.1.0 (editable / source tree)"
+    print(f"vectorprism {ver}")
+    print(f"root={ROOT}")
+    return 0
+
+
+def cmd_pilot_check(_args) -> int:
+    """Validate that a partner install can import core modules and run a tiny encode."""
+    errors: list[str] = []
+    print("VectorPrism pilot-check", flush=True)
+    try:
+        from tensor_contract import PSMTensorContract
+        from causal_graph import CausalDocGraph
+        from structure_index import TaxonomyGraph, RelationalAttrIndex
+
+        _ = (PSMTensorContract, CausalDocGraph, TaxonomyGraph, RelationalAttrIndex)
+        print("  [ok] core imports", flush=True)
+    except Exception as e:
+        errors.append(f"core imports: {e}")
+        print(f"  [fail] core imports: {e}", flush=True)
+
+    try:
+        import torch
+        import numpy as np
+
+        _ = torch.zeros(1) + float(np.zeros(1)[0])
+        print(f"  [ok] torch={torch.__version__} numpy={np.__version__}", flush=True)
+    except Exception as e:
+        errors.append(f"torch/numpy: {e}")
+        print(f"  [fail] torch/numpy: {e}", flush=True)
+
+    try:
+        from base_encoder import HashingEncoder
+        from ingestion_adapter import MultiTaskProjectionAdapter
+        from ingest_pipeline import VectorPrismIngestPipeline, IngestDocument
+        from db_client import VectorDBClient
+
+        class _Mem(VectorDBClient):
+            def __init__(self):
+                self.rows = []
+
+            def upsert(self, doc_id, chunk_text, tensor_1024d, meta):
+                self.rows.append({"document_id": doc_id})
+
+            def query_dense_slice(self, vector_slice, min_truth, max_anchor_dist, limit):
+                return []
+
+            def get_by_ids(self, doc_ids):
+                return []
+
+        enc = HashingEncoder(768)
+        adapter = MultiTaskProjectionAdapter(768)
+        db = _Mem()
+        pipe = VectorPrismIngestPipeline(enc, adapter, db, model_version=1)
+        pipe.upsert_documents(
+            [IngestDocument(document_id="pilot_doc", chunk_text="pilot smoke document")]
+        )
+        assert len(db.rows) == 1
+        print("  [ok] ingest smoke (hash encoder)", flush=True)
+    except Exception as e:
+        errors.append(f"ingest smoke: {e}")
+        print(f"  [fail] ingest smoke: {e}", flush=True)
+
+    try:
+        import sentence_transformers  # noqa: F401
+
+        print("  [ok] sentence-transformers installed", flush=True)
+    except Exception:
+        print(
+            "  [warn] sentence-transformers missing — pip install 'vectorprism[encoder]' or '.[all]'",
+            flush=True,
+        )
+
+    if errors:
+        print('\nFix with: pip install -e ".[all]"', flush=True)
+        print("Docs: PILOT.md", flush=True)
+        return 1
+    print(
+        "\nPilot install looks good. Next: drop partner JSONL and run train/ingest/search.",
+        flush=True,
+    )
+    print("See PILOT.md for the full external-partner runbook.", flush=True)
+    return 0
 
 
 def cmd_train(args) -> int:
@@ -337,6 +430,15 @@ def cmd_causal_recovery(args) -> int:
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="vectorprism", description="VectorPrism Phases 0-6 CLI")
     sub = p.add_subparsers(dest="cmd", required=True)
+
+    s = sub.add_parser("version", help="Print installed package version")
+    s.set_defaults(func=cmd_version)
+
+    s = sub.add_parser(
+        "pilot-check",
+        help="Validate partner install (imports + tiny ingest smoke)",
+    )
+    s.set_defaults(func=cmd_pilot_check)
 
     s = sub.add_parser("phase0", help="Run test suite")
     s.set_defaults(func=cmd_phase0)

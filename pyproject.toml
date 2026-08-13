@@ -1,0 +1,103 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vectorprism"
+version = "0.1.0"
+description = "Positional Subspace Multiplexing (PSM) multi-channel retrieval for high-scale RAG"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.10"
+authors = [{ name = "InsightITS" }]
+keywords = [
+  "rag",
+  "retrieval",
+  "embeddings",
+  "vector-search",
+  "causal",
+  "hyperbolic",
+  "pgvector",
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+  "torch>=2.1.0",
+  "numpy>=1.24.0",
+  "scipy>=1.10.0",
+  "scikit-learn>=1.3.0",
+]
+
+[project.optional-dependencies]
+encoder = ["sentence-transformers>=2.2.0"]
+postgres = ["psycopg[binary]>=3.1.0", "pgvector>=0.2.0"]
+qdrant = ["qdrant-client>=1.7.0"]
+dev = ["pytest>=7.4.0", "build>=1.0.0", "twine>=5.0.0"]
+all = [
+  "sentence-transformers>=2.2.0",
+  "psycopg[binary]>=3.1.0",
+  "pgvector>=0.2.0",
+  "qdrant-client>=1.7.0",
+  "pytest>=7.4.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/insightitsGit/VectorPrism"
+Repository = "https://github.com/insightitsGit/VectorPrism"
+Issues = "https://github.com/insightitsGit/VectorPrism/issues"
+Documentation = "https://github.com/insightitsGit/VectorPrism/blob/main/PILOT.md"
+
+[project.scripts]
+vectorprism = "vectorprism:main"
+
+[tool.setuptools]
+include-package-data = true
+py-modules = [
+  "vectorprism",
+  "ablation_harness",
+  "base_encoder",
+  "benchmark_harness",
+  "causal_graph",
+  "channel_datasets",
+  "checkpointing",
+  "db_client",
+  "db_factory",
+  "dense_dataset",
+  "epistemic_truth",
+  "eval_harness",
+  "eval_runner",
+  "identity_anchor",
+  "ingestion_adapter",
+  "ingest_cli",
+  "ingest_pipeline",
+  "intrinsic_runner",
+  "intrinsic_validation",
+  "jsonl_utils",
+  "live_benchmark",
+  "losses",
+  "reingest",
+  "retrieval_engine",
+  "search_cli",
+  "structure_extract",
+  "structure_index",
+  "tensor_contract",
+  "train",
+  "training",
+  "train_dense",
+]
+
+[tool.setuptools.package-data]
+"*" = ["schema.sql", "LICENSE", "py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["."]
+python_files = ["test_*.py"]
+addopts = "-q"

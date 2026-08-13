@@ -10,7 +10,17 @@
 | Postgres + pgvector ingest/search | Ready (Compose `db` on `:5433`) |
 | Real client labeled data | **Not yet** — swap JSONL when a client arrives |
 | Extra channels (causal/relational/…) in prod | **Earn via ablation** after dense DoD |
-| PyPI package `pip install vectorprism` | Not published yet — install from Git |
+| PyPI package `pip install vectorprism` | **Packaging ready** (`pyproject.toml`) — install from git until first PyPI upload |
+| Real external pilot | See [`PILOT.md`](PILOT.md) — recruit a partner; not another internal benchmark |
+
+## Partner install (git + pip)
+
+```bash
+git clone https://github.com/insightitsGit/VectorPrism.git
+cd VectorPrism
+pip install -e ".[all]"
+vectorprism pilot-check
+```
 
 ## One-command production smoke
 
