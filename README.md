@@ -423,7 +423,7 @@ If VectorPrism informs your research or production retrieval stack:
 ```bibtex
 @software{vectorprism2026,
   title  = {VectorPrism: Positional Subspace Multiplexing for Intent-Gated Retrieval},
-  author = {Insight ITS},
+  author = Amin Parva,
   year   = {2026},
   url    = {https://github.com/insightitsGit/VectorPrism}
 }
