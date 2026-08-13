@@ -47,8 +47,13 @@ class CausalDocGraph:
         *,
         upstream: bool = True,
         downstream: bool = False,
+        beam_width: Optional[int] = None,
     ) -> Dict[str, int]:
-        """Return {doc_id: min_hops_from_any_seed} including seeds at hop 0."""
+        """Return {doc_id: min_hops_from_any_seed} including seeds at hop 0.
+
+        beam_width: if set, at each hop keep only the first N newly discovered
+        neighbors (stable sorted) to bound fan-out on dense graphs.
+        """
         dist: Dict[str, int] = {}
         q: deque[tuple[str, int]] = deque()
         for s in seed_ids:
@@ -64,6 +69,11 @@ class CausalDocGraph:
                 neighbors.extend(self.upstream.get(node, ()))
             if downstream:
                 neighbors.extend(self.downstream.get(node, ()))
+            neighbors = sorted(set(neighbors))
+            if beam_width is not None and beam_width > 0:
+                # Prefer unseen nodes; truncate fan-out per source node
+                unseen = [nb for nb in neighbors if nb not in dist]
+                neighbors = unseen[: int(beam_width)]
             for nb in neighbors:
                 if nb not in dist:
                     dist[nb] = d + 1

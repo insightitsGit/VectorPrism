@@ -44,3 +44,35 @@ Hyperbolic lineage + relational predicates then stabilize taxonomy/boundary quer
 - Product claim now supported on this pack: structured Stage-1 expansion + multi-channel Stage-2 recovers evidence dense cosine buries
 
 Artifacts: `multichannel_recovery.json`, `MULTICHANNEL_RECOVERY_RESULTS.md`, `causal_recovery.json`
+
+## Post-validation (OOD · density · latency · RRF-k)
+
+See `POST_VALIDATION.md` / `post_validation.json` from:
+
+```bash
+docker compose run --rm vectorprism python demos/finance_demo/run_post_validation.py
+```
+
+Highlights:
+- **OOD transfer:** multi fusion without graphs keeps P@10 within ±0.5pp on soft packs; hard_gpt R@10 +4pp
+- **Density stress:** 0→400 cross-cluster noise edges: recovery 100% → 85%, P@10 0.100 → 0.086
+- **Latency:** clean graph ~55 cands / ~1.1 ms; noisy ~72 cands / ~1.5 ms (in-memory)
+- **RRF k:** best at **k=20** (10/13); z-score still leads (13/13) — default `rrf_k` set to 20
+
+## Robustness (precision · sparsity · scale)
+
+See `ROBUSTNESS_VALIDATION.md` from:
+
+```bash
+docker compose run --rm vectorprism python demos/finance_demo/run_robustness_validation.py
+```
+
+Highlights:
+- **MRR / FP:** multi z-score MRR **1.000** vs dense **0.024**; cross-cluster FP@10 **0.043** (not flooding unrelated clusters)
+- **Sparsity:** random drop **20–40%** of causal+tax edges still **13/13** recovery (redundant gold→symptom edges)
+- **Scale:** **1000-doc** corpus — multi still **13/13**, ~55 candidates, ~1.8 ms/query in-memory
+
+## Automated ingestion & stakeholder pack
+
+- Auto graphs (`extract_structure_auto.py`, heuristic): edge F1 low vs curated, but recovery still **11/13 (85%)** vs curated **13/13**
+- Consolidated report: [`../TECHNICAL_REPORT.md`](../TECHNICAL_REPORT.md) via `run_stakeholder_demo.py`

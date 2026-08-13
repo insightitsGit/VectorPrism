@@ -1,0 +1,182 @@
+{"doc_id": "ADV_C01_d01", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C01_d02", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C01_d03", "attributes": {"is_repetitive": true, "timezone": "london", "agreement": null}, "confidence": 0.7}
+{"doc_id": "ADV_C01_d04", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C01_d05", "attributes": {"is_repetitive": true, "sanctions_list": "ssi", "allow_secondary_grandfathered": true}, "confidence": 0.7}
+{"doc_id": "ADV_C01_d06", "attributes": {"is_repetitive": true, "timezone": "london", "agreement": null}, "confidence": 0.7}
+{"doc_id": "ADV_C01_d07", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C01_d08", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C01_d09", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C01_d10", "attributes": {"is_repetitive": true, "timezone": "london", "agreement": null}, "confidence": 0.7}
+{"doc_id": "ADV_C01_d11", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C01_d12", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C01_d13", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C01_d14", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C01_d15", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C01_f01", "attributes": {"is_repetitive": true, "timezone": "london", "agreement": null}, "confidence": 0.7}
+{"doc_id": "ADV_C02_d02", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C02_d05", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C02_d13", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C02_f01", "attributes": {"requires_callback": true}, "confidence": 0.7}
+{"doc_id": "ADV_C03_gold", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C03_d02", "attributes": {"requires_callback": true}, "confidence": 0.7}
+{"doc_id": "ADV_C03_d03", "attributes": {"amount_min": 5000000.0}, "confidence": 0.7}
+{"doc_id": "ADV_C03_d09", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C03_d12", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C03_d13", "attributes": {"requires_callback": true}, "confidence": 0.7}
+{"doc_id": "ADV_H01_gold", "attributes": {"trust_tier": 2, "requires_protector_ack": true}, "confidence": 0.7}
+{"doc_id": "ADV_H01_d01", "attributes": {"trust_tier": 2, "entity_listing": "unlisted"}, "confidence": 0.7}
+{"doc_id": "ADV_H01_d02", "attributes": {"trust_tier": 2, "entity_listing": "unlisted"}, "confidence": 0.7}
+{"doc_id": "ADV_H01_d03", "attributes": {"entity_listing": "unlisted"}, "confidence": 0.7}
+{"doc_id": "ADV_H01_d04", "attributes": {"entity_listing": "unlisted"}, "confidence": 0.7}
+{"doc_id": "ADV_H01_d05", "attributes": {"trust_tier": 2, "entity_listing": "unlisted"}, "confidence": 0.7}
+{"doc_id": "ADV_H01_d06", "attributes": {"trust_tier": 2, "entity_listing": "unlisted"}, "confidence": 0.7}
+{"doc_id": "ADV_H01_d07", "attributes": {"trust_tier": 2, "entity_listing": "unlisted"}, "confidence": 0.7}
+{"doc_id": "ADV_H01_d08", "attributes": {"trust_tier": 2, "entity_listing": "unlisted", "requires_protector_ack": true}, "confidence": 0.7}
+{"doc_id": "ADV_H01_d09", "attributes": {"trust_tier": 2, "entity_listing": "unlisted"}, "confidence": 0.7}
+{"doc_id": "ADV_H01_d10", "attributes": {"trust_tier": 2, "entity_listing": "unlisted"}, "confidence": 0.7}
+{"doc_id": "ADV_H01_d11", "attributes": {"trust_tier": 2, "entity_listing": "unlisted"}, "confidence": 0.7}
+{"doc_id": "ADV_H01_d12", "attributes": {"trust_tier": 2, "entity_listing": "unlisted"}, "confidence": 0.7}
+{"doc_id": "ADV_H01_d13", "attributes": {"entity_listing": "unlisted"}, "confidence": 0.7}
+{"doc_id": "ADV_H01_d14", "attributes": {"trust_tier": 2, "entity_listing": "unlisted"}, "confidence": 0.7}
+{"doc_id": "ADV_H01_d15", "attributes": {"trust_tier": 2, "entity_listing": "unlisted"}, "confidence": 0.7}
+{"doc_id": "ADV_H01_f01", "attributes": {"entity_listing": "unlisted"}, "confidence": 0.7}
+{"doc_id": "ADV_H01_f02", "attributes": {"entity_listing": "unlisted", "requires_protector_ack": true}, "confidence": 0.7}
+{"doc_id": "ADV_H02_gold", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_H02_d01", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_H02_d02", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_H02_d03", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_H02_d04", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_H02_d05", "attributes": {"amount_min": 150000000.0, "is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_H02_d06", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_H02_d07", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_H02_d08", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_H02_d09", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_H02_d10", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_H02_d11", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_H02_d12", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_H02_d13", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_H02_d14", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_H02_d15", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_H02_f01", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_H02_f02", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_R01_gold", "attributes": {"amount_min": 5000000.0, "requires_callback": false, "is_repetitive": true, "transfer_type": "commercial_fedwire"}, "confidence": 0.7}
+{"doc_id": "ADV_R01_d01", "attributes": {"amount_min": 5000000.0, "requires_callback": true, "transfer_type": "commercial_fedwire"}, "confidence": 0.7}
+{"doc_id": "ADV_R01_d02", "attributes": {"requires_callback": true, "transfer_type": "commercial_fedwire"}, "confidence": 0.7}
+{"doc_id": "ADV_R01_d03", "attributes": {"amount_min": 5000000.0, "requires_callback": true, "transfer_type": "commercial_fedwire"}, "confidence": 0.7}
+{"doc_id": "ADV_R01_d04", "attributes": {"requires_callback": true, "is_repetitive": false}, "confidence": 0.7}
+{"doc_id": "ADV_R01_d05", "attributes": {"requires_callback": true, "transfer_type": "commercial_fedwire"}, "confidence": 0.7}
+{"doc_id": "ADV_R01_d06", "attributes": {"requires_callback": true, "is_repetitive": true, "transfer_type": "commercial_fedwire"}, "confidence": 0.7}
+{"doc_id": "ADV_R01_d07", "attributes": {"amount_min": 5000000.0, "requires_callback": true, "transfer_type": "commercial_fedwire"}, "confidence": 0.7}
+{"doc_id": "ADV_R01_d08", "attributes": {"requires_callback": true, "transfer_type": "commercial_fedwire"}, "confidence": 0.7}
+{"doc_id": "ADV_R01_d09", "attributes": {"amount_min": 5000000.0, "requires_callback": true, "is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_R01_d10", "attributes": {"requires_callback": true, "transfer_type": "commercial_fedwire"}, "confidence": 0.7}
+{"doc_id": "ADV_R01_d11", "attributes": {"amount_min": 5000000.0, "requires_callback": true}, "confidence": 0.7}
+{"doc_id": "ADV_R01_d12", "attributes": {"requires_callback": true, "timezone": "est", "transfer_type": "commercial_fedwire"}, "confidence": 0.7}
+{"doc_id": "ADV_R01_d13", "attributes": {"requires_callback": true}, "confidence": 0.7}
+{"doc_id": "ADV_R01_d14", "attributes": {"requires_callback": true, "transfer_type": "commercial_fedwire"}, "confidence": 0.7}
+{"doc_id": "ADV_R01_d15", "attributes": {"amount_min": 5000000.0, "requires_callback": true, "transfer_type": "commercial_fedwire"}, "confidence": 0.7}
+{"doc_id": "ADV_R02_gold", "attributes": {"disposition": "reject", "sanctions_list": "sdn"}, "confidence": 0.7}
+{"doc_id": "ADV_R02_d01", "attributes": {"disposition": "block", "sanctions_list": "geography_only", "sdn_property_interest": false}, "confidence": 0.7}
+{"doc_id": "ADV_R02_d02", "attributes": {"disposition": "block", "sanctions_list": "geography_only", "sdn_property_interest": false}, "confidence": 0.7}
+{"doc_id": "ADV_R02_d03", "attributes": {"sanctions_list": "geography_only", "sdn_property_interest": false}, "confidence": 0.7}
+{"doc_id": "ADV_R02_d04", "attributes": {"disposition": "block", "sanctions_list": "geography_only", "sdn_property_interest": false}, "confidence": 0.7}
+{"doc_id": "ADV_R02_d05", "attributes": {"sanctions_list": "geography_only", "sdn_property_interest": false}, "confidence": 0.7}
+{"doc_id": "ADV_R02_d06", "attributes": {"disposition": "block", "sanctions_list": "geography_only", "sdn_property_interest": false}, "confidence": 0.7}
+{"doc_id": "ADV_R02_d07", "attributes": {"sanctions_list": "geography_only", "sdn_property_interest": false}, "confidence": 0.7}
+{"doc_id": "ADV_R02_d08", "attributes": {"sanctions_list": "geography_only", "sdn_property_interest": false}, "confidence": 0.7}
+{"doc_id": "ADV_R02_d09", "attributes": {"sanctions_list": "geography_only", "sdn_property_interest": false}, "confidence": 0.7}
+{"doc_id": "ADV_R02_d10", "attributes": {"disposition": "block", "sanctions_list": "geography_only", "sdn_property_interest": false}, "confidence": 0.7}
+{"doc_id": "ADV_R02_d11", "attributes": {"sanctions_list": "geography_only", "sdn_property_interest": false}, "confidence": 0.7}
+{"doc_id": "ADV_R02_d12", "attributes": {"sanctions_list": "geography_only", "sdn_property_interest": false}, "confidence": 0.7}
+{"doc_id": "ADV_R02_d13", "attributes": {"disposition": "block", "sanctions_list": "geography_only", "sdn_property_interest": false}, "confidence": 0.7}
+{"doc_id": "ADV_R02_d14", "attributes": {"disposition": "block", "sanctions_list": "geography_only", "sdn_property_interest": false}, "confidence": 0.7}
+{"doc_id": "ADV_R02_d15", "attributes": {"sanctions_list": "geography_only", "sdn_property_interest": false}, "confidence": 0.7}
+{"doc_id": "ADV_R02_f01", "attributes": {"is_repetitive": true, "sanctions_list": "geography_only", "allow_secondary_grandfathered": true, "sdn_property_interest": false}, "confidence": 0.7}
+{"doc_id": "ADV_R02_f02", "attributes": {"sanctions_list": "geography_only", "sdn_property_interest": false}, "confidence": 0.7}
+{"doc_id": "ADV_E01_gold", "attributes": {"im_segregation": "omnibus", "doc_status": "active"}, "confidence": 0.7}
+{"doc_id": "ADV_E01_d01", "attributes": {"umr_phase": 6, "im_segregation": "omnibus"}, "confidence": 0.7}
+{"doc_id": "ADV_E01_d02", "attributes": {"umr_phase": 6}, "confidence": 0.7}
+{"doc_id": "ADV_E01_d03", "attributes": {"umr_phase": 6, "im_segregation": "omnibus"}, "confidence": 0.7}
+{"doc_id": "ADV_E01_d04", "attributes": {"umr_phase": 6}, "confidence": 0.7}
+{"doc_id": "ADV_E01_d05", "attributes": {"umr_phase": 6}, "confidence": 0.7}
+{"doc_id": "ADV_E01_d06", "attributes": {"umr_phase": 6}, "confidence": 0.7}
+{"doc_id": "ADV_E01_d07", "attributes": {"umr_phase": 6, "im_segregation": "third_party_aca"}, "confidence": 0.7}
+{"doc_id": "ADV_E01_d08", "attributes": {"umr_phase": 6, "im_segregation": "omnibus"}, "confidence": 0.7}
+{"doc_id": "ADV_E01_d09", "attributes": {"umr_phase": 6, "im_segregation": "third_party_aca"}, "confidence": 0.7}
+{"doc_id": "ADV_E01_d10", "attributes": {"umr_phase": 6}, "confidence": 0.7}
+{"doc_id": "ADV_E01_d11", "attributes": {"umr_phase": 6}, "confidence": 0.7}
+{"doc_id": "ADV_E01_d12", "attributes": {"umr_phase": 6, "doc_status": "active"}, "confidence": 0.7}
+{"doc_id": "ADV_E01_d13", "attributes": {"umr_phase": 6, "im_segregation": "omnibus"}, "confidence": 0.7}
+{"doc_id": "ADV_E01_d14", "attributes": {"umr_phase": 6, "doc_status": "superseded"}, "confidence": 0.7}
+{"doc_id": "ADV_E01_d15", "attributes": {"umr_phase": 6}, "confidence": 0.7}
+{"doc_id": "ADV_E01_f01", "attributes": {"im_segregation": "third_party_aca"}, "confidence": 0.7}
+{"doc_id": "ADV_E02_gold", "attributes": {"nav_error_bps_min": 50, "shareholder_reprocessing": true}, "confidence": 0.7}
+{"doc_id": "ADV_E02_d01", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_E02_d02", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_E02_d03", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_E02_d04", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_E02_d05", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_E02_d06", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_E02_d07", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_E02_d08", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_E02_d09", "attributes": {"is_repetitive": true, "doc_status": "active"}, "confidence": 0.7}
+{"doc_id": "ADV_E02_d10", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_E02_d11", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_E02_d12", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_E02_d13", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_E02_d14", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_E02_d15", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_E02_f01", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_E02_f02", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C04_d04", "attributes": {"requires_callback": true}, "confidence": 0.7}
+{"doc_id": "ADV_C04_d14", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C04_f01", "attributes": {"timezone": "est"}, "confidence": 0.7}
+{"doc_id": "ADV_C05_d10", "attributes": {"is_repetitive": true, "sanctions_list": "ssi", "allow_secondary_grandfathered": true}, "confidence": 0.7}
+{"doc_id": "ADV_C06_gold", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C07_d01", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C07_d02", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C07_d03", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C07_d04", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C07_d05", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C07_d06", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C07_d07", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C07_d08", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C07_d09", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C07_d10", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C07_d11", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C07_d12", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C07_d13", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C07_d14", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C07_d15", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C07_f01", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_C07_f02", "attributes": {"is_repetitive": true, "timezone": "est"}, "confidence": 0.7}
+{"doc_id": "ADV_R03_gold", "attributes": {"timezone": "est"}, "confidence": 0.7}
+{"doc_id": "ADV_R03_d01", "attributes": {"timezone": "est", "agreement": null}, "confidence": 0.7}
+{"doc_id": "ADV_R03_d02", "attributes": {"timezone": "est", "agreement": null}, "confidence": 0.7}
+{"doc_id": "ADV_R03_d03", "attributes": {"timezone": "est", "agreement": null}, "confidence": 0.7}
+{"doc_id": "ADV_R03_d04", "attributes": {"timezone": "est", "agreement": "gmra"}, "confidence": 0.7}
+{"doc_id": "ADV_R03_d05", "attributes": {"timezone": "london", "agreement": null}, "confidence": 0.7}
+{"doc_id": "ADV_R03_d06", "attributes": {"timezone": "est", "agreement": null}, "confidence": 0.7}
+{"doc_id": "ADV_R03_d07", "attributes": {"timezone": "est", "agreement": null}, "confidence": 0.7}
+{"doc_id": "ADV_R03_d08", "attributes": {"timezone": "london", "agreement": null}, "confidence": 0.7}
+{"doc_id": "ADV_R03_d09", "attributes": {"timezone": "london", "agreement": null}, "confidence": 0.7}
+{"doc_id": "ADV_R03_d10", "attributes": {"timezone": "est", "agreement": null}, "confidence": 0.7}
+{"doc_id": "ADV_R03_d11", "attributes": {"timezone": "est", "agreement": null}, "confidence": 0.7}
+{"doc_id": "ADV_R03_d12", "attributes": {"timezone": "est", "agreement": null}, "confidence": 0.7}
+{"doc_id": "ADV_R03_d13", "attributes": {"timezone": "london", "agreement": null}, "confidence": 0.7}
+{"doc_id": "ADV_R03_d14", "attributes": {"timezone": "london", "agreement": "gmra"}, "confidence": 0.7}
+{"doc_id": "ADV_R03_d15", "attributes": {"is_repetitive": true, "timezone": "london", "agreement": null}, "confidence": 0.7}
+{"doc_id": "ADV_R03_f01", "attributes": {"timezone": "london", "agreement": null}, "confidence": 0.7}
+{"doc_id": "ADV_R03_f02", "attributes": {"timezone": "london", "agreement": null, "umr_phase": 6, "im_segregation": "third_party_aca"}, "confidence": 0.7}
+{"doc_id": "ADV_R04_gold", "attributes": {"is_repetitive": true, "sanctions_list": "sdn", "allow_secondary_grandfathered": true}, "confidence": 0.7}
+{"doc_id": "ADV_R04_d01", "attributes": {"sanctions_list": "sdn"}, "confidence": 0.7}
+{"doc_id": "ADV_R04_d03", "attributes": {"is_repetitive": true, "sanctions_list": "ssi", "allow_secondary_grandfathered": true}, "confidence": 0.7}
+{"doc_id": "ADV_R04_d07", "attributes": {"is_repetitive": true, "sanctions_list": "ssi", "allow_secondary_grandfathered": true}, "confidence": 0.7}
+{"doc_id": "ADV_R04_d09", "attributes": {"sanctions_list": "sdn"}, "confidence": 0.7}
+{"doc_id": "ADV_R04_d10", "attributes": {"is_repetitive": true, "sanctions_list": "ssi", "allow_secondary_grandfathered": true}, "confidence": 0.7}
+{"doc_id": "ADV_R04_d13", "attributes": {"is_repetitive": true, "sanctions_list": "ssi", "allow_secondary_grandfathered": true}, "confidence": 0.7}
+{"doc_id": "ADV_R04_d15", "attributes": {"is_repetitive": true, "sanctions_list": "ssi", "allow_secondary_grandfathered": true}, "confidence": 0.7}
+{"doc_id": "ADV_H03_d03", "attributes": {"is_repetitive": true}, "confidence": 0.7}
+{"doc_id": "ADV_E03_f01", "attributes": {"timezone": "est"}, "confidence": 0.7}
+{"doc_id": "ADV_E03_f02", "attributes": {"is_repetitive": true, "timezone": "est"}, "confidence": 0.7}

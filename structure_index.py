@@ -47,7 +47,13 @@ class TaxonomyGraph:
         self.children[parent_doc_id].add(child_doc_id)
         self.parents[child_doc_id].add(parent_doc_id)
 
-    def get_lineage(self, seed_ids: Iterable[str], depth_delta: int = 2) -> Dict[str, int]:
+    def get_lineage(
+        self,
+        seed_ids: Iterable[str],
+        depth_delta: int = 2,
+        *,
+        beam_width: Optional[int] = None,
+    ) -> Dict[str, int]:
         """BFS over undirected parent/child edges; returns {doc_id: hops}."""
         dist: Dict[str, int] = {}
         q: deque[Tuple[str, int]] = deque()
@@ -63,7 +69,10 @@ class TaxonomyGraph:
             # also siblings: parent's other children
             for par in self.parents.get(node, ()):
                 nbrs |= self.children.get(par, set())
-            for nb in nbrs:
+            ordered = sorted(nbrs)
+            if beam_width is not None and beam_width > 0:
+                ordered = [nb for nb in ordered if nb not in dist][: int(beam_width)]
+            for nb in ordered:
                 if nb not in dist:
                     dist[nb] = d + 1
                     q.append((nb, d + 1))

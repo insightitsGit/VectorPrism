@@ -36,3 +36,17 @@ docker compose run --rm vectorprism python demos/finance_demo/run_causal_recover
 Stage-1 unions dense top-50 with **upstream causal neighbors** of the top-10 seeds; Stage-2 adds a hop-scaled structural bonus into the causal score.
 
 Latest measured lift: dense R@10 **0.071** → dense+causal+graph R@10 **0.357**; recovered **4/13** dense misses (was 0/13).
+
+> Superseded by multi-channel milestone: see [`TECHNICAL_REPORT.md`](TECHNICAL_REPORT.md) (recovered **13/13** z-score / **10–11/13** RRF).
+
+## Packaging for stakeholders
+
+```bash
+# Rebuild consolidated report from JSON artifacts
+python demos/finance_demo/run_stakeholder_demo.py
+
+# Auto-extract graphs (heuristic) + score recovery, then rebuild report
+docker compose run --rm vectorprism python demos/finance_demo/run_stakeholder_demo.py --full
+```
+
+Automated ingestion also supports LLM JSON-schema extraction when `OPENAI_API_KEY` or `VECTORPRISM_LLM_API_KEY` is set (`--backend llm`).

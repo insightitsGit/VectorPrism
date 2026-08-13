@@ -1,0 +1,8 @@
+{
+  "backend": "heuristic",
+  "n_causal": 615,
+  "n_taxonomy": 289,
+  "n_relational": 182,
+  "n_clusters": 17,
+  "n_docs": 306
+}

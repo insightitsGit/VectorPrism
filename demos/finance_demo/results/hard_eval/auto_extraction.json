@@ -1,0 +1,64 @@
+{
+  "backend": "heuristic",
+  "out_dir": "/app/demos/finance_demo/hard_adversarial_auto",
+  "meta": {
+    "n_clusters": 17,
+    "n_docs": 306
+  },
+  "comparison": {
+    "causal_edges": {
+      "precision": 0.10569105691056911,
+      "recall": 0.5803571428571429,
+      "f1": 0.17881705639614856,
+      "tp": 65,
+      "fp": 550,
+      "fn": 47
+    },
+    "taxonomy_edges": {
+      "precision": 0.05536332179930796,
+      "recall": 0.058823529411764705,
+      "f1": 0.0570409982174688,
+      "tp": 16,
+      "fp": 273,
+      "fn": 256
+    },
+    "relational_attrs": {
+      "precision": 0.2875816993464052,
+      "recall": 0.2391304347826087,
+      "f1": 0.2611275964391691,
+      "tp": 88,
+      "fp": 218,
+      "fn": 280
+    }
+  },
+  "paths": {
+    "causal_graph": "/app/demos/finance_demo/hard_adversarial_auto/causal_graph.jsonl",
+    "hyperbolic_graph": "/app/demos/finance_demo/hard_adversarial_auto/hyperbolic_graph.jsonl",
+    "relational_attrs": "/app/demos/finance_demo/hard_adversarial_auto/relational_attrs.jsonl",
+    "meta": "/app/demos/finance_demo/hard_adversarial_auto/extraction_meta.json"
+  },
+  "recovery": [
+    {
+      "label": "auto",
+      "n_causal_edges": 615,
+      "n_tax_edges": 289,
+      "n_rel_attrs": 182,
+      "n_dense_miss": 13,
+      "recovered@10": 11,
+      "recovery@10": 0.8461538461538461,
+      "recall@10": 0.7857142857142857,
+      "MRR": 0.6964285714285714
+    },
+    {
+      "label": "curated",
+      "n_causal_edges": 112,
+      "n_tax_edges": 272,
+      "n_rel_attrs": 112,
+      "n_dense_miss": 13,
+      "recovered@10": 13,
+      "recovery@10": 1.0,
+      "recall@10": 1.0,
+      "MRR": 1.0
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "n_documents": 1000,
+  "n_eval": 14,
+  "n_filler": 53,
+  "n_ood_merged": 641,
+  "n_adversarial": 306
+}

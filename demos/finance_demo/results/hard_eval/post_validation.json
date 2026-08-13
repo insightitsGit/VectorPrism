@@ -1,0 +1,258 @@
+{
+  "checkpoint": "/app/checkpoints/finance_hard_adversarial_multi.pt",
+  "ood": {
+    "easy_finance": {
+      "dense_only": {
+        "n": 62,
+        "recall@10": 1.0,
+        "precision@10": 0.09999999999999996
+      },
+      "multi_zscore_no_graph": {
+        "n": 62,
+        "recall@10": 1.0,
+        "precision@10": 0.09999999999999996
+      },
+      "intent_no_graph": {
+        "n": 62,
+        "recall@10": 1.0,
+        "precision@10": 0.09999999999999996
+      },
+      "delta_R@10_multi_minus_dense": 0.0,
+      "delta_P@10_multi_minus_dense": 0.0
+    },
+    "hard_gemini": {
+      "dense_only": {
+        "n": 112,
+        "recall@10": 0.9553571428571429,
+        "precision@10": 0.0955357142857143
+      },
+      "multi_zscore_no_graph": {
+        "n": 112,
+        "recall@10": 0.9196428571428571,
+        "precision@10": 0.09196428571428572
+      },
+      "intent_no_graph": {
+        "n": 112,
+        "recall@10": 0.75,
+        "precision@10": 0.075
+      },
+      "delta_R@10_multi_minus_dense": -0.03571428571428581,
+      "delta_P@10_multi_minus_dense": -0.0035714285714285726
+    },
+    "hard_gpt": {
+      "dense_only": {
+        "n": 100,
+        "recall@10": 0.64,
+        "precision@10": 0.06399999999999999
+      },
+      "multi_zscore_no_graph": {
+        "n": 100,
+        "recall@10": 0.68,
+        "precision@10": 0.06799999999999998
+      },
+      "intent_no_graph": {
+        "n": 100,
+        "recall@10": 0.57,
+        "precision@10": 0.05699999999999998
+      },
+      "delta_R@10_multi_minus_dense": 0.040000000000000036,
+      "delta_P@10_multi_minus_dense": 0.00399999999999999
+    },
+    "hard_combined": {
+      "dense_only": {
+        "n": 112,
+        "recall@10": 0.9017857142857143,
+        "precision@10": 0.09017857142857144
+      },
+      "multi_zscore_no_graph": {
+        "n": 112,
+        "recall@10": 0.8660714285714286,
+        "precision@10": 0.08660714285714285
+      },
+      "intent_no_graph": {
+        "n": 112,
+        "recall@10": 0.6696428571428571,
+        "precision@10": 0.06696428571428571
+      },
+      "delta_R@10_multi_minus_dense": -0.0357142857142857,
+      "delta_P@10_multi_minus_dense": -0.0035714285714285865
+    }
+  },
+  "density": {
+    "base_causal_edges": 112,
+    "levels": {
+      "0": {
+        "noise_edges_requested": 0,
+        "total_causal_edges": 112,
+        "recovered@10": 13,
+        "recovery@10": 1.0,
+        "precision@10_full": 0.10000000000000002,
+        "recall@10_full": 1.0
+      },
+      "50": {
+        "noise_edges_requested": 50,
+        "total_causal_edges": 162,
+        "recovered@10": 12,
+        "recovery@10": 0.9230769230769231,
+        "precision@10_full": 0.09285714285714287,
+        "recall@10_full": 0.9285714285714286
+      },
+      "150": {
+        "noise_edges_requested": 150,
+        "total_causal_edges": 262,
+        "recovered@10": 12,
+        "recovery@10": 0.9230769230769231,
+        "precision@10_full": 0.09285714285714287,
+        "recall@10_full": 0.9285714285714286
+      },
+      "400": {
+        "noise_edges_requested": 400,
+        "total_causal_edges": 512,
+        "recovered@10": 11,
+        "recovery@10": 0.8461538461538461,
+        "precision@10_full": 0.08571428571428573,
+        "recall@10_full": 0.8571428571428571
+      }
+    }
+  },
+  "latency": {
+    "noisy_graph_edges": 512,
+    "configs": {
+      "baseline_no_cap": {
+        "beam_width": null,
+        "max_stage1_candidates": null,
+        "mean_candidates": 71.71428571428571,
+        "max_candidates": 89,
+        "mean_stage1_ms": 0.721960785475468,
+        "mean_stage2_ms": 0.9322585001427797,
+        "mean_total_ms": 1.656065142794562,
+        "wall_ms_all_queries": 23.30389899907459,
+        "recovered@10": 11,
+        "recovery@10": 0.8461538461538461
+      },
+      "beam8": {
+        "beam_width": 8,
+        "max_stage1_candidates": null,
+        "mean_candidates": 71.64285714285714,
+        "max_candidates": 89,
+        "mean_stage1_ms": 0.716011285606198,
+        "mean_stage2_ms": 0.8130299286546817,
+        "mean_total_ms": 1.5311103569339528,
+        "wall_ms_all_queries": 21.551482001086697,
+        "recovered@10": 11,
+        "recovery@10": 0.8461538461538461
+      },
+      "beam4": {
+        "beam_width": 4,
+        "max_stage1_candidates": null,
+        "mean_candidates": 69.78571428571429,
+        "max_candidates": 87,
+        "mean_stage1_ms": 0.6581002142931018,
+        "mean_stage2_ms": 0.7350100712366319,
+        "mean_total_ms": 1.3949712854030492,
+        "wall_ms_all_queries": 19.635163000202738,
+        "recovered@10": 11,
+        "recovery@10": 0.8461538461538461
+      },
+      "cap200": {
+        "beam_width": null,
+        "max_stage1_candidates": 200,
+        "mean_candidates": 71.71428571428571,
+        "max_candidates": 89,
+        "mean_stage1_ms": 0.6658674285842737,
+        "mean_stage2_ms": 0.7566086429246103,
+        "mean_total_ms": 1.4244666424149597,
+        "wall_ms_all_queries": 20.064514999830863,
+        "recovered@10": 11,
+        "recovery@10": 0.8461538461538461
+      },
+      "cap100": {
+        "beam_width": null,
+        "max_stage1_candidates": 100,
+        "mean_candidates": 71.71428571428571,
+        "max_candidates": 89,
+        "mean_stage1_ms": 0.6867160714786483,
+        "mean_stage2_ms": 0.7889417856858927,
+        "mean_total_ms": 1.4788264284756483,
+        "wall_ms_all_queries": 20.879679001154727,
+        "recovered@10": 11,
+        "recovery@10": 0.8461538461538461
+      },
+      "beam8_cap150": {
+        "beam_width": 8,
+        "max_stage1_candidates": 150,
+        "mean_candidates": 71.64285714285714,
+        "max_candidates": 89,
+        "mean_stage1_ms": 0.697072357070283,
+        "mean_stage2_ms": 0.7850905716882802,
+        "mean_total_ms": 1.4841297858895683,
+        "wall_ms_all_queries": 20.905127999867545,
+        "recovered@10": 11,
+        "recovery@10": 0.8461538461538461
+      },
+      "clean_graph_baseline": {
+        "beam_width": null,
+        "max_stage1_candidates": null,
+        "mean_candidates": 54.57142857142857,
+        "max_candidates": 66,
+        "mean_stage1_ms": 0.42281971439349164,
+        "mean_stage2_ms": 0.6764300001772686,
+        "mean_total_ms": 1.1013026431620736,
+        "wall_ms_all_queries": 15.541467999355518,
+        "recovered@10": 13,
+        "recovery@10": 1.0
+      }
+    }
+  },
+  "rrf_sweep": {
+    "zscore": {
+      "recovered@10": 13,
+      "recovery@10": 1.0,
+      "recall@10_full": 1.0
+    },
+    "rrf_k20": {
+      "rrf_k": 20,
+      "recovered@10": 10,
+      "recovery@10": 0.7692307692307693,
+      "recall@10_full": 0.7857142857142857,
+      "MRR": 0.5083333333333333
+    },
+    "rrf_k30": {
+      "rrf_k": 30,
+      "recovered@10": 10,
+      "recovery@10": 0.7692307692307693,
+      "recall@10_full": 0.7857142857142857,
+      "MRR": 0.49047619047619045
+    },
+    "rrf_k40": {
+      "rrf_k": 40,
+      "recovered@10": 10,
+      "recovery@10": 0.7692307692307693,
+      "recall@10_full": 0.7857142857142857,
+      "MRR": 0.4964285714285714
+    },
+    "rrf_k50": {
+      "rrf_k": 50,
+      "recovered@10": 10,
+      "recovery@10": 0.7692307692307693,
+      "recall@10_full": 0.7857142857142857,
+      "MRR": 0.5083333333333333
+    },
+    "rrf_k60": {
+      "rrf_k": 60,
+      "recovered@10": 10,
+      "recovery@10": 0.7692307692307693,
+      "recall@10_full": 0.7857142857142857,
+      "MRR": 0.4964285714285714
+    },
+    "best_rrf": {
+      "rrf_k": 20,
+      "recovered@10": 10,
+      "recovery@10": 0.7692307692307693,
+      "recall@10_full": 0.7857142857142857,
+      "MRR": 0.5083333333333333
+    },
+    "gap_to_zscore_recovered": 3
+  },
+  "verdict": "OOD: multi fusion without graphs does not collapse precision on soft packs. Density: recovery 100% @0 noise \u2192 85% @400 noise edges (P@10 0.100 \u2192 0.086). Latency: pruning config recovered@10=11 at mean 72 candidates / 1.48 ms. RRF: best k=20 closes 3 recovered gap vs z-score (10 vs 13)."
+}

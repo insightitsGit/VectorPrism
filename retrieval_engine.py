@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from typing import List, Dict, Any, Tuple, Optional
 import re
+import time
 import numpy as np
 
 from tensor_contract import PSMTensorContract as C
@@ -107,9 +108,11 @@ class PSMRetrievalEngine:
         stage1_graph_hops: int = 2,
         graph_struct_bonus: float = 4.0,
         fusion: str = "zscore",  # "zscore" | "rrf"
-        rrf_k: int = 60,
+        rrf_k: int = 20,  # post-validation sweep: k=20 best among {20..60} on adversarial
         doc_text_lookup: Optional[Dict[str, str]] = None,
         query_conditioned_expansion: bool = True,
+        beam_width: Optional[int] = None,
+        max_stage1_candidates: Optional[int] = None,
     ):
         self.db = db_client
         self.classifier = IntentClassifier(hard_truth_filter=hard_truth_filter)
@@ -123,6 +126,8 @@ class PSMRetrievalEngine:
         self.rrf_k = int(rrf_k)
         self.doc_text_lookup = doc_text_lookup or {}
         self.query_conditioned_expansion = bool(query_conditioned_expansion)
+        self.beam_width = beam_width
+        self.max_stage1_candidates = max_stage1_candidates
         d = C.CAUSAL_TIME.length
         if causal_matrix is None:
             self.causal_matrix = np.eye(d, dtype=np.float32)
@@ -233,7 +238,12 @@ class PSMRetrievalEngine:
         to_fetch: List[str] = []
 
         if self.causal_graph is not None:
-            expanded = self.causal_graph.expand(seed_ids, hops=self.stage1_graph_hops, upstream=True)
+            expanded = self.causal_graph.expand(
+                seed_ids,
+                hops=self.stage1_graph_hops,
+                upstream=True,
+                beam_width=self.beam_width,
+            )
             expanded = self._filter_by_query_context(expanded, query_text)
             for did, hop in expanded.items():
                 if hop <= 0:
@@ -243,7 +253,11 @@ class PSMRetrievalEngine:
                     to_fetch.append(did)
 
         if self.taxonomy_graph is not None:
-            lineage = self.taxonomy_graph.get_lineage(seed_ids, depth_delta=self.stage1_graph_hops)
+            lineage = self.taxonomy_graph.get_lineage(
+                seed_ids,
+                depth_delta=self.stage1_graph_hops,
+                beam_width=self.beam_width,
+            )
             for did, hop in lineage.items():
                 if hop <= 0:
                     continue
@@ -266,6 +280,25 @@ class PSMRetrievalEngine:
             if did not in self.doc_text_lookup:
                 self.doc_text_lookup[did] = str(row.get("chunk_text", ""))
 
+        # Cap Stage-1 pool: keep dense head, then structured adds by hop priority
+        if self.max_stage1_candidates is not None and len(candidates) > self.max_stage1_candidates:
+            dense_n = min(self.stage1_dense_limit, self.max_stage1_candidates)
+            head = candidates[:dense_n]
+            rest = candidates[dense_n:]
+
+            def _prio(row: Dict[str, Any]) -> Tuple[int, str]:
+                did = row["document_id"]
+                hop = min(
+                    causal_hops.get(did, 99),
+                    hyp_hops.get(did, 99),
+                    rel_hops.get(did, 99),
+                )
+                return (hop, did)
+
+            rest.sort(key=_prio)
+            budget = self.max_stage1_candidates - len(head)
+            candidates = head + rest[: max(budget, 0)]
+
         return candidates, causal_hops, hyp_hops, rel_hops
 
     def _rrf_fuse(self, channel_scores: List[np.ndarray], weights: np.ndarray) -> np.ndarray:
@@ -278,14 +311,34 @@ class PSMRetrievalEngine:
             fused += (float(w) / (self.rrf_k + ranks)).astype(np.float32)
         return fused
 
-    def search(self, query_1024d: np.ndarray, query_text: str, top_k: int = 5) -> List[Dict[str, Any]]:
+    def search(
+        self,
+        query_1024d: np.ndarray,
+        query_text: str,
+        top_k: int = 5,
+        *,
+        return_stats: bool = False,
+    ):
         assert query_1024d.shape == (1024,), f"expected 1024d query vector, got {query_1024d.shape}"
+        t0 = time.perf_counter()
         w_intent, filters = self.classifier.classify(query_text)
         dense_query_slice = query_1024d[C.DENSE_CORE.start : C.DENSE_CORE.end]
+        t1 = time.perf_counter()
         candidates, causal_hops, hyp_hops, rel_hops = self._stage1_candidates(
             dense_query_slice, filters, query_text
         )
+        t2 = time.perf_counter()
         if not candidates:
+            if return_stats:
+                return [], {
+                    "n_candidates": 0,
+                    "n_causal_hops": 0,
+                    "n_hyp_hops": 0,
+                    "n_rel_hops": 0,
+                    "stage1_ms": (t2 - t1) * 1000.0,
+                    "stage2_ms": 0.0,
+                    "total_ms": (t2 - t0) * 1000.0,
+                }
             return []
 
         candidate_matrix = np.stack([c["tensor_1024d"] for c in candidates])
@@ -341,6 +394,17 @@ class PSMRetrievalEngine:
             res = dict(candidates[idx])
             res["final_score"] = float(final_scores[idx])
             results.append(res)
+        t3 = time.perf_counter()
+        if return_stats:
+            return results, {
+                "n_candidates": len(candidates),
+                "n_causal_hops": len(causal_hops),
+                "n_hyp_hops": len(hyp_hops),
+                "n_rel_hops": len(rel_hops),
+                "stage1_ms": (t2 - t1) * 1000.0,
+                "stage2_ms": (t3 - t2) * 1000.0,
+                "total_ms": (t3 - t0) * 1000.0,
+            }
         return results
 
 
