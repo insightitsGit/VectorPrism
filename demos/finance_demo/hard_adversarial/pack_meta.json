@@ -1,0 +1,15 @@
+{
+  "n_clusters": 17,
+  "n_docs": 306,
+  "n_eval": 17,
+  "n_causal": 7,
+  "n_dense_pairs": 153,
+  "min_cluster_size": 18,
+  "patterns": [
+    "causal_multihop",
+    "epistemic_version",
+    "hyperbolic_sibling",
+    "relational_boundary"
+  ],
+  "note": "Run calibrate_adversarial_pack.py before trusting Miss@10 labels"
+}

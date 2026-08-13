@@ -1,0 +1,108 @@
+{"earlier": "beneficial-ownership change entered the client master", "later": "the KYC event-review queue did not receive the ownership event"}
+{"earlier": "an AML enrichment schema changed upstream", "later": "pending alerts accumulated because enrichment responses became stale"}
+{"earlier": "a payment gateway timed out", "later": "the retry service submitted the wire with a new idempotency key"}
+{"earlier": "the intraday margin stress parameter was refreshed", "later": "margin calls increased without a comparable position increase"}
+{"earlier": "a local market holiday was loaded as an open day", "later": "settlement instructions were released into a closed market"}
+{"earlier": "a source price feed became delayed", "later": "the NAV cache reused a stale security price"}
+{"earlier": "a subsidiary cash sweep entered a bank maintenance window", "later": "the intraday liquidity buffer fell below its minimum"}
+{"earlier": "the SOX export used the wrong environment filter", "later": "valid approval records were omitted from the audit package"}
+{"earlier": "the overnight covariance refresh failed", "later": "the VaR run loaded the prior covariance matrix"}
+{"earlier": "the severity rule required an application-error signal", "later": "loss of the settlement heartbeat was escalated late"}
+{"earlier": "a tax-residency update failed to propagate", "later": "withholding used the prior residency code"}
+{"earlier": "an ESG provider changed methodology", "later": "historical portfolio ESG scores were recalculated"}
+{"earlier": "a backup workload consumed storage throughput", "later": "DR replication lag increased"}
+{"earlier": "a new beneficial-owner association was detected", "later": "the client KYC risk tier increased"}
+{"earlier": "a collateral price became stale", "later": "available margin fell and liquidation fired"}
+{"earlier": "a settlement cash outflow was omitted from the forecast", "later": "projected liquidity was overstated"}
+{"earlier": "beneficial-ownership change entered the client master", "later": "the KYC event-review queue did not receive the ownership event"}
+{"earlier": "an AML enrichment schema changed upstream", "later": "pending alerts accumulated because enrichment responses became stale"}
+{"earlier": "a payment gateway timed out", "later": "the retry service submitted the wire with a new idempotency key"}
+{"earlier": "the intraday margin stress parameter was refreshed", "later": "margin calls increased without a comparable position increase"}
+{"earlier": "a local market holiday was loaded as an open day", "later": "settlement instructions were released into a closed market"}
+{"earlier": "a source price feed became delayed", "later": "the NAV cache reused a stale security price"}
+{"earlier": "a subsidiary cash sweep entered a bank maintenance window", "later": "the intraday liquidity buffer fell below its minimum"}
+{"earlier": "the SOX export used the wrong environment filter", "later": "valid approval records were omitted from the audit package"}
+{"earlier": "the overnight covariance refresh failed", "later": "the VaR run loaded the prior covariance matrix"}
+{"earlier": "the severity rule required an application-error signal", "later": "loss of the settlement heartbeat was escalated late"}
+{"earlier": "a tax-residency update failed to propagate", "later": "withholding used the prior residency code"}
+{"earlier": "an ESG provider changed methodology", "later": "historical portfolio ESG scores were recalculated"}
+{"earlier": "a backup workload consumed storage throughput", "later": "DR replication lag increased"}
+{"earlier": "a new beneficial-owner association was detected", "later": "the client KYC risk tier increased"}
+{"earlier": "a collateral price became stale", "later": "available margin fell and liquidation fired"}
+{"earlier": "a settlement cash outflow was omitted from the forecast", "later": "projected liquidity was overstated"}
+{"earlier": "beneficial-ownership change entered the client master", "later": "the KYC event-review queue did not receive the ownership event"}
+{"earlier": "an AML enrichment schema changed upstream", "later": "pending alerts accumulated because enrichment responses became stale"}
+{"earlier": "a payment gateway timed out", "later": "the retry service submitted the wire with a new idempotency key"}
+{"earlier": "the intraday margin stress parameter was refreshed", "later": "margin calls increased without a comparable position increase"}
+{"earlier": "a local market holiday was loaded as an open day", "later": "settlement instructions were released into a closed market"}
+{"earlier": "a source price feed became delayed", "later": "the NAV cache reused a stale security price"}
+{"earlier": "a subsidiary cash sweep entered a bank maintenance window", "later": "the intraday liquidity buffer fell below its minimum"}
+{"earlier": "the SOX export used the wrong environment filter", "later": "valid approval records were omitted from the audit package"}
+{"earlier": "the overnight covariance refresh failed", "later": "the VaR run loaded the prior covariance matrix"}
+{"earlier": "the severity rule required an application-error signal", "later": "loss of the settlement heartbeat was escalated late"}
+{"earlier": "a tax-residency update failed to propagate", "later": "withholding used the prior residency code"}
+{"earlier": "an ESG provider changed methodology", "later": "historical portfolio ESG scores were recalculated"}
+{"earlier": "a backup workload consumed storage throughput", "later": "DR replication lag increased"}
+{"earlier": "a new beneficial-owner association was detected", "later": "the client KYC risk tier increased"}
+{"earlier": "a collateral price became stale", "later": "available margin fell and liquidation fired"}
+{"earlier": "a settlement cash outflow was omitted from the forecast", "later": "projected liquidity was overstated"}
+{"earlier": "beneficial-ownership change entered the client master", "later": "the KYC event-review queue did not receive the ownership event"}
+{"earlier": "an AML enrichment schema changed upstream", "later": "pending alerts accumulated because enrichment responses became stale"}
+{"earlier": "a payment gateway timed out", "later": "the retry service submitted the wire with a new idempotency key"}
+{"earlier": "the intraday margin stress parameter was refreshed", "later": "margin calls increased without a comparable position increase"}
+{"earlier": "a local market holiday was loaded as an open day", "later": "settlement instructions were released into a closed market"}
+{"earlier": "a source price feed became delayed", "later": "the NAV cache reused a stale security price"}
+{"earlier": "a subsidiary cash sweep entered a bank maintenance window", "later": "the intraday liquidity buffer fell below its minimum"}
+{"earlier": "the SOX export used the wrong environment filter", "later": "valid approval records were omitted from the audit package"}
+{"earlier": "the overnight covariance refresh failed", "later": "the VaR run loaded the prior covariance matrix"}
+{"earlier": "the severity rule required an application-error signal", "later": "loss of the settlement heartbeat was escalated late"}
+{"earlier": "a tax-residency update failed to propagate", "later": "withholding used the prior residency code"}
+{"earlier": "an ESG provider changed methodology", "later": "historical portfolio ESG scores were recalculated"}
+{"earlier": "Corporate customer incorporated in FATF high-risk jurisdiction fails to provide verified UBO documentation for 12% equity owners within 30 business days", "later": "Automated restriction triggers on outbound cross-border debit transactions and file escalates to MLRO under POL-AML Section 4.2"}
+{"earlier": "AML investigation confirms suspicious transaction structuring exceeding $5,000 but fails to identify a specific suspect on date of detection", "later": "Compliance logs rationale and extends mandatory FinCEN Form BSAR filing deadline from 30 calendar days to 60 calendar days"}
+{"earlier": "Real-time payment filter flags SWIFT MT103 wire involving an entity designated on the OFAC Specially Designated Nationals (SDN) list", "later": "Operations diverts wire funds to an internal interest-bearing blocked property account within 48 hours and files report with OFAC within 10 business days"}
+{"earlier": "Non-repetitive commercial customer wire exceeding $5,000,000 USD is submitted without verified out-of-band callback documentation", "later": "Automated payment gateway halts wire release and places transaction in manual supervisor review queue under POL-PAY-201"}
+{"earlier": "Receiving bank receives inbound SWIFT camt.056 payment cancellation request for a wire whose funds have already been withdrawn by the beneficiary", "later": "Investigations desk transmits SWIFT camt.029 rejection notice within 2 hours of receipt under SWIFT gpi operating rules"}
+{"earlier": "Derivative counterparty disputes mark-to-market valuation on daily variation margin call by more than $1,000,000 USD for over 2 business days", "later": "Collateral operations escalates valuation discrepancy to the Credit Risk Committee while requiring undisputed cash transfer by 13:00 EST"}
+{"earlier": "Clean P&L backtesting for ISDA SIMM initial margin model records 4 exceedances across rolling 250-day window", "later": "Risk Operations applies mandatory internal margin multiplier surcharge (1.2x to 1.5x) to all outgoing IM calculations in that asset bucket"}
+{"earlier": "Bank records 6 regulatory VaR backtesting exceptions within preceding 250 trading days", "later": "Federal Reserve market risk capital multiplication factor automatically increases from 3.00 into Basel Yellow Zone scaled add-on"}
+{"earlier": "Institutional prime brokerage client exhausted 100% of approved Intraday Credit Limit (ICL) during morning trading session", "later": "Automated Risk Gatekeeper blocks outbound order flow until credit officer grants temporary increase backed by incoming Fedwire margin"}
+{"earlier": "Clearing member fails to settle net short equity delivery in DTCC Continuous Net Settlement on T+1", "later": "DTCC assesses daily annualized 100 bps fail penalty on market value of failed position against member clearing account"}
+{"earlier": "Securities seller fails to deliver shares 3 business days after receiving formal electronic Buy-In Notice under FINRA Rule 11810", "later": "Buying broker executes buy-in on open market at prevailing price and charges price difference directly to failing seller clearing account"}
+{"earlier": "Broker-dealer fails to close out fail-to-deliver position resulting from short sale by market open on T+1 after settlement date", "later": "Broker-dealer is locked under SEC Regulation SHO Rule 204 pre-borrow penalty requirement for all subsequent short sales in that security"}
+{"earlier": "Counterparty updates clearing depository details without updating standing settlement instructions in DTCC ALERT database", "later": "Trade confirmation encounters matching failure in DTCC TradeSuite, requiring trade cancel-and-rebook prior to 16:00 EST"}
+{"earlier": "Fund accounting NAV error is calculated at $0.03 per share representing 0.30% of NAV with total fund impact of $45,000 USD", "later": "Fund accounting restates internal general ledger records and responsible entity compensates fund account with zero individual shareholder reprocessing"}
+{"earlier": "Credit impairment event reduces fair value of Level 3 illiquid loan asset by 15% of carrying cost between quarterly cycles", "later": "Fund accounting calculates interim ad-hoc NAV adjustment and obtains Valuation Committee formal sign-off within 5 business days"}
+{"earlier": "Institutional money market fund daily shadow NAV calculation declines to $0.9978 per share", "later": "Fund accounting supervisor immediately issues mandatory notification to the Fund Board of Trustees under SEC Rule 2a-7"}
+{"earlier": "Primary pricing vendor data feed fails for 75 municipal bond holdings during daily 16:00 EST close cycle", "later": "Pricing manager activates secondary fallback feed and convenes Fair Value Pricing Committee before 17:30 EST to approve matrix pricing"}
+{"earlier": "Net capital redemptions in UCITS mutual fund exceed 2.00% Swing Threshold during daily dealing cycle", "later": "Fund accounting system applies downward anti-dilution swing factor of 25 bps to published NAV per share"}
+{"earlier": "Unencumbered Level 1 HQLA liquidity buffer drops below 110% of projected peak hourly cash outflow", "later": "Treasury Liquidity Officer activates Intraday Contingency Funding Plan, pausing intercompany advances and executing tri-party repo monetization"}
+{"earlier": "Morning customer wire releases push bank real-time daylight overdraft to 92% of approved uncollateralized cap", "later": "Payment Queue Manager pauses outgoing Fedwire transfers exceeding $10M and Treasury pledges Treasury securities via Fedwire Securities Service"}
+{"earlier": "Software engineer utilizes emergency Break-Glass account to access production core banking database", "later": "Automated PAM monitoring generates Sev-1 audit log requiring formal review and sign-off by IT Security Officer within 24 hours"}
+{"earlier": "Category 1 High-Risk financial reporting spreadsheet modified without role-based access controls and formula locking", "later": "Internal Audit issues formal Sarbanes-Oxley Section 404 ITGC control deficiency notice in quarterly management report"}
+{"earlier": "Fixed Income trading desk 10-year tenor interest rate sensitivity exceeds $100,000/bp limit for 2 consecutive hours", "later": "Trade authorization escalates to Chief Risk Officer to decide between granting 24-hour temporary waiver or ordering mandatory desk de-risking"}
+{"earlier": "Corporate counterparty 95th percentile Monte Carlo Potential Future Exposure breaches 100% of approved credit limit", "later": "Trading platform enforces automated hard stop on new uncollateralized derivative transactions for that counterparty"}
+{"earlier": "Core banking end-of-day ledger batch aborts with error EOD-904 table lock timeout", "later": "DBA terminates blocking sessions, runs rollback script, and restarts batch at Sequence 12B with thread count reduced from 32 to 16"}
+{"earlier": "Kafka consumer lag on tx-ledger-events topic exceeds 500,000 uncommitted messages during peak market volume", "later": "SRE team scales consumer pods from 8 to 24 instances and detaches non-critical audit consumers to restore core ledger throughput"}
+{"earlier": "FIX engine session reconnects with sequence number gap and counterparty responds to ResendRequest with MsgType 3 Reject", "later": "Support engineer verifies zero orphaned open orders and secures written desk head confirmation before issuing administrative ResetSequenceNumber"}
+{"earlier": "Matching engine detects simultaneous packet loss across dual redundant ITCH multicast Feed A and Feed B", "later": "Matching engine trips Trading Volatility Circuit Breaker, cancelling all resting market and peg orders to prevent stale executions"}
+{"earlier": "Smart Order Router detects round-trip latency to exchange venue exceeding 50 ms for 3 consecutive execution cycles", "later": "SOR circuit breaker de-routes outbound orders from affected exchange and redistributes order flow to secondary lit venues"}
+{"earlier": "Foreign financial institution counterparty enters synthetic equity total return swap referencing US stock with delta of 0.90", "later": "Tax operations applies mandatory 30% US statutory withholding tax on all dividend equivalent cash flows under IRC Section 871(m)"}
+{"earlier": "Foreign Financial Institution fails to provide valid GIIN verified on IRS FATCA portal", "later": "Custody operations deducts mandatory 30% Chapter 4 withholding tax from all US-source FDAP interest and dividend distributions"}
+{"earlier": "Portfolio company held in SFDR Article 9 Dark Green fund incurs severe Principal Adverse Impact violation on biodiversity", "later": "Portfolio manager is legally required to divest fund position in issuer within 30 business days"}
+{"earlier": "Transatlantic network WAN partition severs communication between Datacenter Alpha, Datacenter Beta, and Quorum Witness C", "later": "Datacenter Alpha database transitions to Read-Only mode within 500 milliseconds and terminates client write connections to prevent split-brain"}
+{"earlier": "Customer mobile phone undergoes carrier SIM-swap followed within 18 hours by high-value wire transfer request", "later": "Fraud detection engine places immediate 48-hour Outbound Payment Security Freeze requiring biometric video re-verification"}
+{"earlier": "Debit card executes 6 contactless purchase transactions within a 40-minute window", "later": "Card fraud system places card in soft-block status and transmits interactive SMS two-way verification alert to cardholder"}
+{"earlier": "Cash borrower submits US Treasury collateral substitution request in tri-party repo at 15:45 EST", "later": "Tri-party clearing bank flags late submission, requiring manual authorization and assessing late-processing surcharge"}
+{"earlier": "Borrower of loaned equity shares fails to return recalled shares 2 business days prior to proxy voting record date", "later": "Lender issues formal manufactured voting compensation claim and exercises contractual loan termination rights"}
+{"earlier": "Institutional net capital subscriptions in open-ended fund exceed +3.50% of NAV on daily calculation date", "later": "Fund administration partial swing pricing mechanism swings published NAV per share upward by 25 basis points"}
+{"earlier": "Liquid assets in retail open-ended mutual fund fall below 15% mandatory weekly liquidity threshold", "later": "Fund Board of Directors convenes emergency vote to impose a Redemption Gate restricting daily liquidity to 10% of fund NAV"}
+{"earlier": "Custodian operations fails to submit client voluntary tender offer election to DTC by 17:00 EST on Expiration Date - 1", "later": "DTC platform locks election window, preventing client participation without formal underwriter indemnity authorization"}
+{"earlier": "Non-exempt counterparty net mark-to-market loss on TBA mortgage-backed securities exceeds $250,000 USD de minimis threshold", "later": "Broker-dealer issues mandatory variation margin call requiring collateral transfer within 1 business day under FINRA Rule 4210"}
+{"earlier": "Retail margin account trader executes 5 day trades in 3 business days while maintaining account equity of $18,000 USD", "later": "Broker-dealer classifies account as Pattern Day Trader and restricts day-trading buying power until equity reaches $25,000"}
+{"earlier": "Banking organization calculates derivative exposure at default under Basel III Standardized Approach (SA-CCR)", "later": "Calculation engine applies mandatory fixed regulatory alpha scalar of 1.4 to sum of Replacement Cost and Potential Future Exposure"}
+{"earlier": "Algorithmic trading account exhibits 95% cancel-to-fill ratio within 400 ms while placing 50% depth layers opposite an aggressive market order", "later": "Surveillance engine triggers Sev-1 Spoofing Alert requiring trade reconstruction and compliance investigation within 24 hours"}
+{"earlier": "Trading desk fails to achieve 100% order execution capability during mandatory 4-hour annual disaster recovery drill", "later": "Business unit must complete root-cause remediation review and repeat live secondary site drill within 30 calendar days"}
+{"earlier": "Daily FCA CASS 7 client money calculation reveals Client Money Requirement exceeds segregated Client Money Resource by £250,000", "later": "Finance operations transfers £250,000 of corporate cash into segregated client bank accounts on same business day"}
+{"earlier": "Trade Repository rejects EMIR Refit transaction submission due to Unique Transaction Identifier (UTI) mismatch error ETR-301", "later": "Regulatory reporting team must resolve UTI generation logic with counterparty and resubmit within 24 hours to prevent regulatory breach"}
+{"earlier": "Customer files formal dispute claim for Authorized Push Payment wire scam 8 months after funds transfer", "later": "Fraud Operations initiates interbank recall inquiry and evaluates customer fraud warning adherence to determine reimbursement eligibility"}

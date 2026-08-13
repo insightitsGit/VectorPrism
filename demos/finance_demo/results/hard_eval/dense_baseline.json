@@ -1,0 +1,606 @@
+{
+  "encoder": "sentence-transformers/all-mpnet-base-v2",
+  "checkpoint": "checkpoints/finance_hard.pt",
+  "train_pairs": "/app/demos/finance_demo/hard_combined/dense_pairs.jsonl",
+  "n_train_pairs": 798,
+  "documents": "/app/demos/finance_demo/hard_combined/documents.jsonl",
+  "n_docs": 288,
+  "run_a_gemini": {
+    "n_eval": 112,
+    "metrics": {
+      "vectorprism_dense_only": {
+        "recall@1": 0.5535714285714286,
+        "recall@5": 0.875,
+        "recall@10": 0.9285714285714286,
+        "MRR": 0.6803287981859409,
+        "n_eval_examples": 112
+      },
+      "dense_cosine_baseline": {
+        "recall@1": 0.5535714285714286,
+        "recall@5": 0.875,
+        "recall@10": 0.9285714285714286,
+        "MRR": 0.6803287981859409,
+        "n_eval_examples": 112.0
+      }
+    },
+    "confirmed_dense_misses_at_10": 8,
+    "confirmed_miss_rate_at_10": 0.07142857142857142,
+    "labeled_dense_should_miss": 112,
+    "labeled_miss_confirmed_at_10": 8,
+    "labeled_miss_confirmation_rate": 0.07142857142857142,
+    "miss_examples": [
+      {
+        "query": "Why did our treasury desk extend its intraday liquidity forecast by two hours after a routine wire room broadcast?",
+        "gold": [
+          "DOC_WIRE_008"
+        ],
+        "top10": [
+          "DOC_LIQ_001",
+          "DOC_LIQ_005",
+          "DOC_WIRE_002",
+          "DOC_LIQ_008",
+          "DOC_LIQ_007",
+          "vp_c07_gold",
+          "DOC_LIQ_002",
+          "DOC_CASS_003",
+          "vp_c16_gold",
+          "DOC_MARG_007"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "dense",
+        "miss_reason": "paraphrase FAQ: dense misses the operational link between Fedwire tag {1510} broadcast messages and systemic clearing window extensions past 18:30 EST."
+      },
+      {
+        "query": "Why was an institutional hedge fund client blocked from executing an exchange-traded equity order when their margin equity was well above maintenance requirements?",
+        "gold": [
+          "DOC_MARG_007"
+        ],
+        "top10": [
+          "DOC_FINRA_004",
+          "DOC_FINRA_002",
+          "DOC_FINRA_001",
+          "DOC_CASS_004",
+          "vp_t04_gold",
+          "DOC_FINRA_003",
+          "vp_c07_gold",
+          "DOC_SETTL_004",
+          "DOC_CASS_003",
+          "DOC_NAV_002"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "causal",
+        "miss_reason": "cause vs symptom: dense searches for Reg T margin calls or PDT rules rather than 100% exhaustion of the real-time Intraday Credit Limit (ICL) gatekeeper."
+      },
+      {
+        "query": "Why are we requiring a mid-sized asset manager to execute tri-party custody agreements by August 1 when their bilateral trades don't start until autumn?",
+        "gold": [
+          "DOC_MARG_008"
+        ],
+        "top10": [
+          "vp_c05_gold",
+          "DOC_CA_001",
+          "vp_t05_gold",
+          "DOC_AML_008",
+          "DOC_CASS_003",
+          "DOC_CASS_002",
+          "DOC_AML_007",
+          "vp_h05_gold",
+          "vp_c07_gold",
+          "DOC_SWING_002"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "relational",
+        "miss_reason": "regulatory calendar logic: dense seeks general onboarding rules rather than UMR Phase 6 March-May AANA observation exceeding $8B requiring operational readiness 30 days before Sept 1."
+      },
+      {
+        "query": "Why did our trading desk have to absorb a $45,000 open market repurchase loss on an unsettled bond sale on T+6?",
+        "gold": [
+          "DOC_SETTL_003"
+        ],
+        "top10": [
+          "vp_c07_gold",
+          "vp_c09_gold",
+          "DOC_REPO_001",
+          "vp_c16_gold",
+          "DOC_REPO_002",
+          "DOC_LIQ_001",
+          "vp_c15_gold",
+          "DOC_LIQ_007",
+          "vp_c06_gold",
+          "vp_c11_gold"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "causal",
+        "miss_reason": "causal chain: dense searches for DTCC fail fees or Reg SHO rather than FINRA Rule 11810 mandatory buy-in execution following an unresolved T+3 notice."
+      },
+      {
+        "query": "Why did the automated order gateway reject an uncollateralized interest rate swap with a major corporate client who had never defaulted on any payment?",
+        "gold": [
+          "DOC_MRISK_005"
+        ],
+        "top10": [
+          "vp_c16_gold",
+          "DOC_WIRE_005",
+          "DOC_WIRE_004",
+          "DOC_FRAUD_001",
+          "vp_c07_gold",
+          "DOC_MARG_003",
+          "DOC_REPO_001",
+          "DOC_SANCT_004",
+          "DOC_SETTL_003",
+          "vp_c11_gold"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "causal",
+        "miss_reason": "causal trigger: dense looks for settlement fails or credit rating downgrades rather than Monte Carlo 95th percentile Potential Future Exposure (PFE) exceeding 100% of approved credit limit."
+      },
+      {
+        "query": "Why was our FX spot desk prevented from releasing an Indian Rupee payment across the correspondent network despite the trade being confirmed?",
+        "gold": [
+          "DOC_MRISK_008"
+        ],
+        "top10": [
+          "DOC_LIQ_008",
+          "DOC_LIQ_005",
+          "DOC_SETTL_003",
+          "DOC_WIRE_004",
+          "DOC_SETTL_004",
+          "DOC_WIRE_002",
+          "DOC_SANCT_001",
+          "DOC_SETTL_007",
+          "DOC_LIQ_006",
+          "DOC_SANCT_004"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "hyperbolic",
+        "miss_reason": "settlement risk taxonomy: dense matches CLS multi-currency rules rather than non-CLS Herstatt settlement limits requiring PVP or confirmed currency leg receipt."
+      },
+      {
+        "query": "Why did our equity matching engine automatically cancel all resting peg orders at 11:15 AM without any operator intervention?",
+        "gold": [
+          "DOC_INC_006"
+        ],
+        "top10": [
+          "vp_c07_gold",
+          "DOC_INC_005",
+          "DOC_INC_008",
+          "DOC_NAV_005",
+          "DOC_NAV_008",
+          "DOC_INC_001",
+          "DOC_INC_007",
+          "vp_c05_gold",
+          "vp_c15_gold",
+          "DOC_BCP_001"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "causal",
+        "miss_reason": "causal circuit breaker: dense matches manual emergency stops or latency spikes rather than dual ITCH multicast packet loss on both Feed A and Feed B tripping the Volatility Circuit Breaker."
+      },
+      {
+        "query": "Why was our automated trade clearing system required to demonstrate synchronous replication with zero data loss during its annual audit?",
+        "gold": [
+          "DOC_DR_002"
+        ],
+        "top10": [
+          "vp_c13_gold",
+          "DOC_SOX_007",
+          "DOC_DR_003",
+          "DOC_DR_001",
+          "DOC_INC_008",
+          "vp_t08_gold",
+          "DOC_SOX_008",
+          "DOC_BCP_001",
+          "vp_c07_gold",
+          "DOC_INC_004"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "relational",
+        "miss_reason": "precise SLA standard: dense matches Tier-2 application targets (RPO 15 min / RTO 4 hr) rather than Tier-1 critical banking standards (RPO <= 0 sec, RTO <= 30 min)."
+      }
+    ]
+  },
+  "run_b_gpt": {
+    "n_eval": 100,
+    "metrics": {
+      "vectorprism_dense_only": {
+        "recall@1": 0.46,
+        "recall@5": 0.68,
+        "recall@10": 0.82,
+        "MRR": 0.5558452380952381,
+        "n_eval_examples": 100
+      },
+      "dense_cosine_baseline": {
+        "recall@1": 0.46,
+        "recall@5": 0.68,
+        "recall@10": 0.82,
+        "MRR": 0.5558452380952381,
+        "n_eval_examples": 100.0
+      }
+    },
+    "confirmed_dense_misses_at_10": 18,
+    "confirmed_miss_rate_at_10": 0.18,
+    "labeled_dense_should_miss": 90,
+    "labeled_miss_confirmed_at_10": 16,
+    "labeled_miss_confirmation_rate": 0.17777777777777778,
+    "miss_examples": [
+      {
+        "query": "What upstream condition actually produced the settlement outcome?",
+        "gold": [
+          "vp_c05_gold"
+        ],
+        "top10": [
+          "vp_c05_near2",
+          "vp_h05_near2",
+          "vp_t05_near2",
+          "vp_p05_near2",
+          "vp_h05_gold",
+          "vp_p05_gold",
+          "vp_t05_gold",
+          "vp_c16_gold",
+          "vp_h05_near1",
+          "vp_c05_near1"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "causal",
+        "miss_reason": "cause vs symptom; near-miss documents emphasize the visible incident outcome"
+      },
+      {
+        "query": "What upstream condition actually produced the incident outcome?",
+        "gold": [
+          "vp_c10_gold"
+        ],
+        "top10": [
+          "vp_h06_gold",
+          "vp_c08_gold",
+          "vp_c07_gold",
+          "vp_c13_gold",
+          "DOC_INC_004",
+          "DOC_INC_003",
+          "vp_h06_near3",
+          "vp_c10_near3",
+          "DOC_INC_002",
+          "vp_h06_near1"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "causal",
+        "miss_reason": "cause vs symptom; near-miss documents emphasize the visible incident outcome"
+      },
+      {
+        "query": "Which cause should operations fix rather than the visible esg symptom?",
+        "gold": [
+          "vp_c12_gold"
+        ],
+        "top10": [
+          "vp_p08_gold",
+          "vp_c12_near1",
+          "vp_h07_near1",
+          "vp_p08_near1",
+          "vp_h07_near3",
+          "vp_c12_near3",
+          "vp_p08_near3",
+          "vp_h07_gold",
+          "vp_c12_near2",
+          "vp_h07_near2"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "causal",
+        "miss_reason": "lexical trap; distractors contain the same failure vocabulary but identify a different upstream driver"
+      },
+      {
+        "query": "What upstream condition actually produced the margin outcome?",
+        "gold": [
+          "vp_c15_gold"
+        ],
+        "top10": [
+          "vp_c04_gold",
+          "vp_h03_near2",
+          "vp_p04_near2",
+          "vp_t04_near2",
+          "vp_c15_near2",
+          "vp_c04_near2",
+          "DOC_MARG_002",
+          "vp_t04_gold",
+          "DOC_MARG_001",
+          "vp_c07_gold"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "causal",
+        "miss_reason": "cause vs symptom; near-miss documents emphasize the visible incident outcome"
+      },
+      {
+        "query": "Which cause should operations fix rather than the visible margin symptom?",
+        "gold": [
+          "vp_c15_gold"
+        ],
+        "top10": [
+          "vp_c15_near2",
+          "vp_t04_near2",
+          "vp_h03_near2",
+          "vp_c04_near2",
+          "vp_p04_near2",
+          "vp_c04_gold",
+          "DOC_MARG_001",
+          "vp_t04_gold",
+          "DOC_MARG_002",
+          "vp_h03_near1"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "causal",
+        "miss_reason": "lexical trap; distractors contain the same failure vocabulary but identify a different upstream driver"
+      },
+      {
+        "query": "Which higher-level rule or category governs this margin case?",
+        "gold": [
+          "vp_h03_gold"
+        ],
+        "top10": [
+          "DOC_FINRA_003",
+          "vp_c04_gold",
+          "vp_t04_near2",
+          "vp_c15_near2",
+          "vp_p04_near2",
+          "vp_h03_near2",
+          "vp_c04_near2",
+          "DOC_MARG_002",
+          "DOC_MARG_001",
+          "vp_t04_gold"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "hyperbolic",
+        "miss_reason": "hierarchy confusion; sibling and parent categories share the same control terminology"
+      },
+      {
+        "query": "Which branch takes precedence for this margin classification?",
+        "gold": [
+          "vp_h03_gold"
+        ],
+        "top10": [
+          "DOC_MARG_002",
+          "vp_c15_near2",
+          "vp_h03_near2",
+          "vp_t04_near2",
+          "vp_c04_near2",
+          "vp_p04_near2",
+          "vp_c04_gold",
+          "DOC_FINRA_003",
+          "DOC_MARG_001",
+          "DOC_FINRA_001"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "hyperbolic",
+        "miss_reason": "hierarchy confusion; sibling and parent categories share the same control terminology"
+      },
+      {
+        "query": "Which higher-level rule or category governs this marketrisk case?",
+        "gold": [
+          "vp_h04_gold"
+        ],
+        "top10": [
+          "vp_c09_near2",
+          "vp_h04_near2",
+          "vp_h04_near3",
+          "vp_c09_near3",
+          "vp_c09_near1",
+          "vp_h04_near1",
+          "DOC_SURV_004",
+          "vp_p06_gold",
+          "vp_t06_gold",
+          "DOC_SURV_001"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "hyperbolic",
+        "miss_reason": "hierarchy confusion; sibling and parent categories share the same control terminology"
+      },
+      {
+        "query": "Where does this record belong in the marketrisk control hierarchy?",
+        "gold": [
+          "vp_h04_gold"
+        ],
+        "top10": [
+          "vp_c09_near2",
+          "vp_h04_near2",
+          "vp_h04_near3",
+          "vp_c09_near3",
+          "vp_c09_near1",
+          "vp_h04_near1",
+          "vp_c06_gold",
+          "vp_t06_gold",
+          "DOC_NAV_006",
+          "vp_p06_gold"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "hyperbolic",
+        "miss_reason": "taxonomy trap; distractors contain the same control family but the wrong parent-child relationship"
+      },
+      {
+        "query": "Which branch takes precedence for this marketrisk classification?",
+        "gold": [
+          "vp_h04_gold"
+        ],
+        "top10": [
+          "vp_h04_near2",
+          "vp_c09_near2",
+          "vp_p06_gold",
+          "vp_h04_near3",
+          "vp_c09_near3",
+          "vp_c14_gold",
+          "DOC_NAV_006",
+          "vp_h04_near1",
+          "vp_c09_near1",
+          "DOC_NAV_005"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "hyperbolic",
+        "miss_reason": "hierarchy confusion; sibling and parent categories share the same control terminology"
+      },
+      {
+        "query": "Which higher-level rule or category governs this incident case?",
+        "gold": [
+          "vp_h06_gold"
+        ],
+        "top10": [
+          "vp_c10_near3",
+          "vp_h06_near3",
+          "vp_c06_near3",
+          "vp_t06_near3",
+          "vp_p06_near3",
+          "vp_h01_near3",
+          "vp_p02_near3",
+          "vp_c02_near3",
+          "vp_t02_near3",
+          "vp_p07_near3"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "hyperbolic",
+        "miss_reason": "hierarchy confusion; sibling and parent categories share the same control terminology"
+      },
+      {
+        "query": "Which cutoff or trigger should the operator use for this kyc workflow?",
+        "gold": [
+          "vp_t01_gold"
+        ],
+        "top10": [
+          "vp_c01_near1",
+          "vp_t01_near1",
+          "vp_h02_near1",
+          "vp_c14_near1",
+          "vp_p01_near1",
+          "vp_c14_near2",
+          "vp_t01_near2",
+          "vp_h02_near2",
+          "vp_p01_near2",
+          "vp_c01_near2"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "relational",
+        "miss_reason": "lexical trap; nearby procedures share entities and timing language but govern a different threshold"
+      },
+      {
+        "query": "Which cutoff or trigger should the operator use for this margin workflow?",
+        "gold": [
+          "vp_t04_gold"
+        ],
+        "top10": [
+          "vp_h03_near2",
+          "vp_c15_near2",
+          "vp_p04_near2",
+          "vp_c04_near2",
+          "vp_t04_near2",
+          "vp_c15_near1",
+          "vp_t04_near1",
+          "vp_h03_near1",
+          "vp_c04_near1",
+          "vp_p04_near1"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "relational",
+        "miss_reason": "lexical trap; nearby procedures share entities and timing language but govern a different threshold"
+      },
+      {
+        "query": "What exact threshold or timing rule applies to this dr case?",
+        "gold": [
+          "vp_t08_gold"
+        ],
+        "top10": [
+          "vp_c13_near1",
+          "vp_t08_near1",
+          "vp_h08_near1",
+          "vp_t02_gold",
+          "vp_c13_gold",
+          "vp_t07_gold",
+          "vp_t05_gold",
+          "vp_h08_near3",
+          "vp_t08_near3",
+          "vp_c13_near3"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "relational",
+        "miss_reason": "precise-parameter trap; distractors repeat the same control terms with a different limit or cutoff"
+      },
+      {
+        "query": "Which cutoff or trigger should the operator use for this dr workflow?",
+        "gold": [
+          "vp_t08_gold"
+        ],
+        "top10": [
+          "vp_t08_near1",
+          "vp_h08_near1",
+          "vp_c13_near1",
+          "vp_c13_near2",
+          "vp_t08_near2",
+          "vp_h08_near2",
+          "vp_c12_near1",
+          "vp_h07_near1",
+          "vp_p08_near1",
+          "vp_h04_near1"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "relational",
+        "miss_reason": "lexical trap; nearby procedures share entities and timing language but govern a different threshold"
+      },
+      {
+        "query": "What does the procedure require when this kind of kyc case occurs?",
+        "gold": [
+          "vp_p01_gold"
+        ],
+        "top10": [
+          "vp_t01_gold",
+          "vp_h02_gold",
+          "vp_h02_near2",
+          "vp_c14_near2",
+          "vp_c01_near2",
+          "vp_p01_near2",
+          "vp_t01_near2",
+          "vp_c14_gold",
+          "vp_c14_near1",
+          "vp_c01_near1"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "dense",
+        "miss_reason": "paraphrase trap; distractors share the obvious nouns while the gold states the operational requirement indirectly"
+      },
+      {
+        "query": "How should an analyst handle this margin situation in practice?",
+        "gold": [
+          "vp_p04_gold"
+        ],
+        "top10": [
+          "DOC_MARG_001",
+          "DOC_MARG_002",
+          "vp_p04_near2",
+          "vp_c15_near2",
+          "vp_t04_near2",
+          "vp_c04_near2",
+          "vp_h03_near2",
+          "vp_t04_gold",
+          "vp_c04_gold",
+          "DOC_FINRA_001"
+        ],
+        "dense_should_miss": false,
+        "channel_hint": "dense",
+        "miss_reason": "dense may succeed because the question retains direct policy terminology"
+      },
+      {
+        "query": "What does the procedure require when this kind of margin case occurs?",
+        "gold": [
+          "vp_p04_gold"
+        ],
+        "top10": [
+          "DOC_MARG_001",
+          "DOC_MARG_002",
+          "vp_h03_near2",
+          "vp_p04_near2",
+          "vp_t04_near2",
+          "vp_c15_near2",
+          "vp_c04_near2",
+          "vp_c15_near3",
+          "vp_p04_near3",
+          "vp_c04_near3"
+        ],
+        "dense_should_miss": false,
+        "channel_hint": "dense",
+        "miss_reason": "dense may succeed because the question retains direct policy terminology"
+      }
+    ]
+  }
+}

@@ -15,6 +15,8 @@ Subcommands:
   run-all-smoke   end-to-end plumbing on example JSONL (not a quality claim)
   finance-demo    near-real finance client Phase-1 demo
   finance-pg      finance demo ingest+search on Postgres/pgvector
+  hard-eval       isolated/mixed dense hard-eval baseline
+  causal-recovery train causal + recovery scorecard on dense misses
 """
 
 from __future__ import annotations
@@ -292,6 +294,46 @@ def cmd_finance_pg(args) -> int:
     return _run(cmd)
 
 
+def cmd_hard_eval(args) -> int:
+    cmd = [
+        sys.executable,
+        str(ROOT / "demos" / "finance_demo" / "run_hard_eval.py"),
+        "--mode",
+        args.mode,
+        "--encoder",
+        args.encoder,
+        "--epochs",
+        str(args.epochs),
+        "--batch-size",
+        str(args.batch_size),
+        "--packs",
+        *list(args.packs),
+    ]
+    if args.skip_train:
+        cmd.append("--skip-train")
+    return _run(cmd)
+
+
+def cmd_causal_recovery(args) -> int:
+    cmd = [
+        sys.executable,
+        str(ROOT / "demos" / "finance_demo" / "run_causal_recovery.py"),
+        "--pack",
+        args.pack,
+        "--encoder",
+        args.encoder,
+        "--epochs",
+        str(args.epochs),
+        "--batch-size",
+        str(args.batch_size),
+        "--k",
+        str(args.k),
+    ]
+    if args.skip_train:
+        cmd.append("--skip-train")
+    return _run(cmd)
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="vectorprism", description="VectorPrism Phases 0-6 CLI")
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -406,6 +448,36 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--epochs", type=int, default=3)
     s.add_argument("--skip-train", action="store_true")
     s.set_defaults(func=cmd_finance_pg)
+
+    s = sub.add_parser("hard-eval", help="Dense hard-eval baseline (isolated or mixed packs)")
+    s.add_argument("--mode", choices=["isolated", "mixed"], default="isolated")
+    s.add_argument(
+        "--packs",
+        nargs="+",
+        choices=["gemini", "gpt", "adversarial"],
+        default=["adversarial"],
+    )
+    s.add_argument("--encoder", default="sentence-transformers/all-mpnet-base-v2")
+    s.add_argument("--epochs", type=int, default=3)
+    s.add_argument("--batch-size", type=int, default=16)
+    s.add_argument("--skip-train", action="store_true")
+    s.set_defaults(func=cmd_hard_eval)
+
+    s = sub.add_parser(
+        "causal-recovery",
+        help="Train causal from dense ckpt; score recovery on confirmed dense misses",
+    )
+    s.add_argument(
+        "--pack",
+        choices=["gemini", "gpt", "adversarial", "both", "all"],
+        default="adversarial",
+    )
+    s.add_argument("--encoder", default="sentence-transformers/all-mpnet-base-v2")
+    s.add_argument("--epochs", type=int, default=5)
+    s.add_argument("--batch-size", type=int, default=16)
+    s.add_argument("--skip-train", action="store_true")
+    s.add_argument("--k", type=int, default=10)
+    s.set_defaults(func=cmd_causal_recovery)
     return p
 
 

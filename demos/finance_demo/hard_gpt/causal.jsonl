@@ -1,0 +1,60 @@
+{"earlier":"beneficial-ownership change entered the client master","later":"the KYC event-review queue did not receive the ownership event"}
+{"earlier":"an AML enrichment schema changed upstream","later":"pending alerts accumulated because enrichment responses became stale"}
+{"earlier":"a payment gateway timed out","later":"the retry service submitted the wire with a new idempotency key"}
+{"earlier":"the intraday margin stress parameter was refreshed","later":"margin calls increased without a comparable position increase"}
+{"earlier":"a local market holiday was loaded as an open day","later":"settlement instructions were released into a closed market"}
+{"earlier":"a source price feed became delayed","later":"the NAV cache reused a stale security price"}
+{"earlier":"a subsidiary cash sweep entered a bank maintenance window","later":"the intraday liquidity buffer fell below its minimum"}
+{"earlier":"the SOX export used the wrong environment filter","later":"valid approval records were omitted from the audit package"}
+{"earlier":"the overnight covariance refresh failed","later":"the VaR run loaded the prior covariance matrix"}
+{"earlier":"the severity rule required an application-error signal","later":"loss of the settlement heartbeat was escalated late"}
+{"earlier":"a tax-residency update failed to propagate","later":"withholding used the prior residency code"}
+{"earlier":"an ESG provider changed methodology","later":"historical portfolio ESG scores were recalculated"}
+{"earlier":"a backup workload consumed storage throughput","later":"DR replication lag increased"}
+{"earlier":"a new beneficial-owner association was detected","later":"the client KYC risk tier increased"}
+{"earlier":"a collateral price became stale","later":"available margin fell and liquidation fired"}
+{"earlier":"a settlement cash outflow was omitted from the forecast","later":"projected liquidity was overstated"}
+{"earlier":"beneficial-ownership change entered the client master","later":"the KYC event-review queue did not receive the ownership event"}
+{"earlier":"an AML enrichment schema changed upstream","later":"pending alerts accumulated because enrichment responses became stale"}
+{"earlier":"a payment gateway timed out","later":"the retry service submitted the wire with a new idempotency key"}
+{"earlier":"the intraday margin stress parameter was refreshed","later":"margin calls increased without a comparable position increase"}
+{"earlier":"a local market holiday was loaded as an open day","later":"settlement instructions were released into a closed market"}
+{"earlier":"a source price feed became delayed","later":"the NAV cache reused a stale security price"}
+{"earlier":"a subsidiary cash sweep entered a bank maintenance window","later":"the intraday liquidity buffer fell below its minimum"}
+{"earlier":"the SOX export used the wrong environment filter","later":"valid approval records were omitted from the audit package"}
+{"earlier":"the overnight covariance refresh failed","later":"the VaR run loaded the prior covariance matrix"}
+{"earlier":"the severity rule required an application-error signal","later":"loss of the settlement heartbeat was escalated late"}
+{"earlier":"a tax-residency update failed to propagate","later":"withholding used the prior residency code"}
+{"earlier":"an ESG provider changed methodology","later":"historical portfolio ESG scores were recalculated"}
+{"earlier":"a backup workload consumed storage throughput","later":"DR replication lag increased"}
+{"earlier":"a new beneficial-owner association was detected","later":"the client KYC risk tier increased"}
+{"earlier":"a collateral price became stale","later":"available margin fell and liquidation fired"}
+{"earlier":"a settlement cash outflow was omitted from the forecast","later":"projected liquidity was overstated"}
+{"earlier":"beneficial-ownership change entered the client master","later":"the KYC event-review queue did not receive the ownership event"}
+{"earlier":"an AML enrichment schema changed upstream","later":"pending alerts accumulated because enrichment responses became stale"}
+{"earlier":"a payment gateway timed out","later":"the retry service submitted the wire with a new idempotency key"}
+{"earlier":"the intraday margin stress parameter was refreshed","later":"margin calls increased without a comparable position increase"}
+{"earlier":"a local market holiday was loaded as an open day","later":"settlement instructions were released into a closed market"}
+{"earlier":"a source price feed became delayed","later":"the NAV cache reused a stale security price"}
+{"earlier":"a subsidiary cash sweep entered a bank maintenance window","later":"the intraday liquidity buffer fell below its minimum"}
+{"earlier":"the SOX export used the wrong environment filter","later":"valid approval records were omitted from the audit package"}
+{"earlier":"the overnight covariance refresh failed","later":"the VaR run loaded the prior covariance matrix"}
+{"earlier":"the severity rule required an application-error signal","later":"loss of the settlement heartbeat was escalated late"}
+{"earlier":"a tax-residency update failed to propagate","later":"withholding used the prior residency code"}
+{"earlier":"an ESG provider changed methodology","later":"historical portfolio ESG scores were recalculated"}
+{"earlier":"a backup workload consumed storage throughput","later":"DR replication lag increased"}
+{"earlier":"a new beneficial-owner association was detected","later":"the client KYC risk tier increased"}
+{"earlier":"a collateral price became stale","later":"available margin fell and liquidation fired"}
+{"earlier":"a settlement cash outflow was omitted from the forecast","later":"projected liquidity was overstated"}
+{"earlier":"beneficial-ownership change entered the client master","later":"the KYC event-review queue did not receive the ownership event"}
+{"earlier":"an AML enrichment schema changed upstream","later":"pending alerts accumulated because enrichment responses became stale"}
+{"earlier":"a payment gateway timed out","later":"the retry service submitted the wire with a new idempotency key"}
+{"earlier":"the intraday margin stress parameter was refreshed","later":"margin calls increased without a comparable position increase"}
+{"earlier":"a local market holiday was loaded as an open day","later":"settlement instructions were released into a closed market"}
+{"earlier":"a source price feed became delayed","later":"the NAV cache reused a stale security price"}
+{"earlier":"a subsidiary cash sweep entered a bank maintenance window","later":"the intraday liquidity buffer fell below its minimum"}
+{"earlier":"the SOX export used the wrong environment filter","later":"valid approval records were omitted from the audit package"}
+{"earlier":"the overnight covariance refresh failed","later":"the VaR run loaded the prior covariance matrix"}
+{"earlier":"the severity rule required an application-error signal","later":"loss of the settlement heartbeat was escalated late"}
+{"earlier":"a tax-residency update failed to propagate","later":"withholding used the prior residency code"}
+{"earlier":"an ESG provider changed methodology","later":"historical portfolio ESG scores were recalculated"}

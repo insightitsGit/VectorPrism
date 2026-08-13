@@ -1,0 +1,7 @@
+{"earlier": "Scheduled sovereign bond haircut revaluation reduces unencumbered collateral and depletes a trading desk Intraday Credit Ceiling", "later": "Risk Gatekeeper blocks outbound electronic order flow on the affected desk until additional collateral is pledged"}
+{"earlier": "Covered counterparty misses undisputed variation margin transfer deadline", "later": "Credit Operations freezes prime brokerage financing and blocks subsequent DVP releases"}
+{"earlier": "Customer profile phone number change or SIM-swap occurs within 24 hours before a funds transfer request", "later": "Fraud engine applies a 48-hour outbound payment security freeze requiring biometric video release"}
+{"earlier": "Bank consolidated daylight overdraft utilization exceeds 90% of uncollateralized net debit cap", "later": "Payment Queue Manager pauses outbound Fedwire transfers above $10M until Treasury pledges collateral"}
+{"earlier": "Datacenter Alpha loses quorum contact with peer site and cloud Witness during WAN partition", "later": "Local database engine enters read-only within 500ms and rejects settlement write transactions"}
+{"earlier": "CCP issues electronic intraday variation margin call during market volatility", "later": "Clearing member misses 60-minute Fedwire pledge window and is declared in default"}
+{"earlier": "Kafka consumer lag on tx-ledger-events exceeds 500,000 uncommitted messages", "later": "SRE detaches non-critical audit consumers to protect core ledger balance updater"}

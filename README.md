@@ -87,7 +87,7 @@ Ground truth: `PSMTensorContract` / `VectorPrismTensorContract` in [`tensor_cont
 |---|---|---:|---|---|
 | `[0000..0015]` | `HEADER` `[0:16)` | 16 | Control Header Manifest | Bitmask, truth, anchor dist, timestamp, model version |
 | `[0016..0383]` | `DENSE_CORE` `[16:384)` | 368 | Dense Semantic Core | L2-normalized cosine space; Stage-1 ANN |
-| `[0384..0511]` | `RELATIONAL` `[384:512)` | 128 | Relational Group Algebra | TransE-style structure |
+| `[0384..0511]` | `RELATIONAL` `[384:512)` | 128 | Relational Group Algebra | Train: TransE \(S+R\approx O\); **serve today: L2 proximity** \(-\|q_{\mathrm{rel}}-c_{\mathrm{rel}}\|\) (no query-time relation id yet) |
 | `[0512..0639]` | `DISENTANGLED` `[512:640)` | 128 | Disentangled Latent (Jabir) | VIB latent \(z\) |
 | `[0640..0767]` | `HYPERBOLIC` `[640:768)` | 128 | Hyperbolic Taxonomy (Porphyry) | Poincaré ball |
 | `[0768..0895]` | `IDENTITY` `[768:896)` | 128 | Identity Consistency (Ibn Sina) | Distance-to-frozen \(v_0\); **Stage-1 gate only** |

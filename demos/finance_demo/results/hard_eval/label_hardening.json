@@ -1,0 +1,16 @@
+{
+  "gemini": {
+    "eval_path": "C:\\code\\VectorPrism\\demos\\finance_demo\\hard_gemini\\eval.jsonl",
+    "n_eval": 112,
+    "dense_should_miss_before": 112,
+    "dense_should_miss_after": 9,
+    "confirmed_miss_file": "C:\\code\\VectorPrism\\demos\\finance_demo\\results\\hard_eval\\confirmed_misses_gemini.jsonl"
+  },
+  "gpt": {
+    "eval_path": "C:\\code\\VectorPrism\\demos\\finance_demo\\hard_gpt\\eval.jsonl",
+    "n_eval": 100,
+    "dense_should_miss_before": 90,
+    "dense_should_miss_after": 19,
+    "confirmed_miss_file": "C:\\code\\VectorPrism\\demos\\finance_demo\\results\\hard_eval\\confirmed_misses_gpt.jsonl"
+  }
+}

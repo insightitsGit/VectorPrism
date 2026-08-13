@@ -1,0 +1,310 @@
+{
+  "mode": "isolated",
+  "encoder": "sentence-transformers/all-mpnet-base-v2",
+  "adversarial": {
+    "pack": "adversarial",
+    "train_pairs": "/app/demos/finance_demo/hard_adversarial/dense_pairs.jsonl",
+    "n_train_pairs": 153,
+    "n_docs_indexed": 306,
+    "checkpoint": "/app/checkpoints/finance_hard_adversarial.pt",
+    "n_eval": 14,
+    "metrics": {
+      "vectorprism_dense_only": {
+        "recall@1": 0.0,
+        "recall@5": 0.07142857142857142,
+        "recall@10": 0.07142857142857142,
+        "MRR": 0.023809523809523808,
+        "n_eval_examples": 14
+      },
+      "dense_cosine_baseline": {
+        "recall@1": 0.0,
+        "recall@5": 0.07142857142857142,
+        "recall@10": 0.07142857142857142,
+        "MRR": 0.023809523809523808,
+        "n_eval_examples": 14.0
+      }
+    },
+    "confirmed_dense_misses_at_1": 14,
+    "confirmed_miss_rate_at_1": 1.0,
+    "confirmed_dense_misses_at_10": 13,
+    "confirmed_miss_rate_at_10": 0.9285714285714286,
+    "labeled_dense_should_miss": 14,
+    "labeled_miss_confirmed_at_10": 13,
+    "labeled_miss_confirmation_rate": 0.9285714285714286,
+    "miss_examples": [
+      {
+        "query": "Why did the London trading desk's aggressive order routing halt at 14:15 even though the exchange FIX sessions still showed connected status?",
+        "gold": [
+          "ADV_C01_gold"
+        ],
+        "top10": [
+          "ADV_C01_d01",
+          "ADV_C01_d12",
+          "ADV_C01_d06",
+          "ADV_C01_d08",
+          "ADV_C01_d11",
+          "ADV_C01_d10",
+          "ADV_C01_d15",
+          "ADV_C01_d03",
+          "ADV_C01_d05",
+          "ADV_C01_d04"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "causal",
+        "miss_reason": "multi-hop causal disconnect: query symptom is routing halt / FIX; gold is NY collateral revaluation \u2192 ICL breach \u2192 routing gate; distractors monopolize routing/FIX/SOR vocabulary"
+      },
+      {
+        "query": "Why did prime brokerage place a settlement lock on the client's Friday morning DVP deliveries when trade economics already matched?",
+        "gold": [
+          "ADV_C02_gold"
+        ],
+        "top10": [
+          "ADV_C02_d01",
+          "ADV_C02_d02",
+          "ADV_C02_d09",
+          "ADV_C02_d08",
+          "ADV_C02_d03",
+          "ADV_C02_d04",
+          "ADV_C02_d06",
+          "ADV_C02_d14",
+          "ADV_C02_d05",
+          "ADV_C02_d11"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "causal",
+        "miss_reason": "causal multihop: symptom is Friday DVP settlement lock; gold is Wednesday variation-margin shortfall cascading to credit freeze; distractors are SSI/DVP/lock text"
+      },
+      {
+        "query": "Why did Fraud Operations freeze all outbound wires on a wealth account that submitted a valid wire request with matching MFA?",
+        "gold": [
+          "ADV_C03_gold"
+        ],
+        "top10": [
+          "ADV_C03_d01",
+          "ADV_C03_d07",
+          "ADV_C03_d04",
+          "ADV_C03_d09",
+          "ADV_C03_d03",
+          "ADV_C03_d14",
+          "ADV_C03_d10",
+          "ADV_C03_d05",
+          "ADV_C03_d08",
+          "ADV_R01_d06"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "causal",
+        "miss_reason": "causal sequence: query focuses on valid wire+MFA freeze; gold is prior SIM-swap / phone-change within 24h; distractors are callback/$5M wire rules"
+      },
+      {
+        "query": "Which operational approval applies specifically to an unlisted holding company under the Tier-2 discretionary trust onboarding path?",
+        "gold": [
+          "ADV_H01_gold"
+        ],
+        "top10": [
+          "ADV_H01_d07",
+          "ADV_H01_d03",
+          "ADV_H01_d05",
+          "ADV_H01_d06",
+          "ADV_H01_d02",
+          "ADV_H01_d15",
+          "ADV_H01_d11",
+          "ADV_H01_d01",
+          "ADV_H01_d09",
+          "ADV_H01_d10"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "hyperbolic",
+        "miss_reason": "hyperbolic level collision: distractors are parent Tier-2 trust, Tier-1 trust, and corporate holding guides; gold is deep sub-clause for unlisted holdcos"
+      },
+      {
+        "query": "Why was a seven-million-dollar commercial outbound Fedwire released without completing an out-of-band voice callback to the client?",
+        "gold": [
+          "ADV_R01_gold"
+        ],
+        "top10": [
+          "ADV_R01_d14",
+          "ADV_R01_d03",
+          "ADV_R01_d06",
+          "ADV_R01_d02",
+          "ADV_R01_d04",
+          "ADV_R01_d10",
+          "ADV_R01_d07",
+          "ADV_R01_d05",
+          "ADV_R01_d01",
+          "ADV_C04_d04"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "relational",
+        "miss_reason": "relational boundary: distractors restate >$5M dual-auth+callback; gold is repetitive SSI exemption within 180 days"
+      },
+      {
+        "query": "Why did Sanctions Operations return an incoming payment tied to a comprehensively sanctioned geography instead of placing the funds into a blocked interest-bearing account?",
+        "gold": [
+          "ADV_R02_gold"
+        ],
+        "top10": [
+          "ADV_R02_d02",
+          "ADV_R02_d07",
+          "ADV_R02_d10",
+          "ADV_R02_d08",
+          "ADV_R02_d13",
+          "ADV_R02_d06",
+          "ADV_R02_d05",
+          "ADV_R02_d11",
+          "ADV_R02_d01",
+          "ADV_R02_d09"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "relational",
+        "miss_reason": "relational distinction Block vs Reject: distractors push SDN freeze/block account; gold is territory nexus without SDN property interest \u2192 Reject"
+      },
+      {
+        "query": "What is the currently effective Initial Margin segregation requirement for Uncleared Margin Rules Phase 6 covered counterparties?",
+        "gold": [
+          "ADV_E01_gold"
+        ],
+        "top10": [
+          "ADV_E01_d01",
+          "ADV_E01_d15",
+          "ADV_E01_d02",
+          "ADV_E01_d08",
+          "ADV_E01_d12",
+          "ADV_E01_d06",
+          "ADV_E01_d13",
+          "ADV_E01_d11",
+          "ADV_E01_d09",
+          "ADV_E01_d04"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "dense",
+        "miss_reason": "epistemic version trap: distractors are 2021 drafts / omnibus summaries with IM/Phase 6 keywords; gold is active third-party ACA segregation rule"
+      },
+      {
+        "query": "What NAV error threshold currently requires full retrospective shareholder transaction reprocessing and direct investor compensation?",
+        "gold": [
+          "ADV_E02_gold"
+        ],
+        "top10": [
+          "ADV_E02_d09",
+          "ADV_E02_d04",
+          "ADV_E02_d03",
+          "ADV_E02_d10",
+          "ADV_E02_d01",
+          "ADV_E02_d05",
+          "ADV_E02_d02",
+          "ADV_E02_d14",
+          "ADV_E02_d13",
+          "ADV_E02_d15"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "dense",
+        "miss_reason": "threshold/version collision: distractors emphasize $0.01, 0.10\u20130.49%, and immaterial bands; gold is active >=0.50% full reprocessing rule"
+      },
+      {
+        "query": "Why did the Payment Queue Manager pause multiple large customer Fedwire releases at mid-morning even though customer ledger balances were sufficient?",
+        "gold": [
+          "ADV_C04_gold"
+        ],
+        "top10": [
+          "ADV_C04_d01",
+          "ADV_C04_d13",
+          "ADV_C04_d02",
+          "ADV_C04_d07",
+          "ADV_C04_d14",
+          "ADV_C04_d15",
+          "ADV_C04_d10",
+          "ADV_C04_d04",
+          "ADV_C04_d11",
+          "ADV_C04_d08"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "causal",
+        "miss_reason": "causal: symptom is paused Fedwire with good customer balances; gold is bank daylight overdraft cap >90%; distractors are fraud/dual-auth/customer-funds text"
+      },
+      {
+        "query": "Why did Datacenter Alpha suddenly reject new settlement writes and flip its database to read-only during a network event?",
+        "gold": [
+          "ADV_C05_gold"
+        ],
+        "top10": [
+          "ADV_C05_d05",
+          "ADV_C05_d14",
+          "ADV_C05_d15",
+          "ADV_C05_d13",
+          "ADV_C05_d06",
+          "ADV_C05_d07",
+          "ADV_C05_d10",
+          "ADV_C05_d03",
+          "ADV_C05_d01",
+          "ADV_C05_d09"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "causal",
+        "miss_reason": "causal split-brain: distractors are generic DR/RTO failover; gold is loss of quorum with Witness C forcing read-only within 500ms"
+      },
+      {
+        "query": "Why did LCH declare a clearing-member default after a morning volatility spike even though overnight margin balances looked sufficient?",
+        "gold": [
+          "ADV_C06_gold"
+        ],
+        "top10": [
+          "ADV_C06_d04",
+          "ADV_C06_d01",
+          "ADV_C06_d07",
+          "ADV_C06_d03",
+          "ADV_C06_d05",
+          "ADV_C06_d08",
+          "ADV_C06_d12",
+          "ADV_C06_d02",
+          "ADV_C06_d06",
+          "ADV_C02_gold"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "causal",
+        "miss_reason": "causal timing: distractors are overnight VM/IM schedules; gold is 60-minute intraday CCP pledge window miss"
+      },
+      {
+        "query": "Why were non-critical audit consumers disconnected from the Kafka cluster during yesterday's market-close processing window?",
+        "gold": [
+          "ADV_C07_gold"
+        ],
+        "top10": [
+          "ADV_C07_d03",
+          "ADV_C07_d01",
+          "ADV_C07_d08",
+          "ADV_C07_d14",
+          "ADV_C07_d09",
+          "ADV_C07_d06",
+          "ADV_C07_d04",
+          "ADV_C07_d02",
+          "ADV_C07_d12",
+          "ADV_C07_d15"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "causal",
+        "miss_reason": "causal load-shedding: distractors are security/audit topics; gold is consumer lag >500k on tx-ledger-events requiring shed of non-critical consumers"
+      },
+      {
+        "query": "Why was a repo margin call notice rejected for same-day settlement when delivered at 10:45 AM London time?",
+        "gold": [
+          "ADV_R03_gold"
+        ],
+        "top10": [
+          "ADV_R03_d13",
+          "ADV_R03_d01",
+          "ADV_R03_d11",
+          "ADV_R03_d08",
+          "ADV_R03_d02",
+          "ADV_R03_d09",
+          "ADV_R03_d06",
+          "ADV_R03_d03",
+          "ADV_R03_d07",
+          "ADV_R03_d05"
+        ],
+        "dense_should_miss": true,
+        "channel_hint": "relational",
+        "miss_reason": "relational timing boundary: distractors cite 10:00 AM EST CSA rules; gold is GMRA after 10:00 AM London \u2192 next-day delivery"
+      }
+    ]
+  }
+}
