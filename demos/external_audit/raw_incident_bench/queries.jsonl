@@ -1,0 +1,18 @@
+{"query_id":"Q-001","query":"which incident explains slow pgvector searches after an index rebuild?","intent":"find_root_cause","difficulty":"easy"}
+{"query_id":"Q-002","query":"how did the team fix webhook jobs stuck in a retry loop?","intent":"find_resolution","difficulty":"easy"}
+{"query_id":"Q-003","query":"dashboard metrics are old even though the api is healthy","intent":"find_related_incident","difficulty":"medium"}
+{"query_id":"Q-004","query":"jsonl caption export rejected because asset ids repeated","intent":"find_related_incident","difficulty":"easy"}
+{"query_id":"Q-005","query":"find the high severity memory incident where provenance was missing","intent":"filter_by_metadata","difficulty":"medium"}
+{"query_id":"Q-006","query":"benchmark scores changed after no model code changes","intent":"find_root_cause","difficulty":"medium"}
+{"query_id":"Q-007","query":"authorized restricted search returns nothing but public search is fine","intent":"find_root_cause","difficulty":"hard"}
+{"query_id":"Q-008","query":"config reload missed the newest rotation until service restart","intent":"find_related_incident","difficulty":"medium"}
+{"query_id":"Q-009","query":"embedding batch failed because staging storage filled up","intent":"find_resolution","difficulty":"easy"}
+{"query_id":"Q-010","query":"wrong owner got paged for an alert","intent":"find_root_cause","difficulty":"easy"}
+{"query_id":"Q-011","query":"model clients saw checksum failures from cached downloads","intent":"find_related_incident","difficulty":"medium"}
+{"query_id":"Q-012","query":"runbook search gives definitions instead of actual fix procedures","intent":"find_resolution","difficulty":"medium"}
+{"query_id":"Q-013","query":"incidents related to stale metadata or stale exported state","intent":"find_related_incident","difficulty":"hard"}
+{"query_id":"Q-014","query":"which search problem was caused by authorization policy labels rather than vector recall?","intent":"find_root_cause","difficulty":"hard"}
+{"query_id":"Q-015","query":"which media automation issue required deduplicating by asset id?","intent":"find_resolution","difficulty":"easy"}
+{"query_id":"Q-016","query":"what incident added dependency fingerprinting to reports?","intent":"find_resolution","difficulty":"medium"}
+{"query_id":"Q-017","query":"find storage-related failures across model or embedding workflows","intent":"find_related_incident","difficulty":"hard"}
+{"query_id":"Q-018","query":"which incident fixed search quality by boosting procedure documents?","intent":"find_resolution","difficulty":"medium"}

@@ -1,0 +1,8 @@
+{
+  "source": "trentdoney/synthetic-incident-search-benchmark",
+  "license_note": "Public Hugging Face dataset; synthetic incidents (not real customer data).",
+  "n_documents": 12,
+  "n_eval": 18,
+  "vertical": "SRE / incident-response retrieval",
+  "why_this_pack": "Public-safe operational incident notes with labeled queries and hard negatives. Not constructed by VectorPrism authors to force dense failure."
+}

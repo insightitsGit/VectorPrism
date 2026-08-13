@@ -5,10 +5,11 @@
 [![PyPI](https://img.shields.io/badge/PyPI-vectorprism-blue?logo=pypi&logoColor=white)](https://pypi.org/project/vectorprism/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
-[![Build](https://img.shields.io/badge/tests-36%20passing-brightgreen)](https://github.com/insightitsGit/VectorPrism/actions)
+[![Build](https://img.shields.io/github/actions/workflow/status/insightitsGit/VectorPrism/ci.yml?branch=main&label=CI)](https://github.com/insightitsGit/VectorPrism/actions/workflows/ci.yml)
+[![PyPI version](https://img.shields.io/pypi/v/vectorprism.svg)](https://pypi.org/project/vectorprism/)
 [![Demo](https://img.shields.io/badge/Demo-interactive-2f9e7a)](https://insightitsgit.github.io/VectorPrism/)
-[![Benchmarks](https://img.shields.io/badge/Benchmarks-13%2F13%20recovery-c4a35a)](BENCHMARKS.md)
-[![Discord](https://img.shields.io/badge/Discord-Join%20Community-5865F2?logo=discord&logoColor=white)](https://discord.gg/vectorprism)
+[![Benchmarks](https://img.shields.io/badge/Benchmarks-adversarial%20pack-c4a35a)](BENCHMARKS.md)
+[![Discussions](https://img.shields.io/badge/GitHub-Discussions-181717?logo=github)](https://github.com/insightitsGit/VectorPrism/discussions)
 [![GitHub](https://img.shields.io/badge/GitHub-insightitsGit%2FVectorPrism-181717?logo=github)](https://github.com/insightitsGit/VectorPrism)
 
 > One contiguous **1024d** tensor. Six independently trained relevance subspaces. Stage-1 HNSW + Stage-2 intent-gated rescoring. Baseline vector-DB storage cost — not 6× multi-vector inflation.
@@ -22,7 +23,9 @@
 
 ## Benchmarks (adversarial pack)
 
-Dense fails on purpose. Multi-channel recovers the misses.
+**Scope honesty:** the table below is from our calibrated `hard_adversarial` finance pack (dense is *designed* to miss). It is **not** a claim that every public corpus shows the same Miss@10. For partner corpora use [`scripts/corpus_recovery_audit.py`](scripts/corpus_recovery_audit.py) — see [`demos/external_audit/`](demos/external_audit/).
+
+Dense fails on purpose **in that pack**. Multi-channel recovers those misses.
 
 | Metric | Result |
 |--------|-------:|
@@ -452,7 +455,7 @@ Insight ITS works with enterprise architects on:
 - Email: `insightits.info@gmail.com`
 - Soft CTA: email subject **RECOVER** → `insightits.info@gmail.com`
 - GitHub Discussions: [insightitsGit/VectorPrism](https://github.com/insightitsGit/VectorPrism/discussions)  
-- Discord: [Join the VectorPrism community](https://discord.gg/vectorprism)
+- Community: [GitHub Discussions](https://github.com/insightitsGit/VectorPrism/discussions) (no public Discord invite is published)
 
 ---
 

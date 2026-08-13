@@ -1,0 +1,529 @@
+{
+  "checkpoint": "checkpoints/finance_hard_adversarial_multi.pt",
+  "encoder": "sentence-transformers/all-mpnet-base-v2",
+  "k": 10,
+  "n_documents": 12,
+  "n_eval": 18,
+  "n_dense_miss_at_k": 0,
+  "structure_files": {
+    "causal_graph": null,
+    "hyperbolic_graph": null,
+    "relational_attrs": null
+  },
+  "enabled_channels": {
+    "dense": true,
+    "relational": true,
+    "disentangled": false,
+    "hyperbolic": true,
+    "identity": true,
+    "causal": true
+  },
+  "pack_meta": {
+    "source": "trentdoney/synthetic-incident-search-benchmark",
+    "license_note": "Public Hugging Face dataset; synthetic incidents (not real customer data).",
+    "n_documents": 12,
+    "n_eval": 18,
+    "vertical": "SRE / incident-response retrieval",
+    "why_this_pack": "Public-safe operational incident notes with labeled queries and hard negatives. Not constructed by VectorPrism authors to force dense failure."
+  },
+  "full_set_metrics": {
+    "dense_only": {
+      "recall@1": 0.8888888888888888,
+      "recall@5": 1.0,
+      "recall@10": 1.0,
+      "MRR": 0.9444444444444444
+    },
+    "multi_channels": {
+      "recall@1": 0.8888888888888888,
+      "recall@5": 1.0,
+      "recall@10": 1.0,
+      "MRR": 0.9305555555555556
+    }
+  },
+  "recovery_on_dense_misses": {
+    "dense_only": {
+      "recovered@1": 0,
+      "recovered@5": 0,
+      "recovered@10": 0,
+      "recovery@10": 0.0,
+      "n_dense_miss": 0
+    },
+    "multi_channels": {
+      "recovered@1": 0,
+      "recovered@5": 0,
+      "recovered@10": 0,
+      "recovery@10": 0.0,
+      "n_dense_miss": 0
+    }
+  },
+  "per_query": [
+    {
+      "query": "which incident explains slow pgvector searches after an index rebuild?",
+      "gold": [
+        "SYN-2026-0001"
+      ],
+      "dense_rank": 1,
+      "dense_top5": [
+        "SYN-2026-0001",
+        "SYN-2026-0012",
+        "SYN-2026-0007",
+        "SYN-2026-0010",
+        "SYN-2026-0008"
+      ],
+      "dense_hit@10": true,
+      "multi_top5": [
+        "SYN-2026-0001",
+        "SYN-2026-0006",
+        "SYN-2026-0012",
+        "SYN-2026-0002",
+        "SYN-2026-0009"
+      ],
+      "multi_hit@10": true,
+      "silent_dense_fail": false,
+      "multi_recovers_silent_fail": false
+    },
+    {
+      "query": "how did the team fix webhook jobs stuck in a retry loop?",
+      "gold": [
+        "SYN-2026-0002"
+      ],
+      "dense_rank": 1,
+      "dense_top5": [
+        "SYN-2026-0002",
+        "SYN-2026-0003",
+        "SYN-2026-0009",
+        "SYN-2026-0010",
+        "SYN-2026-0008"
+      ],
+      "dense_hit@10": true,
+      "multi_top5": [
+        "SYN-2026-0002",
+        "SYN-2026-0001",
+        "SYN-2026-0009",
+        "SYN-2026-0008",
+        "SYN-2026-0006"
+      ],
+      "multi_hit@10": true,
+      "silent_dense_fail": false,
+      "multi_recovers_silent_fail": false
+    },
+    {
+      "query": "dashboard metrics are old even though the api is healthy",
+      "gold": [
+        "SYN-2026-0003"
+      ],
+      "dense_rank": 1,
+      "dense_top5": [
+        "SYN-2026-0003",
+        "SYN-2026-0006",
+        "SYN-2026-0002",
+        "SYN-2026-0007",
+        "SYN-2026-0001"
+      ],
+      "dense_hit@10": true,
+      "multi_top5": [
+        "SYN-2026-0003",
+        "SYN-2026-0006",
+        "SYN-2026-0001",
+        "SYN-2026-0002",
+        "SYN-2026-0012"
+      ],
+      "multi_hit@10": true,
+      "silent_dense_fail": false,
+      "multi_recovers_silent_fail": false
+    },
+    {
+      "query": "jsonl caption export rejected because asset ids repeated",
+      "gold": [
+        "SYN-2026-0004"
+      ],
+      "dense_rank": 1,
+      "dense_top5": [
+        "SYN-2026-0004",
+        "SYN-2026-0007",
+        "SYN-2026-0005",
+        "SYN-2026-0011",
+        "SYN-2026-0002"
+      ],
+      "dense_hit@10": true,
+      "multi_top5": [
+        "SYN-2026-0004",
+        "SYN-2026-0006",
+        "SYN-2026-0002",
+        "SYN-2026-0011",
+        "SYN-2026-0007"
+      ],
+      "multi_hit@10": true,
+      "silent_dense_fail": false,
+      "multi_recovers_silent_fail": false
+    },
+    {
+      "query": "find the high severity memory incident where provenance was missing",
+      "gold": [
+        "SYN-2026-0005"
+      ],
+      "dense_rank": 1,
+      "dense_top5": [
+        "SYN-2026-0005",
+        "SYN-2026-0007",
+        "SYN-2026-0002",
+        "SYN-2026-0010",
+        "SYN-2026-0012"
+      ],
+      "dense_hit@10": true,
+      "multi_top5": [
+        "SYN-2026-0005",
+        "SYN-2026-0001",
+        "SYN-2026-0007",
+        "SYN-2026-0012",
+        "SYN-2026-0002"
+      ],
+      "multi_hit@10": true,
+      "silent_dense_fail": false,
+      "multi_recovers_silent_fail": false
+    },
+    {
+      "query": "benchmark scores changed after no model code changes",
+      "gold": [
+        "SYN-2026-0006"
+      ],
+      "dense_rank": 1,
+      "dense_top5": [
+        "SYN-2026-0006",
+        "SYN-2026-0008",
+        "SYN-2026-0001",
+        "SYN-2026-0005",
+        "SYN-2026-0007"
+      ],
+      "dense_hit@10": true,
+      "multi_top5": [
+        "SYN-2026-0006",
+        "SYN-2026-0008",
+        "SYN-2026-0001",
+        "SYN-2026-0005",
+        "SYN-2026-0004"
+      ],
+      "multi_hit@10": true,
+      "silent_dense_fail": false,
+      "multi_recovers_silent_fail": false
+    },
+    {
+      "query": "authorized restricted search returns nothing but public search is fine",
+      "gold": [
+        "SYN-2026-0007"
+      ],
+      "dense_rank": 1,
+      "dense_top5": [
+        "SYN-2026-0007",
+        "SYN-2026-0012",
+        "SYN-2026-0001",
+        "SYN-2026-0005",
+        "SYN-2026-0010"
+      ],
+      "dense_hit@10": true,
+      "multi_top5": [
+        "SYN-2026-0007",
+        "SYN-2026-0001",
+        "SYN-2026-0006",
+        "SYN-2026-0012",
+        "SYN-2026-0005"
+      ],
+      "multi_hit@10": true,
+      "silent_dense_fail": false,
+      "multi_recovers_silent_fail": false
+    },
+    {
+      "query": "config reload missed the newest rotation until service restart",
+      "gold": [
+        "SYN-2026-0008"
+      ],
+      "dense_rank": 1,
+      "dense_top5": [
+        "SYN-2026-0008",
+        "SYN-2026-0010",
+        "SYN-2026-0003",
+        "SYN-2026-0001",
+        "SYN-2026-0007"
+      ],
+      "dense_hit@10": true,
+      "multi_top5": [
+        "SYN-2026-0008",
+        "SYN-2026-0001",
+        "SYN-2026-0002",
+        "SYN-2026-0004",
+        "SYN-2026-0003"
+      ],
+      "multi_hit@10": true,
+      "silent_dense_fail": false,
+      "multi_recovers_silent_fail": false
+    },
+    {
+      "query": "embedding batch failed because staging storage filled up",
+      "gold": [
+        "SYN-2026-0009"
+      ],
+      "dense_rank": 1,
+      "dense_top5": [
+        "SYN-2026-0009",
+        "SYN-2026-0004",
+        "SYN-2026-0005",
+        "SYN-2026-0002",
+        "SYN-2026-0001"
+      ],
+      "dense_hit@10": true,
+      "multi_top5": [
+        "SYN-2026-0009",
+        "SYN-2026-0004",
+        "SYN-2026-0002",
+        "SYN-2026-0006",
+        "SYN-2026-0001"
+      ],
+      "multi_hit@10": true,
+      "silent_dense_fail": false,
+      "multi_recovers_silent_fail": false
+    },
+    {
+      "query": "wrong owner got paged for an alert",
+      "gold": [
+        "SYN-2026-0010"
+      ],
+      "dense_rank": 1,
+      "dense_top5": [
+        "SYN-2026-0010",
+        "SYN-2026-0002",
+        "SYN-2026-0012",
+        "SYN-2026-0005",
+        "SYN-2026-0008"
+      ],
+      "dense_hit@10": true,
+      "multi_top5": [
+        "SYN-2026-0010",
+        "SYN-2026-0002",
+        "SYN-2026-0012",
+        "SYN-2026-0004",
+        "SYN-2026-0006"
+      ],
+      "multi_hit@10": true,
+      "silent_dense_fail": false,
+      "multi_recovers_silent_fail": false
+    },
+    {
+      "query": "model clients saw checksum failures from cached downloads",
+      "gold": [
+        "SYN-2026-0011"
+      ],
+      "dense_rank": 1,
+      "dense_top5": [
+        "SYN-2026-0011",
+        "SYN-2026-0008",
+        "SYN-2026-0005",
+        "SYN-2026-0001",
+        "SYN-2026-0003"
+      ],
+      "dense_hit@10": true,
+      "multi_top5": [
+        "SYN-2026-0011",
+        "SYN-2026-0008",
+        "SYN-2026-0001",
+        "SYN-2026-0005",
+        "SYN-2026-0002"
+      ],
+      "multi_hit@10": true,
+      "silent_dense_fail": false,
+      "multi_recovers_silent_fail": false
+    },
+    {
+      "query": "runbook search gives definitions instead of actual fix procedures",
+      "gold": [
+        "SYN-2026-0012"
+      ],
+      "dense_rank": 1,
+      "dense_top5": [
+        "SYN-2026-0012",
+        "SYN-2026-0007",
+        "SYN-2026-0001",
+        "SYN-2026-0008",
+        "SYN-2026-0006"
+      ],
+      "dense_hit@10": true,
+      "multi_top5": [
+        "SYN-2026-0012",
+        "SYN-2026-0006",
+        "SYN-2026-0007",
+        "SYN-2026-0001",
+        "SYN-2026-0008"
+      ],
+      "multi_hit@10": true,
+      "silent_dense_fail": false,
+      "multi_recovers_silent_fail": false
+    },
+    {
+      "query": "incidents related to stale metadata or stale exported state",
+      "gold": [
+        "SYN-2026-0003",
+        "SYN-2026-0010"
+      ],
+      "dense_rank": 2,
+      "dense_top5": [
+        "SYN-2026-0011",
+        "SYN-2026-0010",
+        "SYN-2026-0005",
+        "SYN-2026-0004",
+        "SYN-2026-0008"
+      ],
+      "dense_hit@10": true,
+      "multi_top5": [
+        "SYN-2026-0011",
+        "SYN-2026-0008",
+        "SYN-2026-0005",
+        "SYN-2026-0010",
+        "SYN-2026-0004"
+      ],
+      "multi_hit@10": true,
+      "silent_dense_fail": false,
+      "multi_recovers_silent_fail": false
+    },
+    {
+      "query": "which search problem was caused by authorization policy labels rather than vector recall?",
+      "gold": [
+        "SYN-2026-0007"
+      ],
+      "dense_rank": 1,
+      "dense_top5": [
+        "SYN-2026-0007",
+        "SYN-2026-0005",
+        "SYN-2026-0006",
+        "SYN-2026-0001",
+        "SYN-2026-0012"
+      ],
+      "dense_hit@10": true,
+      "multi_top5": [
+        "SYN-2026-0007",
+        "SYN-2026-0006",
+        "SYN-2026-0001",
+        "SYN-2026-0005",
+        "SYN-2026-0012"
+      ],
+      "multi_hit@10": true,
+      "silent_dense_fail": false,
+      "multi_recovers_silent_fail": false
+    },
+    {
+      "query": "which media automation issue required deduplicating by asset id?",
+      "gold": [
+        "SYN-2026-0004"
+      ],
+      "dense_rank": 1,
+      "dense_top5": [
+        "SYN-2026-0004",
+        "SYN-2026-0005",
+        "SYN-2026-0009",
+        "SYN-2026-0008",
+        "SYN-2026-0007"
+      ],
+      "dense_hit@10": true,
+      "multi_top5": [
+        "SYN-2026-0004",
+        "SYN-2026-0005",
+        "SYN-2026-0009",
+        "SYN-2026-0008",
+        "SYN-2026-0001"
+      ],
+      "multi_hit@10": true,
+      "silent_dense_fail": false,
+      "multi_recovers_silent_fail": false
+    },
+    {
+      "query": "what incident added dependency fingerprinting to reports?",
+      "gold": [
+        "SYN-2026-0006"
+      ],
+      "dense_rank": 2,
+      "dense_top5": [
+        "SYN-2026-0012",
+        "SYN-2026-0006",
+        "SYN-2026-0010",
+        "SYN-2026-0011",
+        "SYN-2026-0005"
+      ],
+      "dense_hit@10": true,
+      "multi_top5": [
+        "SYN-2026-0006",
+        "SYN-2026-0012",
+        "SYN-2026-0010",
+        "SYN-2026-0011",
+        "SYN-2026-0005"
+      ],
+      "multi_hit@10": true,
+      "silent_dense_fail": false,
+      "multi_recovers_silent_fail": false
+    },
+    {
+      "query": "find storage-related failures across model or embedding workflows",
+      "gold": [
+        "SYN-2026-0009",
+        "SYN-2026-0011"
+      ],
+      "dense_rank": 1,
+      "dense_top5": [
+        "SYN-2026-0009",
+        "SYN-2026-0001",
+        "SYN-2026-0002",
+        "SYN-2026-0008",
+        "SYN-2026-0005"
+      ],
+      "dense_hit@10": true,
+      "multi_top5": [
+        "SYN-2026-0001",
+        "SYN-2026-0009",
+        "SYN-2026-0005",
+        "SYN-2026-0008",
+        "SYN-2026-0002"
+      ],
+      "multi_hit@10": true,
+      "silent_dense_fail": false,
+      "multi_recovers_silent_fail": false
+    },
+    {
+      "query": "which incident fixed search quality by boosting procedure documents?",
+      "gold": [
+        "SYN-2026-0012"
+      ],
+      "dense_rank": 1,
+      "dense_top5": [
+        "SYN-2026-0012",
+        "SYN-2026-0001",
+        "SYN-2026-0006",
+        "SYN-2026-0007",
+        "SYN-2026-0005"
+      ],
+      "dense_hit@10": true,
+      "multi_top5": [
+        "SYN-2026-0012",
+        "SYN-2026-0006",
+        "SYN-2026-0001",
+        "SYN-2026-0007",
+        "SYN-2026-0005"
+      ],
+      "multi_hit@10": true,
+      "silent_dense_fail": false,
+      "multi_recovers_silent_fail": false
+    }
+  ],
+  "liability_framing": {
+    "failure_mode": "Wrong runbook / root-cause incident cited \u2192 longer MTTR, repeat outage",
+    "unit_cost_assumption_usd": 15000,
+    "unit_label": "per major incident with wrong root-cause retrieval",
+    "note": "Industry SRE cost-of-downtime proxies vary widely; use as conversation starter only.",
+    "silent_fail_rate_pct": 0.0,
+    "n_silent_fails_at_k": 0,
+    "n_eval": 18,
+    "illustrative_expected_loss_per_100_queries_usd": 0.0,
+    "disclaimer": "Not a promise of savings. Scenario math for pilot scoping."
+  },
+  "honesty": {
+    "checkpoint_trained_on": "VectorPrism finance adversarial demo (transfer test if pack differs)",
+    "graphs_provided": false,
+    "claim": "This audit measures dense vs multi on *this* corpus. Finance adversarial 13/13 recovery does not automatically transfer."
+  }
+}

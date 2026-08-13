@@ -8,7 +8,8 @@ Committed scorecards: [`demos/finance_demo/results/`](demos/finance_demo/results
 
 ## Headline result (adversarial finance pack)
 
-Dense retrieval is intentionally broken on this pack. Multi-channel recovery is the product claim.
+**Scope:** calibrated `hard_adversarial` finance pack only. Dense is intentionally stressed here.  
+**Transfer check:** public incident pack audit → [`demos/external_audit/results/incident_bench/CORPUS_RECOVERY_AUDIT.md`](demos/external_audit/results/incident_bench/CORPUS_RECOVERY_AUDIT.md) (dense already R@10=1.0 — no silent fails to recover).
 
 | Metric | Value |
 |--------|------:|

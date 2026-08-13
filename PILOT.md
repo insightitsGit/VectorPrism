@@ -2,6 +2,8 @@
 
 A **pilot** means someone outside your laptop installs VectorPrism and runs it on **their** documents, queries, and (ideally) labels. Packaging (`pip` / git clone) is what makes that possible.
 
+**Paid audit+fix offer (founding):** [`PILOT_ENGAGEMENT.md`](PILOT_ENGAGEMENT.md) · **Claims honesty:** [`docs/CLAIMS_AUDIT.md`](docs/CLAIMS_AUDIT.md) · **External corpus tooling:** [`demos/external_audit/`](demos/external_audit/)
+
 ---
 
 ## What a pilot partner needs from you
@@ -9,7 +11,7 @@ A **pilot** means someone outside your laptop installs VectorPrism and runs it o
 1. **Installable software** — `pip install "vectorprism[all]"` from PyPI, or `pip install -e ".[all]"` from git for latest main / full adversarial packs
 2. **A 30–60 minute path to first search** — ingest → search on their corpus
 3. **Clear success criteria** — e.g. “recover root-cause docs dense misses” with R@10 / MRR on *their* eval set
-4. **Support channel** — Discord / email / shared Slack for 2–4 weeks
+4. **Support channel** — GitHub Discussions / email / shared Slack for 2–4 weeks
 
 You do **not** need a perfect auto-KG on day one. You need: install works, search works, they can drop in JSONL, and you can iterate on their graph/attrs together.
 
@@ -20,7 +22,7 @@ You do **not** need a perfect auto-KG on day one. You need: install works, searc
 | Channel | Who | Pitch |
 |---------|-----|--------|
 | Existing customers / warm intros | Ops, risk, compliance, SRE | “Dense RAG returns funny neighbors on why/policy queries — we recover with causal/taxonomy channels” |
-| Communities | RAG Discord, local AI meetups, LinkedIn | Offer a **free 2-week pilot** with white-glove ingest help |
+| Communities | GitHub Discussions, local AI meetups, LinkedIn | Offer a **paid audit pilot** ([PILOT_ENGAGEMENT.md](PILOT_ENGAGEMENT.md)) or short unpaid tech validation |
 | Design partners | 1–3 fintech / infra teams | Trade discounted/free usage for labeled misses + quote for case study |
 
 **Ask for:** 200–5,000 document chunks, 20–50 labeled queries (or incident tickets), optional cause/policy links if they have them.
