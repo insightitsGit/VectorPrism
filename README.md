@@ -108,26 +108,42 @@ Parent–child trees distort badly in Euclidean space. The **Hyperbolic Taxonomy
 ### 3. Bitemporal & Compliance Audit Trail Retrieval
 **Keywords:** bitemporal retrieval, compliance RAG, healthcare audit trail, finance document expiry filter
 
-**Shipped in 0.1.3+** as Stage-1 **exact** time gates (not a 7th embedding channel). Design: [`docs/BITEMPORAL.md`](docs/BITEMPORAL.md).
+**Opt-in only (0.1.3+).** Default search is unchanged: if you never pass `as_of` /
+`as_of_transaction` (CLI: never pass `--as-of` / `--as-of-transaction`), Stage-1
+behaves exactly as before. Temporal gates are **exact int64 filters**, not a 7th
+embedding channel. Design: [`docs/BITEMPORAL.md`](docs/BITEMPORAL.md).
+
+| Mode | What happens |
+|------|----------------|
+| **Default (no flags)** | All ingested chunks compete in Stage-1/2 as usual |
+| **Opt-in `as_of=T`** | Only chunks with valid time covering T (`[valid_from, valid_to)`) |
+| **Opt-in `as_of_transaction=T`** | Plus: only chunks the system had recorded by T |
 
 Before Stage-2 matrix math, the **16d Control Header Manifest** (`[0:16)`) exposes O(1) metadata:
 
 - Epistemic truth score (soft by default; hard filter opt-in after ECE calibration)
 - Identity anchor distance (OOD / injection-risk gate in Stage 1)
-- **Valid time** — `valid_timestamp` / `valid_to_timestamp` (half-open `[from, to)`); header `[3:5)` int64 bit-pack
-- **Transaction time** — `transaction_timestamp` (when the system recorded the chunk); header `[6:8)`
+- **Valid time** (stored always; **filtered only when `as_of` is set**) — `valid_timestamp` / `valid_to_timestamp`
+- **Transaction time** (stored when provided; **filtered only when `as_of_transaction` is set**)
 - Model version for safe re-ingest after retrains (**applied** as a Stage-1 filter)
 
 ```python
-# As-of search: only policies/facts true at T (and optionally known by T)
-engine.search(q, "wire transfer limit", top_k=5, as_of="2024-06-01T00:00:00Z")
+# Default — no temporal gate (same product behavior as pre-0.1.3)
+hits = engine.search(q, "wire transfer limit", top_k=5)
+
+# Opt-in — only policies/facts true at T
+hits = engine.search(q, "wire transfer limit", top_k=5, as_of="2024-06-01T00:00:00Z")
 ```
 
 ```bash
+# Default
+vectorprism search --checkpoint ckpt.pt --query "wire limit"
+
+# Opt-in bitemporal
 vectorprism search --checkpoint ckpt.pt --query "wire limit" --as-of 2024-06-01T00:00:00Z
 ```
 
-Stage 1 rejects low-truth, high-anchor-distance, wrong-`model_version`, or **out-of-window** chunks **before** rescoring. Epochs are always **unix seconds as int/BIGINT** — never float embedding values.
+When opted in, Stage 1 also rejects **out-of-window** chunks before rescoring. Epochs are always **unix seconds as int/BIGINT** — never float embedding values.
 
 ### 4. Cost-Optimized Scale for pgvector & Qdrant
 **Keywords:** multi-vector RAG cost reduction, pgvector HNSW, Qdrant named vectors, high-scale vector search

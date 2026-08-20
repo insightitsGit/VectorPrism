@@ -232,7 +232,7 @@ field with no supervision behind it (§6 item 11).
 | 19 | Phases 2–6 not implemented as runnable paths | **CODE-RESOLVED** | `train.py`, `channel_datasets.py`, `intrinsic_runner.py`, `eval_runner.py`, `epistemic_truth.py`, `ingest_cli.py`, `search_cli.py`, `live_benchmark.py`, `reingest.py`, `vectorprism.py` |
 | 20 | Relational train TransE vs serve L2 (no query-time relation id) | **DOCUMENTED / OPEN for full S+R≈O serve** | README + Stage-2 currently use \(-\|q-c\|\); recovery claim path is causal first (`run_causal_recovery.py`) |
 | 21 | Hard-eval never exercised non-dense channels | **CODE-RESOLVED (harness)** / **DATA-DEPENDENT (lift)** | `run_hard_eval.py` + `run_causal_recovery.py`; small measured causal lift on GPT miss set |
-| 22 | Timestamp audit-only; no Stage-1 as-of / true bitemporal | **CODE-RESOLVED (0.1.3)** | `as_of` / `as_of_transaction` Stage-1 gates; `valid_to` + `transaction_timestamp`; docs/`BITEMPORAL.md` |
+| 22 | Timestamp audit-only; no Stage-1 as-of / true bitemporal | **CODE-RESOLVED (0.1.3, opt-in)** | Default search unchanged; `as_of` / `as_of_transaction` opt-in; `docs/BITEMPORAL.md` + with/without tests |
 
 ---
 

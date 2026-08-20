@@ -55,12 +55,19 @@ def main(argv: Optional[list] = None) -> list:
     p.add_argument(
         "--as-of",
         default=None,
-        help="Valid-time as-of (unix seconds or ISO-8601). Keeps [valid_from, valid_to).",
+        help=(
+            "OPT-IN valid-time as-of (unix seconds or ISO-8601). "
+            "Default: no temporal filter (pre-0.1.3 behavior). "
+            "When set, keeps [valid_from, valid_to)."
+        ),
     )
     p.add_argument(
         "--as-of-transaction",
         default=None,
-        help="Transaction-time as-of (unix seconds or ISO-8601).",
+        help=(
+            "OPT-IN transaction-time as-of (unix seconds or ISO-8601). "
+            "Default: off. Requires intentional use with --as-of or alone."
+        ),
     )
     p.add_argument("--device", default="cpu")
     p.add_argument(

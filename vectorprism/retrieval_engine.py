@@ -364,6 +364,11 @@ class PSMRetrievalEngine:
         as_of: Optional[Any] = None,
         as_of_transaction: Optional[Any] = None,
     ):
+        """Hybrid Stage-1/2 search.
+
+        ``as_of`` / ``as_of_transaction`` are **opt-in**. When both are omitted,
+        temporal Stage-1 gates are off (same behavior as pre-0.1.3).
+        """
         assert query_1024d.shape == (1024,), f"expected 1024d query vector, got {query_1024d.shape}"
         t0 = time.perf_counter()
         w_intent, filters = self.classifier.classify(query_text)

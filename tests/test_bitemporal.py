@@ -164,3 +164,80 @@ def test_npz_roundtrip_bitemporal(tmp_path):
     assert r["valid_timestamp"] == 1_700_000_000
     assert r["valid_to_timestamp"] == 1_800_000_000
     assert r["transaction_timestamp"] == 1_700_000_050
+
+
+def _two_era_corpus(tmp_path):
+    """Shared fixture data: expired v1 + current v2, same query text."""
+    enc = HashingEncoder(768)
+    adapter = MultiTaskProjectionAdapter(base_dim=768)
+    db = InMemoryCorpusDB(tmp_path / "era.npz", autoload=False)
+    pipe = VectorPrismIngestPipeline(enc, adapter, db, model_version=1)
+    pipe.upsert_documents(
+        [
+            IngestDocument(
+                "policy_v1",
+                "wire transfer limit ten thousand",
+                timestamp=100,
+                valid_to=200,
+                transaction_time=105,
+            ),
+            IngestDocument(
+                "policy_v2",
+                "wire transfer limit twenty five thousand",
+                timestamp=200,
+                valid_to=None,
+                transaction_time=205,
+            ),
+        ]
+    )
+    engine = PSMRetrievalEngine(db, model_version=1)
+    q = pipe.encode_query("wire transfer limit")
+    return engine, q, db
+
+
+def test_opt_in_default_includes_both_eras(tmp_path):
+    """WITHOUT as_of: both versions remain eligible (feature off)."""
+    engine, q, db = _two_era_corpus(tmp_path)
+    assert len(db.rows) == 2
+
+    hits_default = engine.search(q, "wire transfer limit", top_k=5)
+    ids_default = {h["document_id"] for h in hits_default}
+    assert ids_default == {"policy_v1", "policy_v2"}, (
+        "Default search must not apply temporal gates — got "
+        f"{ids_default}. Pass as_of explicitly to filter by era."
+    )
+
+
+def test_with_vs_without_as_of_comparison(tmp_path):
+    """Side-by-side: default vs opt-in as_of must differ on a two-era corpus."""
+    engine, q, db = _two_era_corpus(tmp_path)
+    query = "wire transfer limit"
+
+    without = engine.search(q, query, top_k=5)
+    with_150 = engine.search(q, query, top_k=5, as_of=150)
+    with_250 = engine.search(q, query, top_k=5, as_of=250)
+
+    ids_without = [h["document_id"] for h in without]
+    ids_150 = [h["document_id"] for h in with_150]
+    ids_250 = [h["document_id"] for h in with_250]
+
+    assert set(ids_without) == {"policy_v1", "policy_v2"}
+    assert ids_150 == ["policy_v1"]
+    assert ids_250 == ["policy_v2"]
+    # Opt-in must change the result set vs default
+    assert ids_150 != ids_without
+    assert ids_250 != ids_without
+    assert ids_150 != ids_250
+
+
+def test_stage1_with_vs_without_as_of_same_query_vector(tmp_path):
+    """Stage-1 pool size: default returns both; as_of returns one."""
+    _, q, db = _two_era_corpus(tmp_path)
+    dense = q[C.DENSE_CORE.start : C.DENSE_CORE.end]
+
+    default_pool = db.query_dense_slice(dense, 0.0, 1.0, 10)
+    gated_pool = db.query_dense_slice(dense, 0.0, 1.0, 10, as_of=150)
+
+    assert {r["document_id"] for r in default_pool} == {"policy_v1", "policy_v2"}
+    assert {r["document_id"] for r in gated_pool} == {"policy_v1"}
+    assert len(gated_pool) < len(default_pool)

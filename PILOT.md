@@ -24,6 +24,10 @@ Partners often chunk in **Onyx** (or LangChain) and then keep Onyx’s default e
 
 See the README section *“Critical: VectorPrism is the embedding + retrieval path”* and `vectorprism.encode_guards.INTEGRATION_BANNER`.
 
+### Bitemporal (opt-in)
+
+Time gates are **off by default**. Pass `as_of` / `--as-of` only when you want era filtering. Details: [`docs/BITEMPORAL.md`](docs/BITEMPORAL.md).
+
 ---
 
 ## How to get a real pilot (recruitment)
