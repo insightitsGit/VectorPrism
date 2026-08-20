@@ -49,7 +49,11 @@ def main(argv: Optional[list] = None) -> int:
     )
     args = p.parse_args(argv)
 
+    from vectorprism.encode_guards import check_encoder_matches_checkpoint, print_integration_banner
+
+    print_integration_banner()
     ckpt = load_checkpoint(args.checkpoint, unsafe_pickle=bool(args.unsafe_pickle))
+    check_encoder_matches_checkpoint(args.encoder, ckpt, context="ingest")
     encoder = build_encoder(args.encoder, args.device)
     db = make_db(
         args.backend,

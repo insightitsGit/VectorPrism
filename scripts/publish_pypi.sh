@@ -26,4 +26,4 @@ else
   python -m twine upload dist/*
 fi
 
-echo "Done. Install with: pip install vectorprism==0.1.0"
+echo "Done. Install with: pip install vectorprism==0.1.3"

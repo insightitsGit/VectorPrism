@@ -52,6 +52,16 @@ def main(argv: Optional[list] = None) -> list:
         default=None,
         help="Stage-1 model_version filter (default: checkpoint model_version)",
     )
+    p.add_argument(
+        "--as-of",
+        default=None,
+        help="Valid-time as-of (unix seconds or ISO-8601). Keeps [valid_from, valid_to).",
+    )
+    p.add_argument(
+        "--as-of-transaction",
+        default=None,
+        help="Transaction-time as-of (unix seconds or ISO-8601).",
+    )
     p.add_argument("--device", default="cpu")
     p.add_argument(
         "--unsafe-pickle",
@@ -60,7 +70,11 @@ def main(argv: Optional[list] = None) -> list:
     )
     args = p.parse_args(argv)
 
+    from vectorprism.encode_guards import check_encoder_matches_checkpoint, print_integration_banner
+
+    print_integration_banner()
     ckpt = load_checkpoint(args.checkpoint, unsafe_pickle=bool(args.unsafe_pickle))
+    check_encoder_matches_checkpoint(args.encoder, ckpt, context="search")
     encoder = build_encoder(args.encoder, args.device)
     db = make_db(
         args.backend,
@@ -113,7 +127,13 @@ def main(argv: Optional[list] = None) -> list:
         model_version=model_version,
     )
     q = pipe.encode_query(args.query)
-    hits = engine.search(q, args.query, top_k=args.top_k)
+    hits = engine.search(
+        q,
+        args.query,
+        top_k=args.top_k,
+        as_of=args.as_of,
+        as_of_transaction=args.as_of_transaction,
+    )
     if not hits:
         print("[search] 0 hits", file=sys.stderr)
     for i, h in enumerate(hits, start=1):

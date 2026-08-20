@@ -22,9 +22,16 @@ class VectorDBClient(ABC):
         max_anchor_dist: float,
         limit: int,
         model_version: Optional[int] = None,
+        as_of: Optional[int] = None,
+        as_of_transaction: Optional[int] = None,
     ) -> List[Dict[str, Any]]:
         """Returns list of dicts, each containing at least
-        {'tensor_1024d': np.ndarray(1024,), 'chunk_text': str, 'document_id': str}."""
+        {'tensor_1024d': np.ndarray(1024,), 'chunk_text': str, 'document_id': str}.
+
+        Optional bitemporal Stage-1 gates (unix seconds, exact int):
+          as_of — valid-time membership [valid_from, valid_to)
+          as_of_transaction — transaction_time <= as_of_transaction
+        """
         ...
 
     def get_by_ids(self, doc_ids: List[str]) -> List[Dict[str, Any]]:
@@ -51,14 +58,17 @@ class PgVectorClient(VectorDBClient):
                 """
                 INSERT INTO psm_document_embeddings
                     (document_id, chunk_text, tensor_1024d,
-                     epistemic_truth, anchor_dist, valid_timestamp, model_version)
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                     epistemic_truth, anchor_dist, valid_timestamp,
+                     valid_to_timestamp, transaction_timestamp, model_version)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
                 ON CONFLICT (document_id) DO UPDATE SET
                     chunk_text = EXCLUDED.chunk_text,
                     tensor_1024d = EXCLUDED.tensor_1024d,
                     epistemic_truth = EXCLUDED.epistemic_truth,
                     anchor_dist = EXCLUDED.anchor_dist,
                     valid_timestamp = EXCLUDED.valid_timestamp,
+                    valid_to_timestamp = EXCLUDED.valid_to_timestamp,
+                    transaction_timestamp = EXCLUDED.transaction_timestamp,
                     model_version = EXCLUDED.model_version
                 """,
                 (
@@ -68,6 +78,16 @@ class PgVectorClient(VectorDBClient):
                     float(meta["epistemic_truth"]),
                     float(meta["anchor_dist"]),
                     int(meta["valid_timestamp"]),
+                    (
+                        None
+                        if meta.get("valid_to_timestamp") is None
+                        else int(meta["valid_to_timestamp"])
+                    ),
+                    (
+                        None
+                        if meta.get("transaction_timestamp") is None
+                        else int(meta["transaction_timestamp"])
+                    ),
                     int(meta.get("model_version", 0)),
                 ),
             )
@@ -97,6 +117,22 @@ class PgVectorClient(VectorDBClient):
                       ADD CONSTRAINT psm_document_embeddings_document_id_key UNIQUE (document_id);
                   END IF;
                 END $$;
+                """
+            )
+        # Bitemporal columns (0.1.3+) — idempotent for existing deployments
+        with self.conn.cursor() as cur:
+            cur.execute(
+                """
+                ALTER TABLE psm_document_embeddings
+                  ADD COLUMN IF NOT EXISTS valid_to_timestamp BIGINT;
+                ALTER TABLE psm_document_embeddings
+                  ADD COLUMN IF NOT EXISTS transaction_timestamp BIGINT;
+                CREATE INDEX IF NOT EXISTS idx_psm_valid_timestamp
+                  ON psm_document_embeddings (valid_timestamp);
+                CREATE INDEX IF NOT EXISTS idx_psm_valid_to_timestamp
+                  ON psm_document_embeddings (valid_to_timestamp);
+                CREATE INDEX IF NOT EXISTS idx_psm_transaction_timestamp
+                  ON psm_document_embeddings (transaction_timestamp);
                 """
             )
 
@@ -137,6 +173,8 @@ class PgVectorClient(VectorDBClient):
         max_anchor_dist: float,
         limit: int,
         model_version: Optional[int] = None,
+        as_of: Optional[int] = None,
+        as_of_transaction: Optional[int] = None,
     ) -> List[Dict[str, Any]]:
         assert vector_slice.shape == (368,), f"expected 368d dense-core slice, got {vector_slice.shape}"
         where = "epistemic_truth >= %s AND anchor_dist <= %s"
@@ -144,11 +182,24 @@ class PgVectorClient(VectorDBClient):
         if model_version is not None:
             where += " AND model_version = %s"
             params.append(int(model_version))
+        if as_of is not None:
+            # [valid_from, valid_to) with NULL valid_to = open-ended
+            where += (
+                " AND valid_timestamp <= %s"
+                " AND (valid_to_timestamp IS NULL OR valid_to_timestamp > %s)"
+            )
+            params.extend([int(as_of), int(as_of)])
+        if as_of_transaction is not None:
+            where += (
+                " AND (transaction_timestamp IS NULL OR transaction_timestamp <= %s)"
+            )
+            params.append(int(as_of_transaction))
         params.extend([vector_slice.astype(np.float32), limit])
         with self.conn.cursor() as cur:
             cur.execute(
                 f"""
-                SELECT document_id, chunk_text, tensor_1024d, epistemic_truth, anchor_dist, model_version
+                SELECT document_id, chunk_text, tensor_1024d, epistemic_truth, anchor_dist,
+                       model_version, valid_timestamp, valid_to_timestamp, transaction_timestamp
                 FROM psm_document_embeddings
                 WHERE {where}
                 ORDER BY dense_core_slice <=> %s
@@ -165,6 +216,9 @@ class PgVectorClient(VectorDBClient):
                 "epistemic_truth": float(r[3]),
                 "anchor_dist": float(r[4]),
                 "model_version": int(r[5]),
+                "valid_timestamp": int(r[6]),
+                "valid_to_timestamp": None if r[7] is None else int(r[7]),
+                "transaction_timestamp": None if r[8] is None else int(r[8]),
             }
             for r in rows
         ]
@@ -237,6 +291,16 @@ class QdrantVectorClient(VectorDBClient):
                         "epistemic_truth": float(meta["epistemic_truth"]),
                         "anchor_dist": float(meta["anchor_dist"]),
                         "valid_timestamp": int(meta["valid_timestamp"]),
+                        "valid_to_timestamp": (
+                            None
+                            if meta.get("valid_to_timestamp") is None
+                            else int(meta["valid_to_timestamp"])
+                        ),
+                        "transaction_timestamp": (
+                            None
+                            if meta.get("transaction_timestamp") is None
+                            else int(meta["transaction_timestamp"])
+                        ),
                         "model_version": int(meta.get("model_version", 0)),
                     },
                 )
@@ -292,7 +356,11 @@ class QdrantVectorClient(VectorDBClient):
         max_anchor_dist: float,
         limit: int,
         model_version: Optional[int] = None,
+        as_of: Optional[int] = None,
+        as_of_transaction: Optional[int] = None,
     ) -> List[Dict[str, Any]]:
+        from vectorprism.bitemporal import passes_bitemporal_filters
+
         must = [
             self._qmodels.FieldCondition(key="epistemic_truth", range=self._qmodels.Range(gte=min_truth)),
             self._qmodels.FieldCondition(key="anchor_dist", range=self._qmodels.Range(lte=max_anchor_dist)),
@@ -304,26 +372,57 @@ class QdrantVectorClient(VectorDBClient):
                     match=self._qmodels.MatchValue(value=int(model_version)),
                 )
             )
+        if as_of is not None:
+            must.append(
+                self._qmodels.FieldCondition(
+                    key="valid_timestamp",
+                    range=self._qmodels.Range(lte=int(as_of)),
+                )
+            )
         qfilter = self._qmodels.Filter(must=must)
+        fetch_n = limit * 3 if (as_of is not None or as_of_transaction is not None) else limit
         hits = self.client.query_points(
             collection_name=self.collection,
             query=vector_slice.tolist(),
             using="dense_core_slice",
             query_filter=qfilter,
-            limit=limit,
+            limit=max(fetch_n, limit),
             with_vectors=["full_tensor"],
         ).points
-        return [
-            {
-                "document_id": str(h.payload.get("document_id", h.id)),
-                "chunk_text": h.payload["chunk_text"],
-                "tensor_1024d": np.asarray(h.vector["full_tensor"], dtype=np.float32),
-                "epistemic_truth": float(h.payload.get("epistemic_truth", 1.0)),
-                "anchor_dist": float(h.payload.get("anchor_dist", 0.0)),
-                "model_version": int(h.payload.get("model_version", 0)),
+        out: List[Dict[str, Any]] = []
+        for h in hits:
+            payload = h.payload or {}
+            vec = h.vector
+            full = vec.get("full_tensor") if isinstance(vec, dict) else vec
+            if full is None:
+                continue
+            row = {
+                "document_id": str(payload.get("document_id", h.id)),
+                "chunk_text": payload.get("chunk_text", ""),
+                "tensor_1024d": np.asarray(full, dtype=np.float32),
+                "epistemic_truth": float(payload.get("epistemic_truth", 1.0)),
+                "anchor_dist": float(payload.get("anchor_dist", 0.0)),
+                "model_version": int(payload.get("model_version", 0)),
+                "valid_timestamp": int(payload.get("valid_timestamp", 0)),
+                "valid_to_timestamp": (
+                    None
+                    if payload.get("valid_to_timestamp") is None
+                    else int(payload["valid_to_timestamp"])
+                ),
+                "transaction_timestamp": (
+                    None
+                    if payload.get("transaction_timestamp") is None
+                    else int(payload["transaction_timestamp"])
+                ),
             }
-            for h in hits
-        ]
+            if not passes_bitemporal_filters(
+                row, as_of=as_of, as_of_transaction=as_of_transaction
+            ):
+                continue
+            out.append(row)
+            if len(out) >= limit:
+                break
+        return out
 
 
 def _is_qdrant_id(value: str) -> bool:

@@ -15,6 +15,15 @@ A **pilot** means someone outside your laptop installs VectorPrism and runs it o
 
 You do **not** need a perfect auto-KG on day one. You need: install works, search works, they can drop in JSONL, and you can iterate on their graph/attrs together.
 
+### Integration warning (Onyx / other RAG stacks)
+
+Partners often chunk in **Onyx** (or LangChain) and then keep Onyx’s default embeddings for search. That skips VectorPrism entirely.
+
+- **OK:** Onyx (or anything) produces `chunk_text` → VectorPrism ingest/search with a VP checkpoint.
+- **Not OK:** Onyx embeddings stored as the retrieval vectors while expecting multi-channel recovery.
+
+See the README section *“Critical: VectorPrism is the embedding + retrieval path”* and `vectorprism.encode_guards.INTEGRATION_BANNER`.
+
 ---
 
 ## How to get a real pilot (recruitment)
@@ -150,7 +159,7 @@ Publish only claims measured on **their** data — not the adversarial finance p
 | Console script `vectorprism` | Added |
 | Public git clone install docs | This file + README |
 | Push main with packaging | **You push when ready** |
-| PyPI publish (`twine upload`) | **0.1.2** (README/claims sync + audit tooling) |
+| PyPI publish (`twine upload`) | **0.1.3** (bitemporal Stage-1 as-of gates) |
 | Example checkpoint download | Optional (HF / release assets) — don’t put huge `.pt` on PyPI |
 
 ### Publish to PyPI (newer releases)
@@ -159,7 +168,7 @@ Publish only claims measured on **their** data — not the adversarial finance p
 pip install -e ".[dev]"
 python -m build
 twine check dist/*
-# twine upload dist/*   # requires PyPI token; current release 0.1.2
+# twine upload dist/*   # requires PyPI token; current release 0.1.3
 ```
 
 ---

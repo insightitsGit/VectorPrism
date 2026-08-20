@@ -37,6 +37,8 @@ class InMemoryCorpusDB(VectorDBClient):
     def upsert(self, doc_id, chunk_text, tensor_1024d, meta):
         # Replace existing id if present
         self.rows = [r for r in self.rows if r["document_id"] != doc_id]
+        vt = meta.get("valid_to_timestamp")
+        tx = meta.get("transaction_timestamp")
         self.rows.append({
             "document_id": doc_id,
             "chunk_text": chunk_text,
@@ -44,6 +46,8 @@ class InMemoryCorpusDB(VectorDBClient):
             "epistemic_truth": float(meta["epistemic_truth"]),
             "anchor_dist": float(meta["anchor_dist"]),
             "valid_timestamp": int(meta["valid_timestamp"]),
+            "valid_to_timestamp": None if vt is None else int(vt),
+            "transaction_timestamp": None if tx is None else int(tx),
             "model_version": int(meta.get("model_version", 0)),
         })
 
@@ -54,12 +58,20 @@ class InMemoryCorpusDB(VectorDBClient):
         max_anchor_dist,
         limit,
         model_version: Optional[int] = None,
+        as_of: Optional[int] = None,
+        as_of_transaction: Optional[int] = None,
     ):
+        from vectorprism.bitemporal import passes_bitemporal_filters
+
         scored = []
         for r in self.rows:
             if r["epistemic_truth"] < min_truth or r["anchor_dist"] > max_anchor_dist:
                 continue
             if model_version is not None and int(r.get("model_version", 0)) != int(model_version):
+                continue
+            if not passes_bitemporal_filters(
+                r, as_of=as_of, as_of_transaction=as_of_transaction
+            ):
                 continue
             dense = r["tensor_1024d"][C.DENSE_CORE.start:C.DENSE_CORE.end]
             score = float(dense @ vector_slice)
@@ -78,7 +90,10 @@ class InMemoryCorpusDB(VectorDBClient):
             np.savez_compressed(
                 out,
                 tensors=np.zeros((0, 1024), dtype=np.float32),
-                meta=np.zeros((0, 4), dtype=np.float64),
+                meta=np.zeros((0, 3), dtype=np.float64),
+                valid_timestamps=np.zeros((0,), dtype=np.int64),
+                valid_to_timestamps=np.full((0,), -1, dtype=np.int64),
+                transaction_timestamps=np.full((0,), -1, dtype=np.int64),
                 ids=np.array([], dtype=object),
                 texts=np.array([], dtype=object),
             )
@@ -89,16 +104,44 @@ class InMemoryCorpusDB(VectorDBClient):
                     [
                         r["epistemic_truth"],
                         r["anchor_dist"],
-                        float(r["valid_timestamp"]),
                         float(r["model_version"]),
                     ]
                     for r in self.rows
                 ],
                 dtype=np.float64,
             )
+            valid_timestamps = np.asarray(
+                [int(r["valid_timestamp"]) for r in self.rows], dtype=np.int64
+            )
+            # -1 sentinel = NULL / open-ended / unset (int64 arrays cannot hold None)
+            valid_to_timestamps = np.asarray(
+                [
+                    -1 if r.get("valid_to_timestamp") is None else int(r["valid_to_timestamp"])
+                    for r in self.rows
+                ],
+                dtype=np.int64,
+            )
+            transaction_timestamps = np.asarray(
+                [
+                    -1
+                    if r.get("transaction_timestamp") is None
+                    else int(r["transaction_timestamp"])
+                    for r in self.rows
+                ],
+                dtype=np.int64,
+            )
             ids = np.asarray([r["document_id"] for r in self.rows], dtype=object)
             texts = np.asarray([r["chunk_text"] for r in self.rows], dtype=object)
-            np.savez_compressed(out, tensors=tensors, meta=meta, ids=ids, texts=texts)
+            np.savez_compressed(
+                out,
+                tensors=tensors,
+                meta=meta,
+                valid_timestamps=valid_timestamps,
+                valid_to_timestamps=valid_to_timestamps,
+                transaction_timestamps=transaction_timestamps,
+                ids=ids,
+                texts=texts,
+            )
         self.store_path = out
         return out
 
@@ -109,8 +152,36 @@ class InMemoryCorpusDB(VectorDBClient):
         meta = data["meta"]
         ids = data["ids"]
         texts = data["texts"]
+        # New format: valid_timestamps int64 array. Legacy: meta[:, 2] was timestamp.
+        if "valid_timestamps" in data.files:
+            valid_timestamps = np.asarray(data["valid_timestamps"], dtype=np.int64)
+            legacy_ts_in_meta = False
+        else:
+            valid_timestamps = None
+            legacy_ts_in_meta = True
         self.rows = []
+        has_to = "valid_to_timestamps" in data.files
+        has_tx = "transaction_timestamps" in data.files
         for i in range(len(ids)):
+            if legacy_ts_in_meta:
+                # float64 can hold unix-seconds exactly; cast via int
+                ts = int(meta[i, 2])
+                ver = int(meta[i, 3]) if meta.shape[1] > 3 else 0
+                vt = None
+                tx = None
+            else:
+                ts = int(valid_timestamps[i])
+                ver = int(meta[i, 2]) if meta.shape[1] > 2 else 0
+                if has_to:
+                    raw_to = int(data["valid_to_timestamps"][i])
+                    vt = None if raw_to < 0 else raw_to
+                else:
+                    vt = None
+                if has_tx:
+                    raw_tx = int(data["transaction_timestamps"][i])
+                    tx = None if raw_tx < 0 else raw_tx
+                else:
+                    tx = None
             self.rows.append(
                 {
                     "document_id": str(ids[i]),
@@ -118,8 +189,10 @@ class InMemoryCorpusDB(VectorDBClient):
                     "tensor_1024d": np.asarray(tensors[i], dtype=np.float32),
                     "epistemic_truth": float(meta[i, 0]),
                     "anchor_dist": float(meta[i, 1]),
-                    "valid_timestamp": int(meta[i, 2]),
-                    "model_version": int(meta[i, 3]),
+                    "valid_timestamp": ts,
+                    "valid_to_timestamp": vt,
+                    "transaction_timestamp": tx,
+                    "model_version": ver,
                 }
             )
         self.store_path = path

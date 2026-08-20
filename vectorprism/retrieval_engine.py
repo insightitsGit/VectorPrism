@@ -17,6 +17,8 @@ from vectorprism.tensor_contract import PSMTensorContract as C
 from vectorprism.db_client import VectorDBClient
 from vectorprism.causal_graph import CausalDocGraph
 from vectorprism.structure_index import TaxonomyGraph, RelationalAttrIndex
+from vectorprism.bitemporal import passes_bitemporal_filters
+from vectorprism.temporal_types import coerce_unix_epoch_seconds
 
 logger = logging.getLogger(__name__)
 
@@ -234,6 +236,12 @@ class PSMRetrievalEngine:
                 continue
             if want_version is not None and int(row.get("model_version", 0)) != int(want_version):
                 continue
+            if not passes_bitemporal_filters(
+                row,
+                as_of=filters.get("as_of"),
+                as_of_transaction=filters.get("as_of_transaction"),
+            ):
+                continue
             out.append(row)
         return out
 
@@ -258,6 +266,8 @@ class PSMRetrievalEngine:
             max_anchor_dist=filters["max_anchor_dist"],
             limit=max(dense_limit, 1),
             model_version=filters.get("model_version"),
+            as_of=filters.get("as_of"),
+            as_of_transaction=filters.get("as_of_transaction"),
         )
         causal_hops: Dict[str, int] = {}
         hyp_hops: Dict[str, int] = {}
@@ -351,10 +361,18 @@ class PSMRetrievalEngine:
         top_k: int = 5,
         *,
         return_stats: bool = False,
+        as_of: Optional[Any] = None,
+        as_of_transaction: Optional[Any] = None,
     ):
         assert query_1024d.shape == (1024,), f"expected 1024d query vector, got {query_1024d.shape}"
         t0 = time.perf_counter()
         w_intent, filters = self.classifier.classify(query_text)
+        if as_of is not None:
+            filters["as_of"] = coerce_unix_epoch_seconds(as_of, field_name="as_of")
+        if as_of_transaction is not None:
+            filters["as_of_transaction"] = coerce_unix_epoch_seconds(
+                as_of_transaction, field_name="as_of_transaction"
+            )
         dense_query_slice = query_1024d[C.DENSE_CORE.start : C.DENSE_CORE.end]
         t1 = time.perf_counter()
         candidates, causal_hops, hyp_hops, rel_hops = self._stage1_candidates(

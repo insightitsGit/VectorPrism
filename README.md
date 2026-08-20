@@ -14,7 +14,37 @@
 
 > One contiguous **1024d** tensor. Six independently trained relevance subspaces. Stage-1 HNSW + Stage-2 intent-gated rescoring. Baseline vector-DB storage cost — not 6× multi-vector inflation.
 
-**[Interactive demo](https://insightitsgit.github.io/VectorPrism/)** · **[Benchmarks](BENCHMARKS.md)** · **[Pilot guide](PILOT.md)** · **[Technical report](demos/finance_demo/TECHNICAL_REPORT.md)**
+**[Interactive demo](https://insightitsgit.github.io/VectorPrism/)** · **[Benchmarks](BENCHMARKS.md)** · **[Pilot guide](PILOT.md)** · **[Bitemporal](docs/BITEMPORAL.md)** · **[Technical report](demos/finance_demo/TECHNICAL_REPORT.md)**
+
+---
+
+## Critical: VectorPrism is the embedding + retrieval path — not a chunker
+
+Developer feedback we keep seeing: teams feed docs through an AI stack that *mentions* VectorPrism (or copies our chunk JSONL shape), then embed and search with **Onyx / default dense embeddings**. That path **cannot** deliver VectorPrism recovery results.
+
+| Step | Who owns it | What to use |
+|------|-------------|-------------|
+| Split documents into passages | **You** (Onyx, LangChain, custom splitter, etc.) | Plain `chunk_text` |
+| Encode each chunk into the index | **VectorPrism** | Frozen base encoder + `MultiTaskProjectionAdapter` checkpoint → **1024d** (6 channel slices + header) |
+| Query encode + Stage-1/2 search | **VectorPrism** | **Same** checkpoint + **same** base encoder |
+
+**Supported**
+
+```text
+your chunker → chunk_text
+           → VectorPrism encode (encoder + adapter ckpt) → store 1024d
+           → VectorPrism search (same ckpt) → multi-channel top-k
+```
+
+**Not supported (will look like “VectorPrism didn’t help”)**
+
+```text
+your chunker → Onyx / OpenAI / Voyage / other dense vector → cosine ANN
+```
+
+Foreign embeddings are a different vector space. They do not populate the dense / relational / disentangled / hyperbolic / identity / causal slices, so Stage-2 fusion never runs on real channel signal. Benchmarks (dense Miss@10 → multi recovery) only apply when **both ingest and search** use VectorPrism’s 6-channel tensors.
+
+CLI ingest/search print this banner and warn on encoder↔checkpoint mismatch (`vectorprism.encode_guards`).
 
 ---
 
@@ -78,14 +108,26 @@ Parent–child trees distort badly in Euclidean space. The **Hyperbolic Taxonomy
 ### 3. Bitemporal & Compliance Audit Trail Retrieval
 **Keywords:** bitemporal retrieval, compliance RAG, healthcare audit trail, finance document expiry filter
 
+**Shipped in 0.1.3+** as Stage-1 **exact** time gates (not a 7th embedding channel). Design: [`docs/BITEMPORAL.md`](docs/BITEMPORAL.md).
+
 Before Stage-2 matrix math, the **16d Control Header Manifest** (`[0:16)`) exposes O(1) metadata:
 
 - Epistemic truth score (soft by default; hard filter opt-in after ECE calibration)
 - Identity anchor distance (OOD / injection-risk gate in Stage 1)
-- Exact int64 timestamp (packed in the header for audit / future filters — **not** applied as a Stage-1 SQL/Qdrant predicate today)
-- Model version for safe re-ingest after retrains (**applied** as a Stage-1 filter; search defaults to the checkpoint’s `model_version`)
+- **Valid time** — `valid_timestamp` / `valid_to_timestamp` (half-open `[from, to)`); header `[3:5)` int64 bit-pack
+- **Transaction time** — `transaction_timestamp` (when the system recorded the chunk); header `[6:8)`
+- Model version for safe re-ingest after retrains (**applied** as a Stage-1 filter)
 
-Stage 1 rejects low-truth, high-anchor-distance, or wrong-`model_version` chunks **before** rescoring.
+```python
+# As-of search: only policies/facts true at T (and optionally known by T)
+engine.search(q, "wire transfer limit", top_k=5, as_of="2024-06-01T00:00:00Z")
+```
+
+```bash
+vectorprism search --checkpoint ckpt.pt --query "wire limit" --as-of 2024-06-01T00:00:00Z
+```
+
+Stage 1 rejects low-truth, high-anchor-distance, wrong-`model_version`, or **out-of-window** chunks **before** rescoring. Epochs are always **unix seconds as int/BIGINT** — never float embedding values.
 
 ### 4. Cost-Optimized Scale for pgvector & Qdrant
 **Keywords:** multi-vector RAG cost reduction, pgvector HNSW, Qdrant named vectors, high-scale vector search
@@ -129,9 +171,10 @@ Ground truth: `PSMTensorContract` / `VectorPrismTensorContract` in [`tensor_cont
 | `[0]` | Channel bitmask | `uint32` ↔ `float32` bit reinterpret |
 | `[1]` | Epistemic truth | `float32` in `[0, 1]` |
 | `[2]` | Identity anchor distance | `float32` |
-| `[3:5]` | Bitemporal timestamp | `int64` ↔ `2×float32` bit reinterpret |
+| `[3:5]` | Valid-time timestamp | `int64` ↔ `2×float32` **bit reinterpret** (unix **seconds**). Never a float *value*. |
 | `[5]` | Model version | `uint32` ↔ `float32` bit reinterpret |
-| `[6:16]` | Reserved | zero-filled |
+| `[6:8]` | Transaction time (optional) | Same int64 packing when set; zeros = unset |
+| `[8:16]` | Reserved | zero-filled |
 
 ---
 
@@ -321,7 +364,9 @@ CREATE TABLE IF NOT EXISTS psm_document_embeddings (
 
     epistemic_truth FLOAT NOT NULL DEFAULT 1.0,
     anchor_dist FLOAT NOT NULL DEFAULT 0.0,
-    valid_timestamp BIGINT NOT NULL,
+    valid_timestamp BIGINT NOT NULL,           -- valid_from (unix seconds)
+    valid_to_timestamp BIGINT,                 -- exclusive end; NULL = open
+    transaction_timestamp BIGINT,              -- when system recorded version
     model_version INTEGER NOT NULL DEFAULT 0,
 
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
@@ -375,7 +420,7 @@ if not client.collection_exists(collection):
     )
 ```
 
-Payload fields used for Stage-1 filters: `epistemic_truth`, `anchor_dist`, `model_version`. Payload also stores `valid_timestamp`, `chunk_text`, and `document_id` (timestamp is header metadata today; not a Stage-1 predicate).
+Payload fields used for Stage-1 filters: `epistemic_truth`, `anchor_dist`, `model_version`, `valid_timestamp` / `valid_to_timestamp` (`as_of`), `transaction_timestamp` (`as_of_transaction`). Payload also stores `chunk_text` and `document_id`.
 
 ---
 

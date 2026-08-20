@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-__version__ = "0.1.2"
+__version__ = "0.1.3"
 
 # Public aliases kept for partner / docs imports
 from vectorprism.tensor_contract import PSMTensorContract, VectorPrismTensorContract
@@ -11,6 +11,7 @@ from vectorprism.ingestion_adapter import (
     MultiTaskProjectionAdapter,
     VectorPrismProjectionAdapter,
 )
+from vectorprism.encode_guards import INTEGRATION_BANNER
 
 __all__ = [
     "__version__",
@@ -20,4 +21,5 @@ __all__ = [
     "VectorPrismRetrievalEngine",
     "MultiTaskProjectionAdapter",
     "VectorPrismProjectionAdapter",
+    "INTEGRATION_BANNER",
 ]

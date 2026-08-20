@@ -17,9 +17,14 @@ CREATE TABLE IF NOT EXISTS psm_document_embeddings (
     ) STORED,
 
     -- Header Metadata Fields (Extracted from Slice [0..15] at ingestion time)
+    -- Epochs are Unix SECONDS as BIGINT (never FLOAT — precision).
+    -- valid_timestamp = valid_from; valid_to_timestamp NULL = still in force.
+    -- transaction_timestamp = when the system recorded this version (optional).
     epistemic_truth FLOAT NOT NULL DEFAULT 1.0,
     anchor_dist FLOAT NOT NULL DEFAULT 0.0,
     valid_timestamp BIGINT NOT NULL,
+    valid_to_timestamp BIGINT,
+    transaction_timestamp BIGINT,
     model_version INTEGER NOT NULL DEFAULT 0,
 
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
@@ -35,4 +40,7 @@ WITH (m = 16, ef_construction = 64);
 CREATE INDEX IF NOT EXISTS idx_psm_epistemic_truth ON psm_document_embeddings (epistemic_truth);
 CREATE INDEX IF NOT EXISTS idx_psm_anchor_dist ON psm_document_embeddings (anchor_dist);
 CREATE INDEX IF NOT EXISTS idx_psm_model_version ON psm_document_embeddings (model_version);
+CREATE INDEX IF NOT EXISTS idx_psm_valid_timestamp ON psm_document_embeddings (valid_timestamp);
+CREATE INDEX IF NOT EXISTS idx_psm_valid_to_timestamp ON psm_document_embeddings (valid_to_timestamp);
+CREATE INDEX IF NOT EXISTS idx_psm_transaction_timestamp ON psm_document_embeddings (transaction_timestamp);
 CREATE INDEX IF NOT EXISTS idx_psm_document_id ON psm_document_embeddings (document_id);

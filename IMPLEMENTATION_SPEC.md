@@ -1,12 +1,12 @@
-# VectorPrism Architecture — Implementation Specification (v4, Build-Ready)
+# VectorPrism Architecture — Implementation Specification (v5, Build-Ready)
 
-**Document Identifier:** `SPEC-VECTORPRISM-2026-V4` (supersedes `SPEC-PSM-2026-V3`)
+**Document Identifier:** `SPEC-VECTORPRISM-2026-V5` (supersedes V4)
 **Product name:** VectorPrism (internal `PSM*` type names retained for compatibility)
-**Status:** Phases 0–6 are code-complete (train/eval/intrinsic/ablation/truth/
-ingest/search/live-benchmark/reingest). Model *quality* still depends on your
+**Status:** Phases 0–6 code-complete + **bitemporal Stage-1 gates (0.1.3)**. Model *quality* still depends on your
 labeled JSONL + a real sentence encoder — example data is plumbing only.
 **Audience:** an engineer/agent picking this up fresh, with no prior
 context on how this design evolved.
+**Bitemporal design:** [`docs/BITEMPORAL.md`](docs/BITEMPORAL.md)
 
 **Pillars (immutable):** 1024d contract · 6 channels · 2-stage retrieval ·
 identity Stage-1-only · earn channels via ablation.
@@ -73,8 +73,9 @@ human cognition" claim across all 6 is not.
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │ PHASE 3: RETRIEVAL (retrieval_engine.py)                                   │
 │  IntentClassifier ──► w_intent (5-dim: dense/rel/dis/hyp/causal)           │
-│  Stage 1 (DB): HNSW on dense_core_slice + truth/anchor filter ──► top 100 │
-│  Stage 2 (RAM): per-channel scoring, min-max normalize, weighted sum      │
+│  Stage 1 (DB): HNSW on dense_core_slice + truth/anchor/model_version/as_of │
+│                 bitemporal filters ──► top 100                             │
+│  Stage 2 (RAM): per-channel scoring, z-score normalize, weighted sum      │
 │                 ──► top-k                                                  │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -90,7 +91,7 @@ weighted sum without re-deriving why; see §6 item 8.
 
 | Offset | Dims | Channel | Header sub-layout (if applicable) |
 |---|---|---|---|
-| `[0..15]` | 16 | Header | `[0]`=bitmask(uint32), `[1]`=truth(f32), `[2]`=anchor_dist(f32), `[3:5]`=timestamp(int64, bit-reinterpreted), `[5]`=model_version(uint32), `[6:16]`=reserved(zero) |
+| `[0..15]` | 16 | Header | `[0]`=bitmask(uint32), `[1]`=truth(f32), `[2]`=anchor_dist(f32), `[3:5]`=**valid_time** int64↔2×f32, `[5]`=model_version(uint32), `[6:8]`=**transaction_time** int64↔2×f32 (zeros=unset), `[8:16]`=reserved(zero) |
 | `[16..383]` | 368 | Dense Core | cosine space, L2-normalized |
 | `[384..511]` | 128 | Relational | TransE-style, needs a relation embedding table (not in this slice) |
 | `[512..639]` | 128 | Disentangled | VIB latent `z` (mu/logvar live in the model, not the stored tensor) |
@@ -108,7 +109,8 @@ lose precision. Use `PSMTensorContract.pack_header` / `unpack_header` only.
 
 | File | Purpose | Test coverage |
 |---|---|---|
-| `tensor_contract.py` | Memory layout, header pack/unpack (+ model_version) | `TestTensorContract` |
+| `temporal_types.py` / `bitemporal.py` | Exact epoch coerce + Stage-1 as-of gates | `tests/test_temporal_types.py`, `tests/test_bitemporal.py` |
+| `tensor_contract.py` | Memory layout, header pack/unpack (+ model_version, tx time) | `TestTensorContract` |
 | `losses.py` | 6 real loss functions + `poincare_distance` | `TestLosses` |
 | `ingestion_adapter.py` | `MultiTaskProjectionAdapter` (the trainable model) | `TestAdapter` |
 | `training.py` | `PSMBatch` data contract + training loop | smoke-tested (all 6 channels backprop) |
@@ -230,6 +232,7 @@ field with no supervision behind it (§6 item 11).
 | 19 | Phases 2–6 not implemented as runnable paths | **CODE-RESOLVED** | `train.py`, `channel_datasets.py`, `intrinsic_runner.py`, `eval_runner.py`, `epistemic_truth.py`, `ingest_cli.py`, `search_cli.py`, `live_benchmark.py`, `reingest.py`, `vectorprism.py` |
 | 20 | Relational train TransE vs serve L2 (no query-time relation id) | **DOCUMENTED / OPEN for full S+R≈O serve** | README + Stage-2 currently use \(-\|q-c\|\); recovery claim path is causal first (`run_causal_recovery.py`) |
 | 21 | Hard-eval never exercised non-dense channels | **CODE-RESOLVED (harness)** / **DATA-DEPENDENT (lift)** | `run_hard_eval.py` + `run_causal_recovery.py`; small measured causal lift on GPT miss set |
+| 22 | Timestamp audit-only; no Stage-1 as-of / true bitemporal | **CODE-RESOLVED (0.1.3)** | `as_of` / `as_of_transaction` Stage-1 gates; `valid_to` + `transaction_timestamp`; docs/`BITEMPORAL.md` |
 
 ---
 

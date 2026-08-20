@@ -10,7 +10,7 @@
 | Postgres + pgvector ingest/search | Ready (Compose `db` on `:5433`) |
 | Real client labeled data | **Not yet** — swap JSONL when a client arrives |
 | Extra channels (causal/relational/…) in prod | **Earn via ablation** after dense DoD |
-| PyPI package `pip install vectorprism` | **Live** — [vectorprism 0.1.2](https://pypi.org/project/vectorprism/); wheel includes `schema.sql` + example JSONL |
+| PyPI package `pip install vectorprism` | **Live** — [vectorprism 0.1.3](https://pypi.org/project/vectorprism/); wheel includes `schema.sql` + example JSONL; bitemporal Stage-1 gates |
 | Real external pilot | See [`PILOT.md`](PILOT.md) — recruit a partner; not another internal benchmark |
 
 ## Partner install
@@ -52,12 +52,13 @@ Artifacts land in:
 1. [ ] `docker compose up -d db` healthy  
 2. [ ] Checkpoint trained (`checkpoints/finance_demo.pt` or your own)  
 3. [ ] `schema.sql` applied (automatic via `ensure_schema` / init mount)  
-4. [ ] Documents upserted via `ingest_cli` / `run_pgvector_demo.py`  
-5. [ ] Sample search returns correct `document_id`s  
+4. [ ] Documents upserted via `ingest_cli` / `run_pgvector_demo.py` (**VectorPrism 1024d**, not Onyx/foreign embeddings)  
+5. [ ] Sample search returns correct `document_id`s (same checkpoint + base encoder as ingest)  
 6. [ ] Phase-1 eval beats or ties dense baseline on **your** eval set  
 7. [ ] `model_version` bumped + reingest after any adapter retrain  
 8. [ ] Epistemic hard filter **off** until ECE ≤ ~0.05  
 9. [ ] Secrets only in `.env` (from `.env.example`)  
+10. [ ] Partners know: chunk elsewhere is fine; **encode + retrieve must be VectorPrism** (README critical section)  
 
 ## Point at your own Postgres
 

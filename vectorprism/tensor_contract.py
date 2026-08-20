@@ -7,12 +7,21 @@ Pillars unchanged:
 
 Improvements (layout-preserving):
   - Reserved header slot [5] now stores model_version (uint32↔f32)
-  - Remaining [6..15] stay reserved/zero for future fields
+  - Remaining reserved slots stay zero unless transaction_time is set
+    (planned true bitemporal: valid_time [3:5), transaction_time [6:8);
+     never store epochs as float *values*)
 """
 
 from dataclasses import dataclass
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
+
 import numpy as np
+
+from vectorprism.temporal_types import (
+    coerce_unix_epoch_seconds,
+    pack_int64_as_2f32,
+    unpack_2f32_as_int64,
+)
 
 
 @dataclass(frozen=True)
@@ -42,9 +51,11 @@ class PSMTensorContract:
     HDR_BITMASK = TensorSlice(0, 1, "Channel Bitmask (uint32 reinterpreted)")
     HDR_TRUTH = TensorSlice(1, 2, "Epistemic Truth Score")
     HDR_ANCHOR = TensorSlice(2, 3, "Identity Anchor Distance")
-    HDR_TIMESTAMP = TensorSlice(3, 5, "Bitemporal Timestamp (int64 as 2xf32)")
+    # valid_time (unix seconds). Second clock (transaction_time) at [6:8).
+    HDR_TIMESTAMP = TensorSlice(3, 5, "Valid-time Timestamp (int64 as 2xf32)")
     HDR_MODEL_VERSION = TensorSlice(5, 6, "Model Version (uint32 reinterpreted)")
-    HDR_RESERVED = TensorSlice(6, 16, "Reserved (zero-filled)")
+    HDR_TX_TIMESTAMP = TensorSlice(6, 8, "Reserved transaction_time (int64 as 2xf32)")
+    HDR_RESERVED = TensorSlice(8, 16, "Reserved (zero-filled)")
 
     # Channel enable bits for bitmask (optional bookkeeping)
     BIT_DENSE = 1 << 0
@@ -55,28 +66,61 @@ class PSMTensorContract:
     BIT_CAUSAL = 1 << 5
 
     @classmethod
+    def _unpack_one_header(cls, h: np.ndarray) -> Dict[str, Any]:
+        h = np.ascontiguousarray(h, dtype=np.float32).reshape(16)
+        bitmask = int(np.frombuffer(np.ascontiguousarray(h[0:1]).tobytes(), dtype=np.uint32)[0])
+        epistemic_truth = float(np.clip(float(h[1]), 0.0, 1.0))
+        anchor_distance = float(h[2])
+        timestamp = unpack_2f32_as_int64(h[3:5])
+        model_version = int(
+            np.frombuffer(np.ascontiguousarray(h[5:6]).tobytes(), dtype=np.uint32)[0]
+        )
+        tx_raw = h[6:8]
+        transaction_time = (
+            unpack_2f32_as_int64(tx_raw) if not np.allclose(tx_raw, 0.0) else None
+        )
+        return {
+            "bitmask": bitmask,
+            "epistemic_truth": epistemic_truth,
+            "anchor_distance": anchor_distance,
+            "timestamp": timestamp,
+            "model_version": model_version,
+            "transaction_time": transaction_time,
+        }
+
+    @classmethod
     def unpack_header(cls, tensor_1024d: np.ndarray) -> Dict[str, Any]:
         """Extracts metadata from the header slice [0..15] in O(1) time."""
         assert tensor_1024d.shape[-1] == cls.TOTAL_DIM, f"Expected {cls.TOTAL_DIM}d tensor"
         header_raw = np.ascontiguousarray(
-            tensor_1024d[..., cls.HEADER.start:cls.HEADER.end]
-        ).astype(np.float32)
+            tensor_1024d[..., cls.HEADER.start : cls.HEADER.end], dtype=np.float32
+        )
+        if header_raw.ndim == 1:
+            return cls._unpack_one_header(header_raw)
 
-        bitmask = header_raw[..., 0:1].view(np.uint32)[..., 0]
-        epistemic_truth = header_raw[..., 1]
-        anchor_distance = header_raw[..., 2]
-        timestamp = header_raw[..., 3:5].view(np.int64)[..., 0]
-        model_version = header_raw[..., 5:6].view(np.uint32)[..., 0]
-
-        def _scalar(x):
-            return int(x) if np.isscalar(x) or getattr(x, "ndim", 1) == 0 else x
-
+        # Batched (N, 16) — preserve array outputs for callers that pass batches
+        n = header_raw.shape[0]
+        bitmask = np.empty(n, dtype=np.uint32)
+        epistemic_truth = np.empty(n, dtype=np.float32)
+        anchor_distance = np.empty(n, dtype=np.float32)
+        timestamp = np.empty(n, dtype=np.int64)
+        model_version = np.empty(n, dtype=np.uint32)
+        transaction_time = []
+        for i in range(n):
+            row = cls._unpack_one_header(header_raw[i])
+            bitmask[i] = row["bitmask"]
+            epistemic_truth[i] = row["epistemic_truth"]
+            anchor_distance[i] = row["anchor_distance"]
+            timestamp[i] = row["timestamp"]
+            model_version[i] = row["model_version"]
+            transaction_time.append(row["transaction_time"])
         return {
-            "bitmask": _scalar(bitmask),
-            "epistemic_truth": float(np.clip(epistemic_truth, 0.0, 1.0)),
-            "anchor_distance": float(anchor_distance),
-            "timestamp": _scalar(timestamp),
-            "model_version": _scalar(model_version),
+            "bitmask": bitmask,
+            "epistemic_truth": epistemic_truth,
+            "anchor_distance": anchor_distance,
+            "timestamp": timestamp,
+            "model_version": model_version,
+            "transaction_time": transaction_time,
         }
 
     @classmethod
@@ -85,21 +129,34 @@ class PSMTensorContract:
         bitmask: int,
         epistemic_truth: float,
         anchor_distance: float,
-        timestamp: int,
+        timestamp: Any,
         model_version: int = 0,
+        transaction_time: Any = None,
     ) -> np.ndarray:
         """Packs metadata into a 16-element float32 header block.
 
-        `timestamp` is Unix epoch seconds, bit-reinterpreted as int64 -> 2xf32.
-        `model_version` is a monotonic uint32 encoder/adapter revision id.
+        ``timestamp`` (valid time) is Unix epoch **seconds**, coerced then
+        bit-reinterpreted as int64 → 2×f32. Optional ``transaction_time`` uses
+        the same packing in ``[6:8)``; leave None to keep reserved zeros
+        (backward compatible with existing tensors).
         """
+        ts = coerce_unix_epoch_seconds(timestamp, field_name="timestamp")
+        assert ts is not None
         header = np.zeros(16, dtype=np.float32)
-        header[0:1] = np.array([int(bitmask)], dtype=np.uint32).view(np.float32)
+        header[0:1] = np.frombuffer(np.uint32(int(bitmask)).tobytes(), dtype=np.float32)
         header[1] = np.clip(float(epistemic_truth), 0.0, 1.0)
         header[2] = float(anchor_distance)
-        header[3:5] = np.array([int(timestamp)], dtype=np.int64).view(np.float32)
-        header[5:6] = np.array([int(model_version)], dtype=np.uint32).view(np.float32)
-        # header[6:16] stays zero — reserved
+        header[3:5] = pack_int64_as_2f32(ts)
+        header[5:6] = np.frombuffer(
+            np.uint32(int(model_version)).tobytes(), dtype=np.float32
+        )
+        if transaction_time is not None:
+            tx = coerce_unix_epoch_seconds(
+                transaction_time, field_name="transaction_time"
+            )
+            assert tx is not None
+            header[6:8] = pack_int64_as_2f32(tx)
+        # header[8:16] stays zero — reserved
         return header
 
     @classmethod
